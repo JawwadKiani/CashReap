@@ -78,7 +78,7 @@ export default function Home() {
       <header className="bg-white shadow-sm border-b border-surface-variant sticky top-0 z-50">
         <div className="max-w-md mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-3">
-            <h1 className="text-xl font-bold text-on-surface">CashBack Finder</h1>
+            <h1 className="text-xl font-bold text-on-surface">CashReap</h1>
             <Button
               variant="ghost"
               size="sm"
@@ -143,7 +143,7 @@ export default function Home() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Scale className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashBack Finder</h2>
+              <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
               <p className="text-sm text-on-surface-variant">
                 Search for a store or use your location to find the best credit card for maximum cash back rewards.
               </p>

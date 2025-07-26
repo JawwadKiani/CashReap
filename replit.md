@@ -1,8 +1,8 @@
-# Credit Card Rewards Recommendation App
+# CashReap - Credit Card Rewards Recommendation App
 
 ## Overview
 
-This is a full-stack web application that helps users find the best credit cards for specific stores and merchants. The app provides personalized credit card recommendations based on store categories, reward rates, and user preferences. It features a mobile-first design with location-based store search, card filtering, and user session management.
+CashReap is a full-stack web application that helps users find the best credit cards for specific stores and merchants. The app provides personalized credit card recommendations based on store categories, reward rates, and user preferences. It features a mobile-first design with location-based store search, card filtering, and user session management.
 
 ## User Preferences
 

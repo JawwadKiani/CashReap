@@ -121,8 +121,8 @@ export default function Settings() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center text-sm text-on-surface-variant">
-              <p>CashBack Finder v1.0.0</p>
-              <p className="mt-1">© 2025 CashBack Finder. All rights reserved.</p>
+              <p>CashReap v1.0.0</p>
+              <p className="mt-1">© 2025 CashReap. All rights reserved.</p>
               <p className="mt-2 text-xs">
                 This app provides information for educational purposes only. 
                 Please consult with financial advisors for personalized advice.
