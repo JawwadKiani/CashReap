@@ -20,7 +20,7 @@ export default function MyCards() {
   const userSession = getUserSession();
 
   const { data: savedCards, isLoading } = useQuery({
-    queryKey: ["/api/saved-cards", userSession],
+    queryKey: [`/api/saved-cards/${userSession}`],
   });
 
   const unsaveCardMutation = useMutation({
@@ -28,7 +28,7 @@ export default function MyCards() {
       return apiRequest("DELETE", `/api/saved-cards/${userSession}/${cardId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", userSession] });
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${userSession}`] });
     },
   });
 

@@ -16,12 +16,12 @@ export function LocationDetector({ onStoreSelect, selectedStore }: LocationDetec
   const { location, isLoading: locationLoading, detectLocation, error: locationError } = useLocation();
 
   const { data: searchResults, isLoading: searchLoading } = useQuery({
-    queryKey: ["/api/stores/search", searchQuery],
+    queryKey: [`/api/stores/search?q=${encodeURIComponent(searchQuery)}`],
     enabled: searchQuery.length > 2,
   });
 
   const { data: nearbyStores } = useQuery({
-    queryKey: ["/api/stores/nearby", location?.latitude, location?.longitude],
+    queryKey: [`/api/stores/nearby?lat=${location?.latitude}&lng=${location?.longitude}`],
     enabled: !!location?.latitude && !!location?.longitude,
   });
 

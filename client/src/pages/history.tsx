@@ -15,7 +15,7 @@ export default function History() {
   const userSession = getUserSession();
 
   const { data: searchHistory, isLoading } = useQuery({
-    queryKey: ["/api/search-history", userSession],
+    queryKey: [`/api/search-history/${userSession}`],
   });
 
   if (isLoading) {

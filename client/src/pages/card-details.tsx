@@ -11,7 +11,7 @@ export default function CardDetails() {
   const { id } = useParams();
 
   const { data: card, isLoading, error } = useQuery({
-    queryKey: ["/api/cards", id],
+    queryKey: [`/api/cards/${id}`],
     enabled: !!id,
   });
 

@@ -40,12 +40,12 @@ export default function Home() {
   }
 
   const { data: recommendations, isLoading: recommendationsLoading } = useQuery({
-    queryKey: ["/api/stores", selectedStore?.id, "recommendations", queryParams.toString()],
+    queryKey: [`/api/stores/${selectedStore?.id}/recommendations?${queryParams.toString()}`],
     enabled: !!selectedStore,
   });
 
   const { data: searchHistory } = useQuery({
-    queryKey: ["/api/search-history", userSession],
+    queryKey: [`/api/search-history/${userSession}`],
   });
 
   const addToHistoryMutation = useMutation({
@@ -56,7 +56,7 @@ export default function Home() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/search-history", userSession] });
+      queryClient.invalidateQueries({ queryKey: [`/api/search-history/${userSession}`] });
     },
   });
 
