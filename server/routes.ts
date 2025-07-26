@@ -17,12 +17,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Search stores
   app.get("/api/stores/search", async (req, res) => {
     try {
-      const { q } = req.query;
+      const { q, lat, lng } = req.query;
       if (!q || typeof q !== "string") {
         return res.status(400).json({ message: "Search query is required" });
       }
 
-      const stores = await storage.searchStores(q);
+      const userLat = lat ? parseFloat(lat as string) : undefined;
+      const userLng = lng ? parseFloat(lng as string) : undefined;
+      
+      const stores = await storage.searchStores(q, userLat, userLng);
       res.json(stores);
     } catch (error) {
       res.status(500).json({ message: "Failed to search stores" });

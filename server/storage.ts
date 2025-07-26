@@ -77,6 +77,9 @@ export class MemStorage implements IStorage {
       { name: "Online Shopping", description: "E-commerce platforms", iconClass: "fas fa-laptop" },
       { name: "Travel", description: "Airlines, hotels, car rentals", iconClass: "fas fa-plane" },
       { name: "Drug Stores", description: "Pharmacies and health stores", iconClass: "fas fa-pills" },
+      { name: "Pharmacies", description: "Pharmacies and drugstores", iconClass: "fas fa-pills" },
+      { name: "Electronics", description: "Electronics and technology stores", iconClass: "fas fa-mobile-alt" },
+      { name: "Home Improvement", description: "Hardware stores and home improvement centers", iconClass: "fas fa-tools" }
     ];
 
     categories.forEach(cat => {
@@ -213,177 +216,108 @@ export class MemStorage implements IStorage {
       isRotating: false
     });
 
-    // Seed stores with multiple locations across different cities
+    // Comprehensive database of major US businesses across multiple locations
     const stores = [
-      // Target locations
-      {
-        name: "Target",
-        categoryId: deptStoreCategory.id,
-        address: "1234 Pine St, Seattle, WA",
-        latitude: "47.6097",
-        longitude: "-122.3331",
-        isChain: true
-      },
-      {
-        name: "Target",
-        categoryId: deptStoreCategory.id,
-        address: "5678 Broadway, New York, NY",
-        latitude: "40.7589",
-        longitude: "-73.9851",
-        isChain: true
-      },
-      {
-        name: "Target",
-        categoryId: deptStoreCategory.id,
-        address: "9012 Sunset Blvd, Los Angeles, CA",
-        latitude: "34.0928",
-        longitude: "-118.3287",
-        isChain: true
-      },
-      {
-        name: "Target",
-        categoryId: deptStoreCategory.id,
-        address: "3456 Michigan Ave, Chicago, IL",
-        latitude: "41.8755",
-        longitude: "-87.6244",
-        isChain: true
-      },
+      // Department Stores - Target
+      { name: "Target", categoryId: deptStoreCategory.id, address: "1234 Pine St, Seattle, WA", latitude: "47.6097", longitude: "-122.3331", isChain: true },
+      { name: "Target", categoryId: deptStoreCategory.id, address: "5678 Broadway, New York, NY", latitude: "40.7589", longitude: "-73.9851", isChain: true },
+      { name: "Target", categoryId: deptStoreCategory.id, address: "9012 Sunset Blvd, Los Angeles, CA", latitude: "34.0928", longitude: "-118.3287", isChain: true },
+      { name: "Target", categoryId: deptStoreCategory.id, address: "3456 Michigan Ave, Chicago, IL", latitude: "41.8755", longitude: "-87.6244", isChain: true },
+      { name: "Target", categoryId: deptStoreCategory.id, address: "1100 S Hayes St, Arlington, VA", latitude: "38.8462", longitude: "-77.0590", isChain: true },
+      { name: "Target", categoryId: deptStoreCategory.id, address: "2300 N Lincoln Ave, Dallas, TX", latitude: "32.8032", longitude: "-96.7743", isChain: true },
       
-      // Starbucks locations
-      {
-        name: "Starbucks",
-        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
-        address: "456 Broadway, Seattle, WA",
-        latitude: "47.6205",
-        longitude: "-122.3212",
-        isChain: true
-      },
-      {
-        name: "Starbucks",
-        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
-        address: "789 5th Ave, New York, NY",
-        latitude: "40.7614",
-        longitude: "-73.9776",
-        isChain: true
-      },
-      {
-        name: "Starbucks",
-        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
-        address: "1011 Hollywood Blvd, Los Angeles, CA",
-        latitude: "34.1016",
-        longitude: "-118.3402",
-        isChain: true
-      },
-      {
-        name: "Starbucks",
-        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
-        address: "1213 State St, Chicago, IL",
-        latitude: "41.8781",
-        longitude: "-87.6298",
-        isChain: true
-      },
+      // Department Stores - Walmart
+      { name: "Walmart", categoryId: deptStoreCategory.id, address: "500 106th Ave NE, Bellevue, WA", latitude: "47.6101", longitude: "-122.2015", isChain: true },
+      { name: "Walmart", categoryId: deptStoreCategory.id, address: "517 E 117th St, New York, NY", latitude: "40.7982", longitude: "-73.9442", isChain: true },
+      { name: "Walmart", categoryId: deptStoreCategory.id, address: "8739 Washington Blvd, Culver City, CA", latitude: "34.0259", longitude: "-118.3973", isChain: true },
+      { name: "Walmart", categoryId: deptStoreCategory.id, address: "7535 S Ashland Ave, Chicago, IL", latitude: "41.7587", longitude: "-87.6634", isChain: true },
       
-      // Gas stations
-      {
-        name: "Shell Gas Station",
-        categoryId: gasCategory.id,
-        address: "789 1st Ave, Seattle, WA",
-        latitude: "47.6058",
-        longitude: "-122.3346",
-        isChain: true
-      },
-      {
-        name: "Shell Gas Station",
-        categoryId: gasCategory.id,
-        address: "1415 Park Ave, New York, NY",
-        latitude: "40.7505",
-        longitude: "-73.9934",
-        isChain: true
-      },
-      {
-        name: "Chevron Gas Station",
-        categoryId: gasCategory.id,
-        address: "1617 Wilshire Blvd, Los Angeles, CA",
-        latitude: "34.0522",
-        longitude: "-118.2437",
-        isChain: true
-      },
-      {
-        name: "BP Gas Station",
-        categoryId: gasCategory.id,
-        address: "1819 Lake Shore Dr, Chicago, IL",
-        latitude: "41.8781",
-        longitude: "-87.6164",
-        isChain: true
-      },
+      // Coffee Shops - Starbucks  
+      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "456 Broadway, Seattle, WA", latitude: "47.6205", longitude: "-122.3212", isChain: true },
+      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "789 5th Ave, New York, NY", latitude: "40.7614", longitude: "-73.9776", isChain: true },
+      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "1011 Hollywood Blvd, Los Angeles, CA", latitude: "34.1016", longitude: "-118.3402", isChain: true },
+      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "1213 State St, Chicago, IL", latitude: "41.8781", longitude: "-87.6298", isChain: true },
+      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "1600 Pennsylvania Ave NW, Washington, DC", latitude: "38.8977", longitude: "-77.0365", isChain: true },
       
-      // Grocery stores
-      {
-        name: "Whole Foods Market",
-        categoryId: groceryCategory.id,
-        address: "2210 Westlake Ave, Seattle, WA",
-        latitude: "47.6417",
-        longitude: "-122.3370",
-        isChain: true
-      },
-      {
-        name: "Whole Foods Market",
-        categoryId: groceryCategory.id,
-        address: "2021 Union Sq, New York, NY",
-        latitude: "40.7357",
-        longitude: "-73.9910",
-        isChain: true
-      },
-      {
-        name: "Trader Joe's",
-        categoryId: groceryCategory.id,
-        address: "2223 Melrose Ave, Los Angeles, CA",
-        latitude: "34.0837",
-        longitude: "-118.3059",
-        isChain: true
-      },
-      {
-        name: "Jewel-Osco",
-        categoryId: groceryCategory.id,
-        address: "2425 North Ave, Chicago, IL",
-        latitude: "41.9103",
-        longitude: "-87.6298",
-        isChain: true
-      },
+      // Coffee Shops - Dunkin'
+      { name: "Dunkin'", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "145 W 50th St, New York, NY", latitude: "40.7614", longitude: "-73.9837", isChain: true },
+      { name: "Dunkin'", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "800 Boylston St, Boston, MA", latitude: "42.3505", longitude: "-71.0763", isChain: true },
+      { name: "Dunkin'", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "2000 Main St, Philadelphia, PA", latitude: "39.9526", longitude: "-75.1652", isChain: true },
       
-      // Restaurants
-      {
-        name: "McDonald's",
-        categoryId: restaurantCategory.id,
-        address: "2627 Pike St, Seattle, WA",
-        latitude: "47.6101",
-        longitude: "-122.3421",
-        isChain: true
-      },
-      {
-        name: "McDonald's",
-        categoryId: restaurantCategory.id,
-        address: "2829 Times Square, New York, NY",
-        latitude: "40.7580",
-        longitude: "-73.9855",
-        isChain: true
-      },
-      {
-        name: "In-N-Out Burger",
-        categoryId: restaurantCategory.id,
-        address: "3031 Venice Blvd, Los Angeles, CA",
-        latitude: "34.0259",
-        longitude: "-118.4398",
-        isChain: true
-      },
-      {
-        name: "Portillo's",
-        categoryId: restaurantCategory.id,
-        address: "3233 River Rd, Chicago, IL",
-        latitude: "41.9036",
-        longitude: "-87.6674",
-        isChain: true
-      }
+      // Gas Stations - Shell
+      { name: "Shell", categoryId: gasCategory.id, address: "789 1st Ave, Seattle, WA", latitude: "47.6058", longitude: "-122.3346", isChain: true },
+      { name: "Shell", categoryId: gasCategory.id, address: "1415 Park Ave, New York, NY", latitude: "40.7505", longitude: "-73.9934", isChain: true },
+      { name: "Shell", categoryId: gasCategory.id, address: "1617 Wilshire Blvd, Los Angeles, CA", latitude: "34.0522", longitude: "-118.2437", isChain: true },
+      { name: "Shell", categoryId: gasCategory.id, address: "1819 Lake Shore Dr, Chicago, IL", latitude: "41.8781", longitude: "-87.6164", isChain: true },
+      
+      // Gas Stations - Chevron
+      { name: "Chevron", categoryId: gasCategory.id, address: "1500 California St, San Francisco, CA", latitude: "37.7919", longitude: "-122.4175", isChain: true },
+      { name: "Chevron", categoryId: gasCategory.id, address: "8500 Sunset Blvd, Los Angeles, CA", latitude: "34.0970", longitude: "-118.3765", isChain: true },
+      { name: "Chevron", categoryId: gasCategory.id, address: "12000 NE 8th St, Bellevue, WA", latitude: "47.6206", longitude: "-122.1706", isChain: true },
+      
+      // Gas Stations - Exxon/Mobil
+      { name: "Exxon", categoryId: gasCategory.id, address: "425 Lexington Ave, New York, NY", latitude: "40.7549", longitude: "-73.9757", isChain: true },
+      { name: "Mobil", categoryId: gasCategory.id, address: "1776 K St NW, Washington, DC", latitude: "38.9017", longitude: "-77.0406", isChain: true },
+      { name: "Exxon", categoryId: gasCategory.id, address: "3400 Main St, Dallas, TX", latitude: "32.7875", longitude: "-96.7992", isChain: true },
+      
+      // Grocery Stores - Whole Foods
+      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "2210 Westlake Ave, Seattle, WA", latitude: "47.6417", longitude: "-122.3370", isChain: true },
+      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "2021 Union Sq, New York, NY", latitude: "40.7357", longitude: "-73.9910", isChain: true },
+      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "239 3rd St, San Francisco, CA", latitude: "37.7820", longitude: "-122.3982", isChain: true },
+      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "1001 Broad St, Washington, DC", latitude: "38.9072", longitude: "-77.0369", isChain: true },
+      
+      // Grocery Stores - Trader Joe's  
+      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "2223 Melrose Ave, Los Angeles, CA", latitude: "34.0837", longitude: "-118.3059", isChain: true },
+      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "142 E 14th St, New York, NY", latitude: "40.7335", longitude: "-73.9899", isChain: true },
+      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "1700 Market St, San Francisco, CA", latitude: "37.7737", longitude: "-122.4134", isChain: true },
+      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "1914 14th St NW, Washington, DC", latitude: "38.9169", longitude: "-77.0374", isChain: true },
+      
+      // Grocery Stores - Safeway
+      { name: "Safeway", categoryId: groceryCategory.id, address: "1410 3rd Ave, Seattle, WA", latitude: "47.6089", longitude: "-122.3356", isChain: true },
+      { name: "Safeway", categoryId: groceryCategory.id, address: "2020 Kittredge St, Berkeley, CA", latitude: "37.8699", longitude: "-122.2678", isChain: true },
+      { name: "Safeway", categoryId: groceryCategory.id, address: "490 L St NW, Washington, DC", latitude: "38.9048", longitude: "-77.0194", isChain: true },
+      
+      // Fast Food - McDonald's
+      { name: "McDonald's", categoryId: restaurantCategory.id, address: "2627 Pike St, Seattle, WA", latitude: "47.6101", longitude: "-122.3421", isChain: true },
+      { name: "McDonald's", categoryId: restaurantCategory.id, address: "2829 Times Square, New York, NY", latitude: "40.7580", longitude: "-73.9855", isChain: true },
+      { name: "McDonald's", categoryId: restaurantCategory.id, address: "3031 Venice Blvd, Los Angeles, CA", latitude: "34.0259", longitude: "-118.4398", isChain: true },
+      { name: "McDonald's", categoryId: restaurantCategory.id, address: "600 N State St, Chicago, IL", latitude: "41.8928", longitude: "-87.6282", isChain: true },
+      { name: "McDonald's", categoryId: restaurantCategory.id, address: "2000 Pennsylvania Ave NW, Washington, DC", latitude: "38.8991", longitude: "-77.0451", isChain: true },
+      
+      // Fast Food - Subway
+      { name: "Subway", categoryId: restaurantCategory.id, address: "1201 3rd Ave, Seattle, WA", latitude: "47.6068", longitude: "-122.3345", isChain: true },
+      { name: "Subway", categoryId: restaurantCategory.id, address: "350 5th Ave, New York, NY", latitude: "40.7484", longitude: "-73.9857", isChain: true },
+      { name: "Subway", categoryId: restaurantCategory.id, address: "6801 Hollywood Blvd, Los Angeles, CA", latitude: "34.1022", longitude: "-118.3390", isChain: true },
+      
+      // Fast Food - Burger King
+      { name: "Burger King", categoryId: restaurantCategory.id, address: "1500 4th Ave, Seattle, WA", latitude: "47.6085", longitude: "-122.3351", isChain: true },
+      { name: "Burger King", categoryId: restaurantCategory.id, address: "89 E 42nd St, New York, NY", latitude: "40.7505", longitude: "-73.9772", isChain: true },
+      { name: "Burger King", categoryId: restaurantCategory.id, address: "7021 Sunset Blvd, Los Angeles, CA", latitude: "34.0983", longitude: "-118.3432", isChain: true },
+      
+      // Pharmacies - CVS (using Drug Stores category)
+      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "1401 3rd Ave, Seattle, WA", latitude: "47.6089", longitude: "-122.3356", isChain: true },
+      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "630 Lexington Ave, New York, NY", latitude: "40.7575", longitude: "-73.9708", isChain: true },
+      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "6801 Hollywood Blvd, Los Angeles, CA", latitude: "34.1022", longitude: "-118.3390", isChain: true },
+      
+      // Pharmacies - Walgreens (using Drug Stores category)
+      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "2100 3rd Ave, Seattle, WA", latitude: "47.6134", longitude: "-122.3437", isChain: true },
+      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "1440 Broadway, New York, NY", latitude: "40.7564", longitude: "-73.9860", isChain: true },
+      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "6625 Hollywood Blvd, Los Angeles, CA", latitude: "34.1019", longitude: "-118.3376", isChain: true },
+      
+      // Electronics - Best Buy (using Department Stores as closest match)
+      { name: "Best Buy", categoryId: deptStoreCategory.id, address: "1000 4th Ave N, Seattle, WA", latitude: "47.6205", longitude: "-122.3493", isChain: true },
+      { name: "Best Buy", categoryId: deptStoreCategory.id, address: "622 Broadway, New York, NY", latitude: "40.7272", longitude: "-73.9969", isChain: true },
+      { name: "Best Buy", categoryId: deptStoreCategory.id, address: "1200 N Highland Ave, Los Angeles, CA", latitude: "34.0983", longitude: "-118.3390", isChain: true },
+      
+      // Home Improvement - Home Depot (using Department Stores as closest match)
+      { name: "Home Depot", categoryId: deptStoreCategory.id, address: "5701 Airport Way S, Seattle, WA", latitude: "47.5493", longitude: "-122.3015", isChain: true },
+      { name: "Home Depot", categoryId: deptStoreCategory.id, address: "40-31 Junction Blvd, Corona, NY", latitude: "40.7478", longitude: "-73.8648", isChain: true },
+      { name: "Home Depot", categoryId: deptStoreCategory.id, address: "1045 S La Brea Ave, Los Angeles, CA", latitude: "34.0522", longitude: "-118.3440", isChain: true },
+      
+      // Home Improvement - Lowe's (using Department Stores as closest match)
+      { name: "Lowe's", categoryId: deptStoreCategory.id, address: "1500 1st Ave S, Seattle, WA", latitude: "47.5934", longitude: "-122.3370", isChain: true },
+      { name: "Lowe's", categoryId: deptStoreCategory.id, address: "517 E 117th St, New York, NY", latitude: "40.7982", longitude: "-73.9442", isChain: true },
+      { name: "Lowe's", categoryId: deptStoreCategory.id, address: "355 S La Brea Ave, Los Angeles, CA", latitude: "34.0259", longitude: "-118.3440", isChain: true }
     ];
 
     stores.forEach(store => {
@@ -463,9 +397,24 @@ export class MemStorage implements IStorage {
     return { ...store, category };
   }
 
-  async searchStores(query: string): Promise<StoreWithCategory[]> {
-    const stores = Array.from(this.stores.values())
+  async searchStores(query: string, userLat?: number, userLng?: number, maxDistance = 50): Promise<StoreWithCategory[]> {
+    let stores = Array.from(this.stores.values())
       .filter(store => store.name.toLowerCase().includes(query.toLowerCase()));
+    
+    // If user location is provided, filter by distance and sort by proximity
+    if (userLat !== undefined && userLng !== undefined) {
+      stores = stores
+        .map(store => ({
+          ...store,
+          distance: this.calculateDistance(
+            userLat, userLng, 
+            parseFloat(store.latitude), parseFloat(store.longitude)
+          )
+        }))
+        .filter(store => store.distance <= maxDistance)
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 10); // Limit to top 10 nearest
+    }
     
     const storesWithCategories: StoreWithCategory[] = [];
     for (const store of stores) {
@@ -476,6 +425,18 @@ export class MemStorage implements IStorage {
     }
     
     return storesWithCategories;
+  }
+
+  // Distance calculation utility
+  private calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in kilometers
   }
 
   async getNearbyStores(latitude: number, longitude: number, radiusKm: number = 5): Promise<StoreWithCategory[]> {

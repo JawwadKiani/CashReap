@@ -16,7 +16,7 @@ export function LocationDetector({ onStoreSelect, selectedStore }: LocationDetec
   const { location, isLoading: locationLoading, detectLocation, error: locationError } = useLocation();
 
   const { data: searchResults, isLoading: searchLoading } = useQuery({
-    queryKey: [`/api/stores/search?q=${encodeURIComponent(searchQuery)}`],
+    queryKey: [`/api/stores/search?q=${encodeURIComponent(searchQuery)}${location ? `&lat=${location.latitude}&lng=${location.longitude}` : ''}`],
     enabled: searchQuery.length > 2,
   });
 
