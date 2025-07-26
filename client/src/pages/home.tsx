@@ -78,7 +78,10 @@ export default function Home() {
       <header className="bg-white shadow-sm border-b border-surface-variant sticky top-0 z-50">
         <div className="max-w-md mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-3">
-            <h1 className="text-xl font-bold text-on-surface">CashReap</h1>
+            <div className="flex items-center gap-2">
+              <img src="/src/assets/logo.svg" alt="CashReap" className="h-8" />
+              <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
+            </div>
             <Button
               variant="ghost"
               size="sm"
@@ -140,8 +143,9 @@ export default function Home() {
         {!selectedStore && (
           <div className="bg-white rounded-xl p-6 shadow-sm border border-surface-variant text-center">
             <div className="mb-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Scale className="w-8 h-8 text-primary" />
+              <div className="mb-3">
+                <img src="/src/assets/logo.svg" alt="CashReap" className="h-12 mx-auto mb-2" />
+                <div className="text-xs text-on-surface-variant font-medium text-center mb-2">Harvest Your Rewards</div>
               </div>
               <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
               <p className="text-sm text-on-surface-variant">

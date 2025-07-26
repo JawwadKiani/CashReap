@@ -4,6 +4,11 @@
 
 CashReap is a full-stack web application that helps users find the best credit cards for specific stores and merchants. The app provides personalized credit card recommendations based on store categories, reward rates, and user preferences. It features a mobile-first design with location-based store search, card filtering, and user session management.
 
+**Brand Identity:**
+- **Logo**: Custom SVG featuring wheat stalks (representing "reaping") with an integrated dollar sign
+- **Slogan**: "Harvest Your Rewards" - emphasizing the agricultural metaphor of reaping/harvesting cash back rewards
+- **Color Scheme**: Amber/gold for the wheat stalks, green for the dollar sign, representing growth and money
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
