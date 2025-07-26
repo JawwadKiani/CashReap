@@ -213,8 +213,9 @@ export class MemStorage implements IStorage {
       isRotating: false
     });
 
-    // Seed stores
+    // Seed stores with multiple locations across different cities
     const stores = [
+      // Target locations
       {
         name: "Target",
         categoryId: deptStoreCategory.id,
@@ -224,6 +225,32 @@ export class MemStorage implements IStorage {
         isChain: true
       },
       {
+        name: "Target",
+        categoryId: deptStoreCategory.id,
+        address: "5678 Broadway, New York, NY",
+        latitude: "40.7589",
+        longitude: "-73.9851",
+        isChain: true
+      },
+      {
+        name: "Target",
+        categoryId: deptStoreCategory.id,
+        address: "9012 Sunset Blvd, Los Angeles, CA",
+        latitude: "34.0928",
+        longitude: "-118.3287",
+        isChain: true
+      },
+      {
+        name: "Target",
+        categoryId: deptStoreCategory.id,
+        address: "3456 Michigan Ave, Chicago, IL",
+        latitude: "41.8755",
+        longitude: "-87.6244",
+        isChain: true
+      },
+      
+      // Starbucks locations
+      {
         name: "Starbucks",
         categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
         address: "456 Broadway, Seattle, WA",
@@ -231,6 +258,32 @@ export class MemStorage implements IStorage {
         longitude: "-122.3212",
         isChain: true
       },
+      {
+        name: "Starbucks",
+        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
+        address: "789 5th Ave, New York, NY",
+        latitude: "40.7614",
+        longitude: "-73.9776",
+        isChain: true
+      },
+      {
+        name: "Starbucks",
+        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
+        address: "1011 Hollywood Blvd, Los Angeles, CA",
+        latitude: "34.1016",
+        longitude: "-118.3402",
+        isChain: true
+      },
+      {
+        name: "Starbucks",
+        categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id,
+        address: "1213 State St, Chicago, IL",
+        latitude: "41.8781",
+        longitude: "-87.6298",
+        isChain: true
+      },
+      
+      // Gas stations
       {
         name: "Shell Gas Station",
         categoryId: gasCategory.id,
@@ -240,11 +293,95 @@ export class MemStorage implements IStorage {
         isChain: true
       },
       {
+        name: "Shell Gas Station",
+        categoryId: gasCategory.id,
+        address: "1415 Park Ave, New York, NY",
+        latitude: "40.7505",
+        longitude: "-73.9934",
+        isChain: true
+      },
+      {
+        name: "Chevron Gas Station",
+        categoryId: gasCategory.id,
+        address: "1617 Wilshire Blvd, Los Angeles, CA",
+        latitude: "34.0522",
+        longitude: "-118.2437",
+        isChain: true
+      },
+      {
+        name: "BP Gas Station",
+        categoryId: gasCategory.id,
+        address: "1819 Lake Shore Dr, Chicago, IL",
+        latitude: "41.8781",
+        longitude: "-87.6164",
+        isChain: true
+      },
+      
+      // Grocery stores
+      {
         name: "Whole Foods Market",
         categoryId: groceryCategory.id,
         address: "2210 Westlake Ave, Seattle, WA",
         latitude: "47.6417",
         longitude: "-122.3370",
+        isChain: true
+      },
+      {
+        name: "Whole Foods Market",
+        categoryId: groceryCategory.id,
+        address: "2021 Union Sq, New York, NY",
+        latitude: "40.7357",
+        longitude: "-73.9910",
+        isChain: true
+      },
+      {
+        name: "Trader Joe's",
+        categoryId: groceryCategory.id,
+        address: "2223 Melrose Ave, Los Angeles, CA",
+        latitude: "34.0837",
+        longitude: "-118.3059",
+        isChain: true
+      },
+      {
+        name: "Jewel-Osco",
+        categoryId: groceryCategory.id,
+        address: "2425 North Ave, Chicago, IL",
+        latitude: "41.9103",
+        longitude: "-87.6298",
+        isChain: true
+      },
+      
+      // Restaurants
+      {
+        name: "McDonald's",
+        categoryId: restaurantCategory.id,
+        address: "2627 Pike St, Seattle, WA",
+        latitude: "47.6101",
+        longitude: "-122.3421",
+        isChain: true
+      },
+      {
+        name: "McDonald's",
+        categoryId: restaurantCategory.id,
+        address: "2829 Times Square, New York, NY",
+        latitude: "40.7580",
+        longitude: "-73.9855",
+        isChain: true
+      },
+      {
+        name: "In-N-Out Burger",
+        categoryId: restaurantCategory.id,
+        address: "3031 Venice Blvd, Los Angeles, CA",
+        latitude: "34.0259",
+        longitude: "-118.4398",
+        isChain: true
+      },
+      {
+        name: "Portillo's",
+        categoryId: restaurantCategory.id,
+        address: "3233 River Rd, Chicago, IL",
+        latitude: "41.9036",
+        longitude: "-87.6674",
         isChain: true
       }
     ];
