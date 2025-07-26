@@ -17,10 +17,16 @@ const getUserSession = () => {
 };
 
 export default function MyCards() {
+  const [showAllCards, setShowAllCards] = useState(false);
   const userSession = getUserSession();
 
   const { data: savedCards, isLoading } = useQuery({
     queryKey: [`/api/saved-cards/${userSession}`],
+  });
+
+  const { data: allCards } = useQuery({
+    queryKey: ["/api/cards"],
+    enabled: showAllCards,
   });
 
   const unsaveCardMutation = useMutation({
@@ -32,8 +38,28 @@ export default function MyCards() {
     },
   });
 
+  const saveCardMutation = useMutation({
+    mutationFn: async (cardId: string) => {
+      return apiRequest("POST", "/api/saved-cards", {
+        cardId,
+        userSession
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${userSession}`] });
+    },
+  });
+
   const handleUnsaveCard = (cardId: string) => {
     unsaveCardMutation.mutate(cardId);
+  };
+
+  const handleSaveCard = (cardId: string) => {
+    saveCardMutation.mutate(cardId);
+  };
+
+  const isCardSaved = (cardId: string) => {
+    return savedCards?.some((saved: any) => saved.card.id === cardId);
   };
 
   if (isLoading) {
@@ -51,18 +77,64 @@ export default function MyCards() {
         <div className="max-w-md mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-on-surface">My Cards</h1>
-            <Button variant="ghost" size="sm" className="text-primary">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-primary"
+              onClick={() => setShowAllCards(!showAllCards)}
+            >
               <Plus className="w-4 h-4 mr-1" />
-              Add Card
+              {showAllCards ? "Hide Cards" : "Add Card"}
             </Button>
           </div>
         </div>
       </header>
 
       <main className="max-w-md mx-auto px-4 py-4">
-        {savedCards && savedCards.length > 0 ? (
-          <div className="space-y-4">
-            {savedCards.map((savedCard: any) => (
+        {/* All Available Cards Section */}
+        {showAllCards && (
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-on-surface mb-4">Available Credit Cards</h2>
+            <div className="space-y-3">
+              {allCards && allCards.map((card: any) => (
+                <Card key={card.id} className="shadow-sm">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <CardTitle className="text-lg text-on-surface">{card.name}</CardTitle>
+                        <p className="text-sm text-on-surface-variant mb-2">{card.issuer}</p>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="secondary" className="text-xs">
+                            ${card.annualFee} Annual Fee
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {card.baseReward}% Base Rewards
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-on-surface-variant">{card.description}</p>
+                      </div>
+                      <Button 
+                        variant={isCardSaved(card.id) ? "secondary" : "default"}
+                        size="sm"
+                        onClick={() => isCardSaved(card.id) ? handleUnsaveCard(card.id) : handleSaveCard(card.id)}
+                        disabled={saveCardMutation.isPending || unsaveCardMutation.isPending}
+                      >
+                        {isCardSaved(card.id) ? "Saved" : "Save"}
+                      </Button>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* My Saved Cards Section */}
+        <div>
+          <h2 className="text-lg font-semibold text-on-surface mb-4">My Saved Cards</h2>
+          {savedCards && savedCards.length > 0 ? (
+            <div className="space-y-4">
+              {savedCards.map((savedCard: any) => (
               <Card key={savedCard.id} className="shadow-sm">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
@@ -127,11 +199,16 @@ export default function MyCards() {
             <p className="text-on-surface-variant mb-4">
               Save credit cards from recommendations to quickly access them later.
             </p>
-            <Button className="bg-primary hover:bg-primary/90 text-white">
-              Explore Cards
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white"
+              onClick={() => setShowAllCards(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Browse Available Cards
             </Button>
           </div>
         )}
+        </div>
       </main>
     </div>
   );
