@@ -39,16 +39,20 @@ export default function CardDetails() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-surface-variant sticky top-0 z-50">
         <div className="max-w-md mx-auto px-4 py-3">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => window.history.back()}
-              className="text-on-surface-variant hover:text-primary"
+              className="text-on-surface-variant hover:text-primary mr-1"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
-            <h1 className="text-lg font-semibold text-on-surface">Card Details</h1>
+            <img src="/src/assets/logo.png" alt="CashReap" className="h-10" />
+            <div>
+              <h1 className="text-lg font-semibold text-on-surface">Card Details</h1>
+              <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
+            </div>
           </div>
         </div>
       </header>

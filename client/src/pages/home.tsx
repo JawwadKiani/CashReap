@@ -79,7 +79,7 @@ export default function Home() {
         <div className="max-w-md mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <img src="/src/assets/logo.svg" alt="CashReap" className="h-8" />
+              <img src="/src/assets/logo.png" alt="CashReap" className="h-10" />
               <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
             </div>
             <Button
@@ -143,10 +143,6 @@ export default function Home() {
         {!selectedStore && (
           <div className="bg-white rounded-xl p-6 shadow-sm border border-surface-variant text-center">
             <div className="mb-4">
-              <div className="mb-3">
-                <img src="/src/assets/logo.png" alt="CashReap" className="h-12 mx-auto mb-2" />
-                <div className="text-xs text-on-surface-variant font-medium text-center mb-2">Harvest Your Rewards</div>
-              </div>
               <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
               <p className="text-sm text-on-surface-variant">
                 Search for any major US business to find the best credit card for maximum cash back rewards.
