@@ -215,7 +215,7 @@ export class DatabaseStorage implements IStorage {
   async unsaveCard(userId: string, cardId: string): Promise<boolean> {
     const result = await db.delete(userSavedCards)
       .where(eq(userSavedCards.userId, userId));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
   }
 
   // Utility function to get current quarter
@@ -288,8 +288,119 @@ export class DatabaseStorage implements IStorage {
 
     console.log("Seeding initial data...");
     
-    // This is a simplified version - in a real app you'd load this from a data file
-    // For now, we'll just ensure the database is ready for the authentication system
+    try {
+      // First, seed merchant categories
+      const categories = [
+        { id: "grocery", name: "Grocery Stores", description: "Supermarkets and grocery stores" },
+        { id: "gas", name: "Gas Stations", description: "Fuel and gas stations" },
+        { id: "dining", name: "Dining", description: "Restaurants and food delivery" },
+        { id: "travel", name: "Travel", description: "Airlines, hotels, and rental cars" },
+        { id: "drugstores", name: "Drugstores", description: "Pharmacies and drugstores" },
+        { id: "department", name: "Department Stores", description: "Large retail stores" },
+        { id: "warehouse", name: "Warehouse Clubs", description: "Wholesale clubs like Costco" },
+        { id: "online", name: "Online Shopping", description: "E-commerce and online purchases" },
+        { id: "streaming", name: "Streaming Services", description: "Video and music streaming" },
+        { id: "transit", name: "Transit", description: "Public transportation and rideshare" }
+      ];
+
+      for (const category of categories) {
+        await db.insert(merchantCategories).values(category).onConflictDoNothing();
+      }
+
+      // Seed credit cards
+      const cards = [
+        {
+          id: "chase-sapphire-reserve",
+          name: "Chase Sapphire Reserve",
+          issuer: "Chase",
+          annualFee: 550,
+          baseReward: 1.0,
+          minCreditScore: 720,
+          welcomeBonus: "60,000 points after $4,000 spend in 3 months",
+          description: "Premium travel rewards card with 3x on travel and dining"
+        },
+        {
+          id: "amex-platinum",
+          name: "The Platinum Card® from American Express",
+          issuer: "American Express",
+          annualFee: 695,
+          baseReward: 1.0,
+          minCreditScore: 720,
+          welcomeBonus: "80,000 points after $6,000 spend in 6 months",
+          description: "Luxury travel card with extensive benefits and airport lounge access"
+        },
+        {
+          id: "citi-double-cash",
+          name: "Citi Double Cash Card",
+          issuer: "Citi",
+          annualFee: 0,
+          baseReward: 2.0,
+          minCreditScore: 650,
+          welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
+          description: "Simple cash back card with 2% on all purchases"
+        },
+        {
+          id: "chase-freedom-flex",
+          name: "Chase Freedom Flex",
+          issuer: "Chase",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 630,
+          welcomeBonus: "$200 cash back after $500 spend in 3 months",
+          description: "Rotating 5x categories plus 3x on dining and drugstores"
+        },
+        {
+          id: "discover-it-cash",
+          name: "Discover it® Cash Back",
+          issuer: "Discover",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 600,
+          welcomeBonus: "Discover matches all cash back earned in your first year",
+          description: "Rotating 5x categories with first-year cash back match"
+        }
+      ];
+
+      await db.insert(creditCards).values(cards).onConflictDoNothing();
+
+      // Seed card category rewards
+      const rewards = [
+        // Chase Sapphire Reserve
+        { cardId: "chase-sapphire-reserve", categoryId: "travel", rewardRate: "3.0", isRotating: false },
+        { cardId: "chase-sapphire-reserve", categoryId: "dining", rewardRate: "3.0", isRotating: false },
+        
+        // Citi Double Cash
+        { cardId: "citi-double-cash", categoryId: "grocery", rewardRate: "2.0", isRotating: false },
+        { cardId: "citi-double-cash", categoryId: "gas", rewardRate: "2.0", isRotating: false },
+        { cardId: "citi-double-cash", categoryId: "dining", rewardRate: "2.0", isRotating: false },
+        
+        // Chase Freedom Flex  
+        { cardId: "chase-freedom-flex", categoryId: "dining", rewardRate: "3.0", isRotating: false },
+        { cardId: "chase-freedom-flex", categoryId: "drugstores", rewardRate: "3.0", isRotating: false },
+        
+        // Discover it Cash Back
+        { cardId: "discover-it-cash", categoryId: "grocery", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q1 2025" },
+      ];
+
+      await db.insert(cardCategoryRewards).values(rewards).onConflictDoNothing();
+
+      // Seed some popular stores
+      const storeData = [
+        { id: "target", name: "Target", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "walmart", name: "Walmart", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "costco", name: "Costco", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "whole-foods", name: "Whole Foods Market", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "starbucks", name: "Starbucks", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" }
+      ];
+
+      for (const store of storeData) {
+        await db.insert(stores).values(store).onConflictDoNothing();
+      }
+
+      console.log("Initial data seeded successfully!");
+    } catch (error) {
+      console.error("Error seeding data:", error);
+    }
   }
 }
 

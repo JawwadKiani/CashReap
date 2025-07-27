@@ -5,9 +5,10 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
+import type { User as UserType } from "@shared/schema";
 
 export default function Settings() {
-  const { user } = useAuth();
+  const { user } = useAuth() as { user: UserType | undefined };
   const [notifications, setNotifications] = useState(true);
   const [saveHistory, setSaveHistory] = useState(true);
 
@@ -149,7 +150,27 @@ export default function Settings() {
           <CardContent className="pt-6">
             <div className="text-center text-sm text-on-surface-variant">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <img src="/src/assets/logo.png" alt="CashReap" className="h-6" />
+                <svg width="24" height="24" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="140" y="180" width="120" height="80" rx="8" fill="#F59E0B" stroke="#000" strokeWidth="2"/>
+                  <rect x="140" y="195" width="120" height="12" fill="#000"/>
+                  <circle cx="220" cy="225" r="8" fill="#F59E0B" stroke="#000" strokeWidth="1"/>
+                  <circle cx="235" cy="225" r="8" fill="#F59E0B" stroke="#000" strokeWidth="1"/>
+                  <path d="M180 180 Q185 140 200 120 Q210 110 220 105" stroke="#22C55E" strokeWidth="6" fill="none" strokeLinecap="round"/>
+                  <path d="M220 105 L225 85" stroke="#22C55E" strokeWidth="4" fill="none" strokeLinecap="round"/>
+                  <path d="M220 90 L225 85 L230 90" stroke="#22C55E" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  <ellipse cx="195" cy="135" rx="25" ry="15" fill="#22C55E" transform="rotate(-30 195 135)"/>
+                  <path d="M180 140 Q195 135 205 130" stroke="#22C55E" strokeWidth="2" fill="none"/>
+                  <circle cx="185" cy="125" r="8" fill="#F59E0B"/>
+                  <text x="185" y="130" fontFamily="Arial, sans-serif" fontSize="10" fontWeight="bold" textAnchor="middle" fill="#fff">$</text>
+                  <ellipse cx="240" cy="125" rx="20" ry="12" fill="#22C55E" transform="rotate(45 240 125)"/>
+                  <path d="M225 115 Q240 125 250 130" stroke="#22C55E" strokeWidth="2" fill="none"/>
+                  <circle cx="250" cy="115" r="8" fill="#F59E0B"/>
+                  <text x="250" y="120" fontFamily="Arial, sans-serif" fontSize="10" fontWeight="bold" textAnchor="middle" fill="#fff">$</text>
+                  <ellipse cx="210" cy="155" rx="15" ry="8" fill="#22C55E" transform="rotate(15 210 155)"/>
+                  <path d="M205 160 Q210 155 215 150" stroke="#22C55E" strokeWidth="1.5" fill="none"/>
+                  <circle cx="220" cy="150" r="6" fill="#F59E0B"/>
+                  <text x="220" y="154" fontFamily="Arial, sans-serif" fontSize="8" fontWeight="bold" textAnchor="middle" fill="#fff">$</text>
+                </svg>
                 <span className="text-xs font-medium">Harvest Your Rewards</span>
               </div>
               <p>CashReap v1.0.0</p>
