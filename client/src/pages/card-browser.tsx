@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation as useWouterLocation } from "wouter";
-import { Search, Filter, ArrowLeft } from "lucide-react";
+import { Search, Filter, ArrowLeft, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/hooks/useAuth";
 import type { CreditCard } from "@shared/schema";
 
 export default function CardBrowser() {
@@ -15,9 +18,18 @@ export default function CardBrowser() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<string>("name");
   const [filterByIssuer, setFilterByIssuer] = useState<string>("all");
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ["/api/credit-cards"],
+  });
+
+  // Get user's saved cards
+  const { data: savedCards = [] } = useQuery({
+    queryKey: [`/api/saved-cards/${user?.id}`],
+    enabled: !!user?.id,
   });
 
   // Filter and sort cards
@@ -52,6 +64,67 @@ export default function CardBrowser() {
 
   const handleGoBack = () => {
     navigate("/");
+  };
+
+  // Check if card is saved
+  const isCardSaved = (cardId: string) => {
+    return savedCards.some((saved: any) => saved.cardId === cardId);
+  };
+
+  // Save card mutation
+  const saveCardMutation = useMutation({
+    mutationFn: async (cardId: string) => {
+      await apiRequest(`/api/saved-cards`, {
+        method: "POST",
+        body: { cardId }
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
+      toast({
+        title: "Card Saved",
+        description: "Card added to your collection.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to save card. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Unsave card mutation
+  const unsaveCardMutation = useMutation({
+    mutationFn: async (cardId: string) => {
+      await apiRequest(`/api/saved-cards/${cardId}`, {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
+      toast({
+        title: "Card Removed",
+        description: "Card removed from your collection.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error", 
+        description: "Failed to remove card. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSaveToggle = (e: React.MouseEvent, cardId: string) => {
+    e.stopPropagation(); // Prevent card click navigation
+    if (isCardSaved(cardId)) {
+      unsaveCardMutation.mutate(cardId);
+    } else {
+      saveCardMutation.mutate(cardId);
+    }
   };
 
   return (
@@ -135,22 +208,36 @@ export default function CardBrowser() {
             sortedCards.map((card: CreditCard) => (
               <Card 
                 key={card.id} 
-                className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => handleCardClick(card.id)}
+                className="hover:shadow-md transition-shadow relative"
               >
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg">{card.name}</CardTitle>
+                    <div className="flex-1 cursor-pointer" onClick={() => handleCardClick(card.id)}>
+                      <CardTitle className="text-lg hover:text-primary transition-colors">{card.name}</CardTitle>
                       <CardDescription>{card.issuer}</CardDescription>
                     </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-primary">
-                        {card.baseReward}% base
+                    <div className="flex items-center gap-2">
+                      <div className="text-right">
+                        <div className="text-sm font-medium text-primary">
+                          {card.baseReward}% base
+                        </div>
+                        <div className="text-xs text-on-surface-variant">
+                          ${card.annualFee}/year
+                        </div>
                       </div>
-                      <div className="text-xs text-on-surface-variant">
-                        ${card.annualFee}/year
-                      </div>
+                      <Button
+                        size="sm"
+                        variant={isCardSaved(card.id) ? "destructive" : "default"}
+                        className="w-8 h-8 p-0 shrink-0"
+                        onClick={(e) => handleSaveToggle(e, card.id)}
+                        disabled={saveCardMutation.isPending || unsaveCardMutation.isPending}
+                      >
+                        {isCardSaved(card.id) ? (
+                          <Minus className="w-4 h-4" />
+                        ) : (
+                          <Plus className="w-4 h-4" />
+                        )}
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>
@@ -168,7 +255,7 @@ export default function CardBrowser() {
                         </Badge>
                       )}
                     </div>
-                    <div className="text-xs text-on-surface-variant">
+                    <div className="text-xs text-on-surface-variant cursor-pointer" onClick={() => handleCardClick(card.id)}>
                       Tap for details
                     </div>
                   </div>

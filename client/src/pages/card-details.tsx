@@ -201,7 +201,10 @@ export default function CardDetails() {
 
             {/* Action Buttons */}
             <div className="space-y-3 pt-4">
-              <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 text-white"
+                onClick={() => window.open(`https://www.google.com/search?q=apply+${encodeURIComponent(card.name)}`, '_blank')}
+              >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Apply Now
               </Button>
