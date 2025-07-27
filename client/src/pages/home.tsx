@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useLocation as useWouterLocation } from "wouter";
-import { Sliders, Scale, Bookmark } from "lucide-react";
+import { Sliders, Scale, Bookmark, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LocationDetector } from "@/components/location-detector";
 import { FilterPanel } from "@/components/filter-panel";
@@ -10,25 +10,16 @@ import { TopRecommendation } from "@/components/top-recommendation";
 import { CardRecommendation } from "@/components/card-recommendation";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/hooks/useAuth";
 import type { StoreWithCategory, CardRecommendation as CardRec } from "@shared/schema";
 import type { FilterOptions } from "@/types";
 
-// Simple session management
-const getUserSession = () => {
-  let session = localStorage.getItem("userSession");
-  if (!session) {
-    session = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    localStorage.setItem("userSession", session);
-  }
-  return session;
-};
-
 export default function Home() {
+  const { user } = useAuth();
   const [, navigate] = useWouterLocation();
   const [selectedStore, setSelectedStore] = useState<StoreWithCategory | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({});
-  const userSession = getUserSession();
 
   // Build query parameters for recommendations
   const queryParams = new URLSearchParams();
@@ -45,18 +36,19 @@ export default function Home() {
   });
 
   const { data: searchHistory } = useQuery({
-    queryKey: [`/api/search-history/${userSession}`],
+    queryKey: [`/api/search-history/${user?.id}`],
+    enabled: !!user?.id,
   });
 
   const addToHistoryMutation = useMutation({
     mutationFn: async (storeId: string) => {
       return apiRequest("POST", "/api/search-history", {
         storeId,
-        userSession
+        userId: user?.id
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/search-history/${userSession}`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/search-history/${user?.id}`] });
     },
   });
 
@@ -146,9 +138,16 @@ export default function Home() {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-surface-variant text-center">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
-              <p className="text-sm text-on-surface-variant">
+              <p className="text-sm text-on-surface-variant mb-4">
                 Search for any major US business to find the best credit card for maximum cash back rewards.
               </p>
+              <Button
+                onClick={() => navigate("/browse-cards")}
+                className="bg-primary hover:bg-primary/90 text-white"
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Browse All Cards
+              </Button>
             </div>
           </div>
         )}

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, decimal, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, decimal, boolean, timestamp, index, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -44,14 +44,36 @@ export const stores = pgTable("stores", {
 export const userSearchHistory = pgTable("user_search_history", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   storeId: varchar("store_id").notNull().references(() => stores.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
   searchedAt: timestamp("searched_at").notNull().default(sql`now()`),
-  userSession: text("user_session"), // Simple session tracking
+});
+
+// Session storage table for Replit Auth
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table for Replit Auth
+export const users = pgTable("users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const userSavedCards = pgTable("user_saved_cards", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   cardId: varchar("card_id").notNull().references(() => creditCards.id),
-  userSession: text("user_session").notNull(),
+  userId: varchar("user_id").notNull().references(() => users.id),
   savedAt: timestamp("saved_at").notNull().default(sql`now()`),
 });
 
@@ -62,6 +84,7 @@ export const insertCardCategoryRewardSchema = createInsertSchema(cardCategoryRew
 export const insertStoreSchema = createInsertSchema(stores).omit({ id: true });
 export const insertUserSearchHistorySchema = createInsertSchema(userSearchHistory).omit({ id: true });
 export const insertUserSavedCardSchema = createInsertSchema(userSavedCards).omit({ id: true });
+export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, updatedAt: true });
 
 // Types
 export type CreditCard = typeof creditCards.$inferSelect;
@@ -76,6 +99,9 @@ export type UserSearchHistory = typeof userSearchHistory.$inferSelect;
 export type InsertUserSearchHistory = z.infer<typeof insertUserSearchHistorySchema>;
 export type UserSavedCard = typeof userSavedCards.$inferSelect;
 export type InsertUserSavedCard = z.infer<typeof insertUserSavedCardSchema>;
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type UpsertUser = typeof users.$inferInsert;
 
 // Extended types for API responses
 export type StoreWithCategory = Store & {

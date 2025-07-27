@@ -1,9 +1,30 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { z } from "zod";
+import { fromZodError } from "zod-validation-error";
+import { 
+  insertUserSearchHistorySchema, 
+  insertUserSavedCardSchema,
+  type CardRecommendation
+} from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup authentication
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
   // Get all stores
   app.get("/api/stores", async (req, res) => {
     try {
@@ -100,7 +121,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get all credit cards
-  app.get("/api/cards", async (req, res) => {
+  app.get("/api/credit-cards", async (req, res) => {
     try {
       const cards = await storage.getCreditCards();
       res.json(cards);
@@ -110,7 +131,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get specific credit card
-  app.get("/api/cards/:id", async (req, res) => {
+  app.get("/api/credit-cards/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const card = await storage.getCreditCard(id);

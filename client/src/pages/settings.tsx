@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { Bell, MapPin, CreditCard, Shield, HelpCircle, LogOut } from "lucide-react";
+import { Bell, CreditCard, Shield, HelpCircle, LogOut, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Settings() {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState(true);
-  const [locationServices, setLocationServices] = useState(true);
   const [saveHistory, setSaveHistory] = useState(true);
 
   const handleClearHistory = () => {
     if (confirm("Are you sure you want to clear your search history? This action cannot be undone.")) {
-      localStorage.removeItem("userSession");
-      // Force a page reload to generate new session
+      // TODO: Call API to clear user search history
       window.location.reload();
     }
+  };
+
+  const handleLogout = () => {
+    window.location.href = "/api/logout";
   };
 
   return (
@@ -32,6 +36,41 @@ export default function Settings() {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-4 space-y-4">
+        {/* User Profile */}
+        {user && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Account</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  {user.profileImageUrl ? (
+                    <img src={user.profileImageUrl} alt="Profile" className="w-12 h-12 rounded-full object-cover" />
+                  ) : (
+                    <User className="w-6 h-6 text-primary" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-medium text-on-surface">
+                    {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
+                  </p>
+                  <p className="text-sm text-on-surface-variant">{user.email}</p>
+                </div>
+              </div>
+              <Separator />
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="w-full justify-start"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Preferences */}
         <Card>
           <CardHeader>
@@ -49,22 +88,6 @@ export default function Settings() {
               <Switch
                 checked={notifications}
                 onCheckedChange={setNotifications}
-              />
-            </div>
-
-            <Separator />
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-on-surface-variant" />
-                <div>
-                  <p className="font-medium text-on-surface">Location Services</p>
-                  <p className="text-sm text-on-surface-variant">Allow location access for nearby stores</p>
-                </div>
-              </div>
-              <Switch
-                checked={locationServices}
-                onCheckedChange={setLocationServices}
               />
             </div>
 
