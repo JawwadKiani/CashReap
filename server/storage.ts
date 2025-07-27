@@ -498,108 +498,131 @@ export class MemStorage implements IStorage {
       isRotating: false
     });
 
-    // Comprehensive database of major US businesses across multiple locations
+    // Comprehensive database of all major US businesses (no location dependency)
     const stores = [
-      // Department Stores - Target
-      { name: "Target", categoryId: deptStoreCategory.id, address: "1234 Pine St, Seattle, WA", latitude: "47.6097", longitude: "-122.3331", isChain: true },
-      { name: "Target", categoryId: deptStoreCategory.id, address: "5678 Broadway, New York, NY", latitude: "40.7589", longitude: "-73.9851", isChain: true },
-      { name: "Target", categoryId: deptStoreCategory.id, address: "9012 Sunset Blvd, Los Angeles, CA", latitude: "34.0928", longitude: "-118.3287", isChain: true },
-      { name: "Target", categoryId: deptStoreCategory.id, address: "3456 Michigan Ave, Chicago, IL", latitude: "41.8755", longitude: "-87.6244", isChain: true },
-      { name: "Target", categoryId: deptStoreCategory.id, address: "1100 S Hayes St, Arlington, VA", latitude: "38.8462", longitude: "-77.0590", isChain: true },
-      { name: "Target", categoryId: deptStoreCategory.id, address: "2300 N Lincoln Ave, Dallas, TX", latitude: "32.8032", longitude: "-96.7743", isChain: true },
-      
-      // Department Stores - Walmart
-      { name: "Walmart", categoryId: deptStoreCategory.id, address: "500 106th Ave NE, Bellevue, WA", latitude: "47.6101", longitude: "-122.2015", isChain: true },
-      { name: "Walmart", categoryId: deptStoreCategory.id, address: "517 E 117th St, New York, NY", latitude: "40.7982", longitude: "-73.9442", isChain: true },
-      { name: "Walmart", categoryId: deptStoreCategory.id, address: "8739 Washington Blvd, Culver City, CA", latitude: "34.0259", longitude: "-118.3973", isChain: true },
-      { name: "Walmart", categoryId: deptStoreCategory.id, address: "7535 S Ashland Ave, Chicago, IL", latitude: "41.7587", longitude: "-87.6634", isChain: true },
-      
-      // Coffee Shops - Starbucks  
-      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "456 Broadway, Seattle, WA", latitude: "47.6205", longitude: "-122.3212", isChain: true },
-      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "789 5th Ave, New York, NY", latitude: "40.7614", longitude: "-73.9776", isChain: true },
-      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "1011 Hollywood Blvd, Los Angeles, CA", latitude: "34.1016", longitude: "-118.3402", isChain: true },
-      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "1213 State St, Chicago, IL", latitude: "41.8781", longitude: "-87.6298", isChain: true },
-      { name: "Starbucks", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "1600 Pennsylvania Ave NW, Washington, DC", latitude: "38.8977", longitude: "-77.0365", isChain: true },
-      
-      // Coffee Shops - Dunkin'
-      { name: "Dunkin'", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "145 W 50th St, New York, NY", latitude: "40.7614", longitude: "-73.9837", isChain: true },
-      { name: "Dunkin'", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "800 Boylston St, Boston, MA", latitude: "42.3505", longitude: "-71.0763", isChain: true },
-      { name: "Dunkin'", categoryId: categoryArray.find(c => c.name === "Coffee Shops")!.id, address: "2000 Main St, Philadelphia, PA", latitude: "39.9526", longitude: "-75.1652", isChain: true },
-      
-      // Gas Stations - Shell
-      { name: "Shell", categoryId: gasCategory.id, address: "789 1st Ave, Seattle, WA", latitude: "47.6058", longitude: "-122.3346", isChain: true },
-      { name: "Shell", categoryId: gasCategory.id, address: "1415 Park Ave, New York, NY", latitude: "40.7505", longitude: "-73.9934", isChain: true },
-      { name: "Shell", categoryId: gasCategory.id, address: "1617 Wilshire Blvd, Los Angeles, CA", latitude: "34.0522", longitude: "-118.2437", isChain: true },
-      { name: "Shell", categoryId: gasCategory.id, address: "1819 Lake Shore Dr, Chicago, IL", latitude: "41.8781", longitude: "-87.6164", isChain: true },
-      
-      // Gas Stations - Chevron
-      { name: "Chevron", categoryId: gasCategory.id, address: "1500 California St, San Francisco, CA", latitude: "37.7919", longitude: "-122.4175", isChain: true },
-      { name: "Chevron", categoryId: gasCategory.id, address: "8500 Sunset Blvd, Los Angeles, CA", latitude: "34.0970", longitude: "-118.3765", isChain: true },
-      { name: "Chevron", categoryId: gasCategory.id, address: "12000 NE 8th St, Bellevue, WA", latitude: "47.6206", longitude: "-122.1706", isChain: true },
-      
-      // Gas Stations - Exxon/Mobil
-      { name: "Exxon", categoryId: gasCategory.id, address: "425 Lexington Ave, New York, NY", latitude: "40.7549", longitude: "-73.9757", isChain: true },
-      { name: "Mobil", categoryId: gasCategory.id, address: "1776 K St NW, Washington, DC", latitude: "38.9017", longitude: "-77.0406", isChain: true },
-      { name: "Exxon", categoryId: gasCategory.id, address: "3400 Main St, Dallas, TX", latitude: "32.7875", longitude: "-96.7992", isChain: true },
-      
-      // Grocery Stores - Whole Foods
-      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "2210 Westlake Ave, Seattle, WA", latitude: "47.6417", longitude: "-122.3370", isChain: true },
-      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "2021 Union Sq, New York, NY", latitude: "40.7357", longitude: "-73.9910", isChain: true },
-      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "239 3rd St, San Francisco, CA", latitude: "37.7820", longitude: "-122.3982", isChain: true },
-      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "1001 Broad St, Washington, DC", latitude: "38.9072", longitude: "-77.0369", isChain: true },
-      
-      // Grocery Stores - Trader Joe's  
-      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "2223 Melrose Ave, Los Angeles, CA", latitude: "34.0837", longitude: "-118.3059", isChain: true },
-      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "142 E 14th St, New York, NY", latitude: "40.7335", longitude: "-73.9899", isChain: true },
-      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "1700 Market St, San Francisco, CA", latitude: "37.7737", longitude: "-122.4134", isChain: true },
-      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "1914 14th St NW, Washington, DC", latitude: "38.9169", longitude: "-77.0374", isChain: true },
-      
-      // Grocery Stores - Safeway
-      { name: "Safeway", categoryId: groceryCategory.id, address: "1410 3rd Ave, Seattle, WA", latitude: "47.6089", longitude: "-122.3356", isChain: true },
-      { name: "Safeway", categoryId: groceryCategory.id, address: "2020 Kittredge St, Berkeley, CA", latitude: "37.8699", longitude: "-122.2678", isChain: true },
-      { name: "Safeway", categoryId: groceryCategory.id, address: "490 L St NW, Washington, DC", latitude: "38.9048", longitude: "-77.0194", isChain: true },
-      
-      // Fast Food - McDonald's
-      { name: "McDonald's", categoryId: restaurantCategory.id, address: "2627 Pike St, Seattle, WA", latitude: "47.6101", longitude: "-122.3421", isChain: true },
-      { name: "McDonald's", categoryId: restaurantCategory.id, address: "2829 Times Square, New York, NY", latitude: "40.7580", longitude: "-73.9855", isChain: true },
-      { name: "McDonald's", categoryId: restaurantCategory.id, address: "3031 Venice Blvd, Los Angeles, CA", latitude: "34.0259", longitude: "-118.4398", isChain: true },
-      { name: "McDonald's", categoryId: restaurantCategory.id, address: "600 N State St, Chicago, IL", latitude: "41.8928", longitude: "-87.6282", isChain: true },
-      { name: "McDonald's", categoryId: restaurantCategory.id, address: "2000 Pennsylvania Ave NW, Washington, DC", latitude: "38.8991", longitude: "-77.0451", isChain: true },
-      
-      // Fast Food - Subway
-      { name: "Subway", categoryId: restaurantCategory.id, address: "1201 3rd Ave, Seattle, WA", latitude: "47.6068", longitude: "-122.3345", isChain: true },
-      { name: "Subway", categoryId: restaurantCategory.id, address: "350 5th Ave, New York, NY", latitude: "40.7484", longitude: "-73.9857", isChain: true },
-      { name: "Subway", categoryId: restaurantCategory.id, address: "6801 Hollywood Blvd, Los Angeles, CA", latitude: "34.1022", longitude: "-118.3390", isChain: true },
-      
-      // Fast Food - Burger King
-      { name: "Burger King", categoryId: restaurantCategory.id, address: "1500 4th Ave, Seattle, WA", latitude: "47.6085", longitude: "-122.3351", isChain: true },
-      { name: "Burger King", categoryId: restaurantCategory.id, address: "89 E 42nd St, New York, NY", latitude: "40.7505", longitude: "-73.9772", isChain: true },
-      { name: "Burger King", categoryId: restaurantCategory.id, address: "7021 Sunset Blvd, Los Angeles, CA", latitude: "34.0983", longitude: "-118.3432", isChain: true },
-      
-      // Pharmacies - CVS (using Drug Stores category)
-      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "1401 3rd Ave, Seattle, WA", latitude: "47.6089", longitude: "-122.3356", isChain: true },
-      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "630 Lexington Ave, New York, NY", latitude: "40.7575", longitude: "-73.9708", isChain: true },
-      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "6801 Hollywood Blvd, Los Angeles, CA", latitude: "34.1022", longitude: "-118.3390", isChain: true },
-      
-      // Pharmacies - Walgreens (using Drug Stores category)
-      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "2100 3rd Ave, Seattle, WA", latitude: "47.6134", longitude: "-122.3437", isChain: true },
-      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "1440 Broadway, New York, NY", latitude: "40.7564", longitude: "-73.9860", isChain: true },
-      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "6625 Hollywood Blvd, Los Angeles, CA", latitude: "34.1019", longitude: "-118.3376", isChain: true },
-      
-      // Electronics - Best Buy (using Department Stores as closest match)
-      { name: "Best Buy", categoryId: deptStoreCategory.id, address: "1000 4th Ave N, Seattle, WA", latitude: "47.6205", longitude: "-122.3493", isChain: true },
-      { name: "Best Buy", categoryId: deptStoreCategory.id, address: "622 Broadway, New York, NY", latitude: "40.7272", longitude: "-73.9969", isChain: true },
-      { name: "Best Buy", categoryId: deptStoreCategory.id, address: "1200 N Highland Ave, Los Angeles, CA", latitude: "34.0983", longitude: "-118.3390", isChain: true },
-      
-      // Home Improvement - Home Depot (using Department Stores as closest match)
-      { name: "Home Depot", categoryId: deptStoreCategory.id, address: "5701 Airport Way S, Seattle, WA", latitude: "47.5493", longitude: "-122.3015", isChain: true },
-      { name: "Home Depot", categoryId: deptStoreCategory.id, address: "40-31 Junction Blvd, Corona, NY", latitude: "40.7478", longitude: "-73.8648", isChain: true },
-      { name: "Home Depot", categoryId: deptStoreCategory.id, address: "1045 S La Brea Ave, Los Angeles, CA", latitude: "34.0522", longitude: "-118.3440", isChain: true },
-      
-      // Home Improvement - Lowe's (using Department Stores as closest match)
-      { name: "Lowe's", categoryId: deptStoreCategory.id, address: "1500 1st Ave S, Seattle, WA", latitude: "47.5934", longitude: "-122.3370", isChain: true },
-      { name: "Lowe's", categoryId: deptStoreCategory.id, address: "517 E 117th St, New York, NY", latitude: "40.7982", longitude: "-73.9442", isChain: true },
-      { name: "Lowe's", categoryId: deptStoreCategory.id, address: "355 S La Brea Ave, Los Angeles, CA", latitude: "34.0259", longitude: "-118.3440", isChain: true }
+      // DEPARTMENT STORES & GENERAL RETAIL
+      { name: "Target", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Walmart", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Costco", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Sam's Club", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "BJ's Wholesale Club", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Macy's", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Nordstrom", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Kohl's", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "JCPenney", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Dillard's", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // GROCERY STORES
+      { name: "Whole Foods Market", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Trader Joe's", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Safeway", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Kroger", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Publix", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "H-E-B", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Wegmans", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Stop & Shop", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Giant", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Food Lion", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Harris Teeter", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "ShopRite", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Albertsons", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Meijer", categoryId: groceryCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // GAS STATIONS
+      { name: "Shell", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Chevron", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Exxon", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Mobil", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "BP", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Texaco", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Marathon", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Speedway", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Circle K", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "7-Eleven", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Wawa", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "QuikTrip", categoryId: gasCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // RESTAURANTS - FAST FOOD
+      { name: "McDonald's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Burger King", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Wendy's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Taco Bell", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "KFC", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Subway", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Chick-fil-A", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Chipotle", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Five Guys", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "In-N-Out Burger", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Shake Shack", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Panera Bread", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Pizza Hut", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Domino's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Papa John's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // RESTAURANTS - CASUAL DINING
+      { name: "Applebee's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Chili's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Olive Garden", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Red Lobster", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "TGI Friday's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Buffalo Wild Wings", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Texas Roadhouse", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Outback Steakhouse", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Cracker Barrel", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Denny's", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "IHOP", categoryId: restaurantCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // COFFEE SHOPS
+
+      // DRUG STORES & PHARMACIES
+      { name: "CVS Pharmacy", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Walgreens", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Rite Aid", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Duane Reade", categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // ELECTRONICS
+      { name: "Best Buy", categoryId: categoryArray.find(c => c.name === "Electronics")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Apple Store", categoryId: categoryArray.find(c => c.name === "Electronics")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Microsoft Store", categoryId: categoryArray.find(c => c.name === "Electronics")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "GameStop", categoryId: categoryArray.find(c => c.name === "Electronics")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "RadioShack", categoryId: categoryArray.find(c => c.name === "Electronics")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // HOME IMPROVEMENT
+      { name: "Home Depot", categoryId: categoryArray.find(c => c.name === "Home Improvement")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Lowe's", categoryId: categoryArray.find(c => c.name === "Home Improvement")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Menards", categoryId: categoryArray.find(c => c.name === "Home Improvement")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Ace Hardware", categoryId: categoryArray.find(c => c.name === "Home Improvement")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+
+      // ONLINE SHOPPING
+      { name: "Amazon", categoryId: categoryArray.find(c => c.name === "Online Shopping")!.id, address: "Online Platform", latitude: "0", longitude: "0", isChain: true },
+      { name: "eBay", categoryId: categoryArray.find(c => c.name === "Online Shopping")!.id, address: "Online Platform", latitude: "0", longitude: "0", isChain: true },
+      { name: "Walmart.com", categoryId: categoryArray.find(c => c.name === "Online Shopping")!.id, address: "Online Platform", latitude: "0", longitude: "0", isChain: true },
+      { name: "Target.com", categoryId: categoryArray.find(c => c.name === "Online Shopping")!.id, address: "Online Platform", latitude: "0", longitude: "0", isChain: true },
+      { name: "Best Buy Online", categoryId: categoryArray.find(c => c.name === "Online Shopping")!.id, address: "Online Platform", latitude: "0", longitude: "0", isChain: true },
+
+      // TRAVEL (Airlines, Hotels, Car Rentals)
+      { name: "Southwest Airlines", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "American Airlines", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "Delta Airlines", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "United Airlines", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "JetBlue Airways", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "Marriott", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Hilton", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Holiday Inn", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Best Western", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Enterprise Rent-A-Car", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "Hertz", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+      { name: "Avis", categoryId: categoryArray.find(c => c.name === "Travel")!.id, address: "National Service", latitude: "0", longitude: "0", isChain: true },
+
+      // ADDITIONAL POPULAR RETAILERS
+      { name: "Dollar Tree", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Dollar General", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Family Dollar", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Big Lots", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "TJ Maxx", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Marshall's", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Ross Dress for Less", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true },
+      { name: "Burlington", categoryId: deptStoreCategory.id, address: "National Chain", latitude: "0", longitude: "0", isChain: true }
     ];
 
     stores.forEach(store => {
@@ -680,55 +703,10 @@ export class MemStorage implements IStorage {
   }
 
   async searchStores(query: string, userLat?: number, userLng?: number, maxDistance = 50): Promise<StoreWithCategory[]> {
-    let stores = Array.from(this.stores.values())
-      .filter(store => store.name.toLowerCase().includes(query.toLowerCase()));
-    
-    // If user location is provided, generate local stores around their area
-    if (userLat !== undefined && userLng !== undefined && stores.length > 0) {
-      // Get unique store brands that match the query
-      const matchingBrands = [...new Set(stores.map(store => store.name))];
-      
-      // Generate realistic local store locations around user's coordinates
-      const localStores: any[] = [];
-      for (const brandName of matchingBrands) {
-        const brandStore = stores.find(s => s.name === brandName)!;
-        
-        // Generate 2-4 locations per brand within reasonable distance
-        const numLocations = Math.floor(Math.random() * 3) + 2;
-        for (let i = 0; i < numLocations; i++) {
-          // Generate coordinates within ~25 mile radius of user
-          const offsetLat = (Math.random() - 0.5) * 0.7; // ~25 miles latitude
-          const offsetLng = (Math.random() - 0.5) * 0.9; // ~25 miles longitude (adjusted for latitude)
-          
-          const storeLat = userLat + offsetLat;
-          const storeLng = userLng + offsetLng;
-          
-          // Generate realistic address based on coordinates
-          const address = this.generateRealisticAddress(storeLat, storeLng);
-          
-          const distance = this.calculateDistance(userLat, userLng, storeLat, storeLng);
-          
-          // Only include stores within the max distance
-          if (distance <= maxDistance) {
-            localStores.push({
-              id: randomUUID(),
-              name: brandName,
-              categoryId: brandStore.categoryId,
-              address: address,
-              latitude: storeLat.toString(),
-              longitude: storeLng.toString(),
-              isChain: brandStore.isChain,
-              distance: distance
-            });
-          }
-        }
-      }
-      
-      // Sort by distance and limit results
-      stores = localStores
-        .sort((a, b) => (a.distance || 0) - (b.distance || 0))
-        .slice(0, 10);
-    }
+    // Simple name-based search across all registered businesses
+    const stores = Array.from(this.stores.values())
+      .filter(store => store.name.toLowerCase().includes(query.toLowerCase()))
+      .slice(0, 20); // Limit to top 20 results
     
     const storesWithCategories: StoreWithCategory[] = [];
     for (const store of stores) {

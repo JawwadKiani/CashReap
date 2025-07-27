@@ -117,3 +117,15 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **Major Issuers**: Chase (5), American Express (5), Capital One (5), Citi (4), Discover (3), Bank of America (3), Wells Fargo (3), U.S. Bank (3), plus Barclays, Synchrony Bank, and Navy Federal
 - **Card Categories**: Premium travel cards (Sapphire Reserve, Platinum Card), flat-rate cashback (Double Cash, Active Cash), rotating category cards (Freedom Flex, Discover it), and business cards
 - **Complete Information**: Each card includes annual fees, credit score requirements, welcome bonuses, base reward rates, and detailed feature descriptions
+
+### Comprehensive National Business Database (January 2025)
+- **Replaced Location-Based Search**: Moved from GPS-dependent nearby store finder to comprehensive national business database
+- **Major US Retailers**: Target, Walmart, Costco, Sam's Club, Macy's, Nordstrom, Kohl's, JCPenney, Best Buy, Home Depot, Lowe's
+- **Restaurant Chains**: McDonald's, Burger King, Wendy's, Taco Bell, KFC, Subway, Chick-fil-A, Chipotle, Pizza Hut, Domino's, Olive Garden, Applebee's
+- **Grocery Stores**: Whole Foods, Trader Joe's, Safeway, Kroger, Publix, H-E-B, Wegmans, Albertsons, Stop & Shop, Harris Teeter
+- **Gas Stations**: Shell, Chevron, Exxon, Mobil, BP, Texaco, Marathon, Speedway, Circle K, 7-Eleven, Wawa, QuikTrip
+- **Travel Services**: Airlines (Southwest, American, Delta, United, JetBlue), Hotels (Marriott, Hilton, Holiday Inn), Car Rentals (Enterprise, Hertz, Avis)
+- **Online Platforms**: Amazon, eBay, Walmart.com, Target.com, Best Buy Online
+- **Coffee & Quick Service**: Starbucks, Dunkin', Tim Hortons, Peet's Coffee, Caribou Coffee
+- **Pharmacies**: CVS Pharmacy, Walgreens, Rite Aid, Duane Reade
+- **Simplified Search**: Users can now search for any major US business by name without needing location permissions
