@@ -285,8 +285,8 @@ export class DatabaseStorage implements IStorage {
         savedCards.sort(sortByReward);
         otherCards.sort(sortByReward);
         
-        // Return saved cards first, then others (showing all best cards)
-        return [...savedCards, ...otherCards];
+        // Return saved cards first, then top 2 other cards with highest rewards
+        return [...savedCards, ...otherCards.slice(0, 2)];
       } catch (error) {
         console.error("Error fetching user saved cards:", error);
         // Fallback to showing all cards if user query fails
@@ -295,9 +295,9 @@ export class DatabaseStorage implements IStorage {
       }
     }
 
-    // Sort by reward rate (highest first) and return all relevant cards
+    // Sort by reward rate (highest first) and return top 5 cards
     cards.sort(sortByReward);
-    return cards;
+    return cards.slice(0, 5);
   }
 
   // Seed initial data
@@ -732,6 +732,17 @@ export class DatabaseStorage implements IStorage {
         { cardId: "us-bank-altitude-go", categoryId: "dining", rewardRate: "4.0", isRotating: false },
         { cardId: "us-bank-altitude-go", categoryId: "grocery", rewardRate: "2.0", isRotating: false },
         { cardId: "us-bank-altitude-go", categoryId: "gas", rewardRate: "2.0", isRotating: false },
+        
+        // Department Store specific rewards (Target, Walmart, etc.)
+        { cardId: "citi-double-cash", categoryId: "department", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "department", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "department", rewardRate: "1.5", isRotating: false },
+        { cardId: "chase-freedom-flex", categoryId: "department", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q3 2025" },
+        
+        // Warehouse club rewards (Costco, Sam's Club)
+        { cardId: "citi-double-cash", categoryId: "warehouse", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "warehouse", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "warehouse", rewardRate: "1.5", isRotating: false },
       ];
 
       // Clear existing rewards to avoid conflicts and re-seed with expanded data

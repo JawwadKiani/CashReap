@@ -70,7 +70,7 @@ export default function Home() {
   };
 
   // Create a set of saved card IDs for quick lookup
-  const savedCardIds = new Set(savedCards.map((sc: any) => sc.cardId));
+  const savedCardIds = new Set((savedCards as any[]).map((sc: any) => sc.cardId));
 
   // Add saved status to recommendations (reward rate now comes from API)
   const enrichedRecommendations = recommendations?.map((card: any) => ({
@@ -142,7 +142,7 @@ export default function Home() {
         {topRecommendation && (
           <div className="space-y-3">
             <h3 className="font-semibold text-on-surface">
-              {topRecommendation.isSaved ? "Your Best Card" : "Top Recommendation"}
+              {topRecommendation.isSaved ? "🎯 Your Best Card" : "⭐ Top Recommendation"}
             </h3>
             <CardRecommendation 
               card={topRecommendation}
@@ -160,7 +160,7 @@ export default function Home() {
         {/* Other Recommendations */}
         {otherRecommendations.length > 0 && (
           <div className="space-y-3">
-            <h3 className="font-semibold text-on-surface">Other Options</h3>
+            <h3 className="font-semibold text-on-surface">💳 Other Great Options</h3>
             {otherRecommendations.map((card: any) => (
               <CardRecommendation
                 key={card.id}
