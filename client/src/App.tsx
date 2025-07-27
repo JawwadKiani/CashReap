@@ -12,6 +12,7 @@ import History from "@/pages/history";
 import Settings from "@/pages/settings";
 import CardBrowser from "@/pages/card-browser";
 import { Landing } from "@/pages/landing";
+import { SignIn, SignUp } from "@/pages/auth";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -31,7 +32,12 @@ function Router() {
   return (
     <Switch>
       {!isAuthenticated ? (
-        <Route path="/" component={Landing} />
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
+          <Route component={Landing} />
+        </>
       ) : (
         <>
           <div className="pb-16"> {/* Add padding for bottom navigation */}

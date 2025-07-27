@@ -1,9 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreditCard, TrendingUp, Search, Shield } from "lucide-react";
+import { useLocation as useWouterLocation } from "wouter";
 
 export function Landing() {
-  const handleLogin = () => {
+  const [, navigate] = useWouterLocation();
+
+  const handleSignIn = () => {
+    navigate("/signin");
+  };
+
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
+
+  const handleReplitLogin = () => {
     window.location.href = "/api/login";
   };
 
@@ -78,20 +89,48 @@ export function Landing() {
             <CardHeader>
               <CardTitle>Ready to Start Harvesting?</CardTitle>
               <CardDescription>
-                Sign in to access personalized recommendations and save your favorite cards
+                Create an account to access personalized recommendations and save your favorite cards
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="flex gap-3">
+                <Button 
+                  onClick={handleSignUp}
+                  className="flex-1 bg-primary hover:bg-primary/90 text-white"
+                  size="lg"
+                >
+                  Sign Up
+                </Button>
+                <Button 
+                  onClick={handleSignIn}
+                  variant="outline"
+                  className="flex-1"
+                  size="lg"
+                >
+                  Sign In
+                </Button>
+              </div>
+              
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-surface-variant"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-on-surface-variant">Or</span>
+                </div>
+              </div>
+
               <Button 
-                onClick={handleLogin}
-                className="w-full bg-primary hover:bg-primary/90 text-white"
+                onClick={handleReplitLogin}
+                variant="outline"
+                className="w-full"
                 size="lg"
               >
-                Sign In with Replit
+                Continue with Replit
               </Button>
               
               <div className="text-xs text-on-surface-variant">
-                Secure authentication powered by Replit
+                Multiple secure authentication options available
               </div>
             </CardContent>
           </Card>
