@@ -46,7 +46,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userLat = lat ? parseFloat(lat as string) : undefined;
       const userLng = lng ? parseFloat(lng as string) : undefined;
       
-      const stores = await storage.searchStores(q, userLat, userLng);
+      const stores = await storage.searchStores(q as string);
       res.json(stores);
     } catch (error) {
       res.status(500).json({ message: "Failed to search stores" });
@@ -110,13 +110,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Apply filters
       if (annualFee !== undefined) {
         const maxFee = annualFee === "0" ? 0 : annualFee === "100" ? 100 : Infinity;
-        recommendations = recommendations.filter(card => card.annualFee <= maxFee);
+        recommendations = recommendations.filter((card: any) => card.annualFee <= maxFee);
       }
       
       if (creditScore !== undefined) {
         const minScore = parseInt(creditScore as string);
         if (!isNaN(minScore)) {
-          recommendations = recommendations.filter(card => card.minCreditScore <= minScore);
+          recommendations = recommendations.filter((card: any) => card.minCreditScore <= minScore);
         }
       }
       
@@ -191,14 +191,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const schema = z.object({
         storeId: z.string(),
-        userSession: z.string()
+        userId: z.string()
       });
       
-      const { storeId, userSession } = schema.parse(req.body);
+      const { storeId, userId } = schema.parse(req.body);
       
       const history = await storage.addToSearchHistory({
         storeId,
-        userSession
+        userId
       });
       
       res.json(history);

@@ -23,6 +23,9 @@ export default function Home() {
 
   // Build query parameters for recommendations
   const queryParams = new URLSearchParams();
+  if (user?.id) {
+    queryParams.set('userId', user.id);
+  }
   if (filters.annualFee && filters.annualFee !== 'any') {
     queryParams.set('annualFee', filters.annualFee);
   }
@@ -32,11 +35,16 @@ export default function Home() {
 
   const { data: recommendations = [], isLoading: recommendationsLoading } = useQuery({
     queryKey: [`/api/stores/${selectedStore?.id}/recommendations?${queryParams.toString()}`],
-    enabled: !!selectedStore,
+    enabled: !!selectedStore && !!user?.id,
   });
 
   const { data: searchHistory } = useQuery({
     queryKey: [`/api/search-history/${user?.id}`],
+    enabled: !!user?.id,
+  });
+
+  const { data: savedCards = [] } = useQuery({
+    queryKey: [`/api/saved-cards/${user?.id}`],
     enabled: !!user?.id,
   });
 
@@ -61,8 +69,17 @@ export default function Home() {
     navigate(`/card/${cardId}`);
   };
 
-  const topRecommendation = recommendations && recommendations.length > 0 ? recommendations[0] : null;
-  const otherRecommendations = recommendations ? recommendations.slice(1) : [];
+  // Create a set of saved card IDs for quick lookup
+  const savedCardIds = new Set(savedCards.map((sc: any) => sc.cardId));
+
+  // Add saved status to recommendations (reward rate now comes from API)
+  const enrichedRecommendations = recommendations?.map((card: any) => ({
+    ...card,
+    isSaved: savedCardIds.has(card.id)
+  })) || [];
+
+  const topRecommendation = enrichedRecommendations.length > 0 ? enrichedRecommendations[0] : null;
+  const otherRecommendations = enrichedRecommendations.slice(1);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -123,31 +140,35 @@ export default function Home() {
 
         {/* Top Recommendation */}
         {topRecommendation && (
-          <TopRecommendation 
-            card={topRecommendation} 
-            onViewDetails={handleViewCardDetails} 
-          />
-        )}
-
-        {/* Debug Info */}
-        {selectedStore && (
-          <div className="bg-yellow-100 p-3 rounded-lg text-sm space-y-1">
-            <div><strong>Debug Info:</strong></div>
-            <div>Store: {selectedStore.name}</div>
-            <div>Loading: {recommendationsLoading ? 'Yes' : 'No'}</div>
-            <div>Recommendations Length: {recommendations?.length || 0}</div>
-            <div>First Card: {recommendations?.[0]?.name || 'None'}</div>
+          <div className="space-y-3">
+            <h3 className="font-semibold text-on-surface">
+              {topRecommendation.isSaved ? "Your Best Card" : "Top Recommendation"}
+            </h3>
+            <CardRecommendation 
+              card={topRecommendation}
+              rewardRate={topRecommendation.rewardRate}
+              categoryMatch={topRecommendation.categoryMatch}
+              isRotating={topRecommendation.isRotating}
+              isSaved={topRecommendation.isSaved}
+              onViewDetails={handleViewCardDetails} 
+            />
           </div>
         )}
+
+
 
         {/* Other Recommendations */}
         {otherRecommendations.length > 0 && (
           <div className="space-y-3">
             <h3 className="font-semibold text-on-surface">Other Options</h3>
-            {otherRecommendations.map((card: CardRec) => (
+            {otherRecommendations.map((card: any) => (
               <CardRecommendation
                 key={card.id}
                 card={card}
+                rewardRate={card.rewardRate}
+                categoryMatch={card.categoryMatch}
+                isRotating={card.isRotating}
+                isSaved={card.isSaved}
                 onViewDetails={handleViewCardDetails}
               />
             ))}
