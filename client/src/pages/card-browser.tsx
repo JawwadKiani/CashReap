@@ -162,9 +162,9 @@ export default function CardBrowser() {
                           No Annual Fee
                         </Badge>
                       )}
-                      {card.creditScoreRequired && (
+                      {card.minCreditScore && (
                         <Badge variant="outline" className="text-xs">
-                          {card.creditScoreRequired}+ Credit Score
+                          {card.minCreditScore}+ Credit Score
                         </Badge>
                       )}
                     </div>

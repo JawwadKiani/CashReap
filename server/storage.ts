@@ -307,8 +307,9 @@ export class DatabaseStorage implements IStorage {
         await db.insert(merchantCategories).values(category).onConflictDoNothing();
       }
 
-      // Seed credit cards
+      // Seed credit cards - 34+ comprehensive collection
       const cards = [
+        // Chase Cards (5)
         {
           id: "chase-sapphire-reserve",
           name: "Chase Sapphire Reserve",
@@ -320,24 +321,24 @@ export class DatabaseStorage implements IStorage {
           description: "Premium travel rewards card with 3x on travel and dining"
         },
         {
-          id: "amex-platinum",
-          name: "The Platinum Card® from American Express",
-          issuer: "American Express",
-          annualFee: 695,
+          id: "chase-sapphire-preferred",
+          name: "Chase Sapphire Preferred Card",
+          issuer: "Chase",
+          annualFee: 95,
           baseReward: 1.0,
-          minCreditScore: 720,
-          welcomeBonus: "80,000 points after $6,000 spend in 6 months",
-          description: "Luxury travel card with extensive benefits and airport lounge access"
+          minCreditScore: 690,
+          welcomeBonus: "60,000 points after $4,000 spend in 3 months",
+          description: "Popular travel card with 2x on travel and dining"
         },
         {
-          id: "citi-double-cash",
-          name: "Citi Double Cash Card",
-          issuer: "Citi",
+          id: "chase-freedom-unlimited",
+          name: "Chase Freedom Unlimited",
+          issuer: "Chase",
           annualFee: 0,
-          baseReward: 2.0,
-          minCreditScore: 650,
-          welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
-          description: "Simple cash back card with 2% on all purchases"
+          baseReward: 1.5,
+          minCreditScore: 630,
+          welcomeBonus: "$200 cash back after $500 spend in 3 months",
+          description: "Flat 1.5% cash back on all purchases"
         },
         {
           id: "chase-freedom-flex",
@@ -350,6 +351,164 @@ export class DatabaseStorage implements IStorage {
           description: "Rotating 5x categories plus 3x on dining and drugstores"
         },
         {
+          id: "chase-ink-business-preferred",
+          name: "Chase Ink Business Preferred Credit Card",
+          issuer: "Chase",
+          annualFee: 95,
+          baseReward: 1.0,
+          minCreditScore: 680,
+          welcomeBonus: "100,000 points after $15,000 spend in 3 months",
+          description: "Business card with 3x on select business categories"
+        },
+        
+        // American Express Cards (5)
+        {
+          id: "amex-platinum",
+          name: "The Platinum Card® from American Express",
+          issuer: "American Express",
+          annualFee: 695,
+          baseReward: 1.0,
+          minCreditScore: 720,
+          welcomeBonus: "80,000 points after $6,000 spend in 6 months",
+          description: "Luxury travel card with extensive benefits and airport lounge access"
+        },
+        {
+          id: "amex-gold",
+          name: "American Express® Gold Card",
+          issuer: "American Express",
+          annualFee: 250,
+          baseReward: 1.0,
+          minCreditScore: 700,
+          welcomeBonus: "60,000 points after $4,000 spend in 6 months",
+          description: "Dining and grocery rewards card with 4x on restaurants"
+        },
+        {
+          id: "amex-everyday-preferred",
+          name: "Blue Cash Preferred® Card from American Express",
+          issuer: "American Express",
+          annualFee: 95,
+          baseReward: 1.0,
+          minCreditScore: 670,
+          welcomeBonus: "$300 after $3,000 spend in 6 months",
+          description: "6% cash back at US supermarkets up to $6,000 per year"
+        },
+        {
+          id: "amex-blue-cash-everyday",
+          name: "Blue Cash Everyday® Card from American Express",
+          issuer: "American Express",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 630,
+          welcomeBonus: "$200 after $2,000 spend in 6 months",
+          description: "3% cash back at US supermarkets up to $6,000 per year"
+        },
+        {
+          id: "amex-business-platinum",
+          name: "The Business Platinum Card® from American Express",
+          issuer: "American Express",
+          annualFee: 695,
+          baseReward: 1.0,
+          minCreditScore: 720,
+          welcomeBonus: "120,000 points after $15,000 spend in 3 months",
+          description: "Premium business card with travel benefits and rewards"
+        },
+
+        // Capital One Cards (5)
+        {
+          id: "capital-one-venture-x",
+          name: "Capital One Venture X Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 395,
+          baseReward: 2.0,
+          minCreditScore: 720,
+          welcomeBonus: "75,000 miles after $4,000 spend in 3 months",
+          description: "Premium travel card with 2x miles on all purchases"
+        },
+        {
+          id: "capital-one-venture",
+          name: "Capital One Venture Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 95,
+          baseReward: 2.0,
+          minCreditScore: 660,
+          welcomeBonus: "60,000 miles after $3,000 spend in 3 months",
+          description: "Travel rewards card with 2x miles on all purchases"
+        },
+        {
+          id: "capital-one-savor",
+          name: "Capital One Savor Cash Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 95,
+          baseReward: 1.0,
+          minCreditScore: 660,
+          welcomeBonus: "$300 after $3,000 spend in 3 months",
+          description: "4% cash back on dining and entertainment"
+        },
+        {
+          id: "capital-one-savorone",
+          name: "Capital One SavorOne Cash Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 630,
+          welcomeBonus: "$200 after $500 spend in 3 months",
+          description: "3% cash back on dining, entertainment, and streaming"
+        },
+        {
+          id: "capital-one-quicksilver",
+          name: "Capital One Quicksilver Cash Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 0,
+          baseReward: 1.5,
+          minCreditScore: 630,
+          welcomeBonus: "$200 after $500 spend in 3 months",
+          description: "Flat 1.5% cash back on all purchases"
+        },
+
+        // Citi Cards (4)
+        {
+          id: "citi-double-cash",
+          name: "Citi Double Cash Card",
+          issuer: "Citi",
+          annualFee: 0,
+          baseReward: 2.0,
+          minCreditScore: 650,
+          welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
+          description: "Simple cash back card with 2% on all purchases"
+        },
+        {
+          id: "citi-premier",
+          name: "Citi Premier® Card",
+          issuer: "Citi",
+          annualFee: 95,
+          baseReward: 1.0,
+          minCreditScore: 690,
+          welcomeBonus: "80,000 points after $4,000 spend in 3 months",
+          description: "Travel and dining rewards with 3x points on multiple categories"
+        },
+        {
+          id: "citi-custom-cash",
+          name: "Citi Custom Cash℠ Card",
+          issuer: "Citi",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 650,
+          welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
+          description: "5% cash back on your top eligible spend category each month"
+        },
+        {
+          id: "citi-simplicity",
+          name: "Citi Simplicity® Card",
+          issuer: "Citi",
+          annualFee: 0,
+          baseReward: 0.0,
+          minCreditScore: 580,
+          welcomeBonus: "0% intro APR for 21 months",
+          description: "No late fees, no penalty rate, no annual fee"
+        },
+
+        // Discover Cards (3)
+        {
           id: "discover-it-cash",
           name: "Discover it® Cash Back",
           issuer: "Discover",
@@ -358,6 +517,154 @@ export class DatabaseStorage implements IStorage {
           minCreditScore: 600,
           welcomeBonus: "Discover matches all cash back earned in your first year",
           description: "Rotating 5x categories with first-year cash back match"
+        },
+        {
+          id: "discover-it-miles",
+          name: "Discover it® Miles",
+          issuer: "Discover",
+          annualFee: 0,
+          baseReward: 1.5,
+          minCreditScore: 600,
+          welcomeBonus: "Discover matches all miles earned in your first year",
+          description: "1.5x miles on all purchases with first-year miles match"
+        },
+        {
+          id: "discover-it-chrome",
+          name: "Discover it® chrome",
+          issuer: "Discover",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 600,
+          welcomeBonus: "Discover matches all cash back earned in your first year",
+          description: "2% cash back at gas stations and restaurants"
+        },
+
+        // Bank of America Cards (3)
+        {
+          id: "boa-travel-rewards",
+          name: "Bank of America® Travel Rewards Credit Card",
+          issuer: "Bank of America",
+          annualFee: 0,
+          baseReward: 1.5,
+          minCreditScore: 650,
+          welcomeBonus: "25,000 points after $1,000 spend in 90 days",
+          description: "1.5x points on all purchases with no foreign transaction fees"
+        },
+        {
+          id: "boa-cash-rewards",
+          name: "Bank of America® Cash Rewards Credit Card",
+          issuer: "Bank of America",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 600,
+          welcomeBonus: "$200 after $1,000 spend in 90 days",
+          description: "3% cash back in your choice category, 2% at grocery stores and wholesale clubs"
+        },
+        {
+          id: "boa-premium-rewards",
+          name: "Bank of America® Premium Rewards® Credit Card",
+          issuer: "Bank of America",
+          annualFee: 95,
+          baseReward: 1.5,
+          minCreditScore: 720,
+          welcomeBonus: "60,000 points after $4,000 spend in 90 days",
+          description: "2x points on travel and dining with premium benefits"
+        },
+
+        // Wells Fargo Cards (3)
+        {
+          id: "wells-fargo-active-cash",
+          name: "Wells Fargo Active Cash® Card",
+          issuer: "Wells Fargo",
+          annualFee: 0,
+          baseReward: 2.0,
+          minCreditScore: 600,
+          welcomeBonus: "$200 cash rewards after $1,000 spend in 3 months",
+          description: "Flat 2% cash rewards on all purchases"
+        },
+        {
+          id: "wells-fargo-autograph",
+          name: "Wells Fargo Autograph℠ Card",
+          issuer: "Wells Fargo",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 650,
+          welcomeBonus: "20,000 points after $1,000 spend in 3 months",
+          description: "3x points on restaurants, travel, gas, transit, and streaming"
+        },
+        {
+          id: "wells-fargo-propel",
+          name: "Wells Fargo Propel American Express® Card",
+          issuer: "Wells Fargo",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 630,
+          welcomeBonus: "20,000 points after $1,000 spend in 3 months",
+          description: "3x points on dining, ordering, gas, transit, and streaming"
+        },
+
+        // U.S. Bank Cards (3)
+        {
+          id: "us-bank-altitude-go",
+          name: "U.S. Bank Altitude® Go Visa Signature® Card",
+          issuer: "U.S. Bank",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 650,
+          welcomeBonus: "20,000 points after $1,000 spend in 90 days",
+          description: "4x points on dining, 2x on grocery stores, streaming services, and gas"
+        },
+        {
+          id: "us-bank-cash-plus",
+          name: "U.S. Bank Cash+® Visa Signature® Card",
+          issuer: "U.S. Bank",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 650,
+          welcomeBonus: "$200 after $1,000 spend in 120 days",
+          description: "5% cash back on two categories you choose each quarter"
+        },
+        {
+          id: "us-bank-altitude-reserve",
+          name: "U.S. Bank Altitude® Reserve Visa Infinite® Card",
+          issuer: "U.S. Bank",
+          annualFee: 400,
+          baseReward: 1.5,
+          minCreditScore: 750,
+          welcomeBonus: "50,000 points after $4,500 spend in 90 days",
+          description: "Premium travel card with 3x points on mobile wallet purchases"
+        },
+
+        // Additional Popular Cards (5)
+        {
+          id: "barclays-arrival-plus",
+          name: "Barclaycard Arrival® Plus World Elite Mastercard®",
+          issuer: "Barclays",
+          annualFee: 89,
+          baseReward: 2.0,
+          minCreditScore: 700,
+          welcomeBonus: "70,000 miles after $5,000 spend in 90 days",
+          description: "2x miles on all purchases with travel redemption flexibility"
+        },
+        {
+          id: "synchrony-amazon-prime",
+          name: "Amazon Prime Rewards Visa Signature Card",
+          issuer: "Synchrony Bank",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 650,
+          welcomeBonus: "$100 Amazon Gift Card upon approval",
+          description: "5% back at Amazon and Whole Foods for Prime members"
+        },
+        {
+          id: "navy-federal-more-rewards",
+          name: "Navy Federal Credit Union More Rewards American Express® Card",
+          issuer: "Navy Federal",
+          annualFee: 0,
+          baseReward: 1.0,
+          minCreditScore: 650,
+          welcomeBonus: "20,000 points after $3,000 spend in 90 days",
+          description: "3x points on supermarkets, gas, restaurants, and transit"
         }
       ];
 
