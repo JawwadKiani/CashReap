@@ -80,7 +80,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex-1 flex justify-center">
               <div className="flex flex-col items-center">
-                <img src="/src/assets/logo.png" alt="CashReap" className="h-16 mb-1" />
+                <img src="/src/assets/logo-transparent.svg" alt="CashReap" className="h-32 mb-1" />
                 <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
               </div>
             </div>

@@ -1,0 +1,33 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Credit Card -->
+  <rect x="140" y="180" width="120" height="80" rx="8" fill="#F59E0B" stroke="#000" stroke-width="2"/>
+  <rect x="140" y="195" width="120" height="12" fill="#000"/>
+  
+  <!-- Card chip circles -->
+  <circle cx="220" cy="225" r="8" fill="#F59E0B" stroke="#000" stroke-width="1"/>
+  <circle cx="235" cy="225" r="8" fill="#F59E0B" stroke="#000" stroke-width="1"/>
+  
+  <!-- Plant stem -->
+  <path d="M180 180 Q185 140 200 120 Q210 110 220 105" stroke="#22C55E" stroke-width="6" fill="none" stroke-linecap="round"/>
+  
+  <!-- Main stem continuation -->
+  <path d="M220 105 L225 85" stroke="#22C55E" stroke-width="4" fill="none" stroke-linecap="round"/>
+  
+  <!-- Arrow at top -->
+  <path d="M220 90 L225 85 L230 90" stroke="#22C55E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Left large leaf -->
+  <ellipse cx="195" cy="135" rx="25" ry="15" fill="#22C55E" transform="rotate(-30 195 135)"/>
+  <path d="M180 140 Q195 135 205 130" stroke="#22C55E" stroke-width="2" fill="none"/>
+  
+  <!-- Right large leaf -->
+  <ellipse cx="240" cy="125" rx="20" ry="12" fill="#22C55E" transform="rotate(45 240 125)"/>
+  <path d="M225 115 Q240 125 250 130" stroke="#22C55E" stroke-width="2" fill="none"/>
+  
+  <!-- Small leaf on stem -->
+  <ellipse cx="210" cy="155" rx="15" ry="8" fill="#22C55E" transform="rotate(15 210 155)"/>
+  <path d="M205 160 Q210 155 215 150" stroke="#22C55E" stroke-width="1.5" fill="none"/>
+  
+  <!-- Text -->
+  <text x="200" y="320" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#1F2937">CASH REAP</text>
+</svg>

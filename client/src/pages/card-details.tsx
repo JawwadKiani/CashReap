@@ -49,7 +49,7 @@ export default function CardDetails() {
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex-1 flex flex-col items-center">
-              <img src="/src/assets/logo.png" alt="CashReap" className="h-16 mb-2" />
+              <img src="/src/assets/logo-transparent.svg" alt="CashReap" className="h-32 mb-2" />
               <h1 className="text-lg font-semibold text-on-surface">Card Details</h1>
               <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
             </div>
