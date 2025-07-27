@@ -122,7 +122,7 @@ export default function Settings() {
           <CardContent className="pt-6">
             <div className="text-center text-sm text-on-surface-variant">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <img src="/src/assets/logo.svg" alt="CashReap" className="h-6" />
+                <img src="/src/assets/logo.png" alt="CashReap" className="h-6" />
                 <span className="text-xs font-medium">Harvest Your Rewards</span>
               </div>
               <p>CashReap v1.0.0</p>

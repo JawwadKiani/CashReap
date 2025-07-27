@@ -144,7 +144,7 @@ export default function Home() {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-surface-variant text-center">
             <div className="mb-4">
               <div className="mb-3">
-                <img src="/src/assets/logo.svg" alt="CashReap" className="h-12 mx-auto mb-2" />
+                <img src="/src/assets/logo.png" alt="CashReap" className="h-12 mx-auto mb-2" />
                 <div className="text-xs text-on-surface-variant font-medium text-center mb-2">Harvest Your Rewards</div>
               </div>
               <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
