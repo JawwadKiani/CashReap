@@ -74,10 +74,7 @@ export default function CardBrowser() {
   // Save card mutation
   const saveCardMutation = useMutation({
     mutationFn: async (cardId: string) => {
-      await apiRequest(`/api/saved-cards`, {
-        method: "POST",
-        body: { cardId }
-      });
+      await apiRequest("/api/saved-cards", "POST", { cardId });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
@@ -98,9 +95,7 @@ export default function CardBrowser() {
   // Unsave card mutation
   const unsaveCardMutation = useMutation({
     mutationFn: async (cardId: string) => {
-      await apiRequest(`/api/saved-cards/${cardId}`, {
-        method: "DELETE",
-      });
+      await apiRequest(`/api/saved-cards/${cardId}`, "DELETE");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
