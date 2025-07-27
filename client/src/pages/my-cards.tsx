@@ -59,7 +59,7 @@ export default function MyCards() {
   };
 
   const isCardSaved = (cardId: string) => {
-    return savedCards?.some((saved: any) => saved.card.id === cardId);
+    return Array.isArray(savedCards) && savedCards.some((saved: any) => saved.card.id === cardId);
   };
 
   if (isLoading) {
@@ -100,7 +100,7 @@ export default function MyCards() {
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-on-surface mb-4">Available Credit Cards</h2>
             <div className="space-y-3">
-              {allCards && allCards.map((card: any) => (
+              {Array.isArray(allCards) && allCards.map((card: any) => (
                 <Card key={card.id} className="shadow-sm">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
@@ -136,7 +136,7 @@ export default function MyCards() {
         {/* My Saved Cards Section */}
         <div>
           <h2 className="text-lg font-semibold text-on-surface mb-4">My Saved Cards</h2>
-          {savedCards && savedCards.length > 0 ? (
+          {Array.isArray(savedCards) && savedCards.length > 0 ? (
             <div className="space-y-4">
               {savedCards.map((savedCard: any) => (
               <Card key={savedCard.id} className="shadow-sm">
