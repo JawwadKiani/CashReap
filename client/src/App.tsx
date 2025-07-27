@@ -36,7 +36,6 @@ function Router() {
           <Route path="/" component={Landing} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
-          <Route component={NotFound} />
         </>
       ) : (
         <>
