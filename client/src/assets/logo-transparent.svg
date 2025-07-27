@@ -20,13 +20,25 @@
   <ellipse cx="195" cy="135" rx="25" ry="15" fill="#22C55E" transform="rotate(-30 195 135)"/>
   <path d="M180 140 Q195 135 205 130" stroke="#22C55E" stroke-width="2" fill="none"/>
   
+  <!-- Dollar sign fruit on left leaf -->
+  <circle cx="185" cy="125" r="8" fill="#F59E0B"/>
+  <text x="185" y="130" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#fff">$</text>
+  
   <!-- Right large leaf -->
   <ellipse cx="240" cy="125" rx="20" ry="12" fill="#22C55E" transform="rotate(45 240 125)"/>
   <path d="M225 115 Q240 125 250 130" stroke="#22C55E" stroke-width="2" fill="none"/>
   
+  <!-- Dollar sign fruit on right leaf -->
+  <circle cx="250" cy="115" r="8" fill="#F59E0B"/>
+  <text x="250" y="120" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#fff">$</text>
+  
   <!-- Small leaf on stem -->
   <ellipse cx="210" cy="155" rx="15" ry="8" fill="#22C55E" transform="rotate(15 210 155)"/>
   <path d="M205 160 Q210 155 215 150" stroke="#22C55E" stroke-width="1.5" fill="none"/>
+  
+  <!-- Dollar sign fruit on small leaf -->
+  <circle cx="220" cy="150" r="6" fill="#F59E0B"/>
+  <text x="220" y="154" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#fff">$</text>
   
   <!-- Text -->
   <text x="200" y="320" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#1F2937">CASH REAP</text>
