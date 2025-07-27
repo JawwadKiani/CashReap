@@ -30,7 +30,7 @@ export default function Home() {
     queryParams.set('creditScore', filters.creditScore.toString());
   }
 
-  const { data: recommendations, isLoading: recommendationsLoading } = useQuery({
+  const { data: recommendations = [], isLoading: recommendationsLoading } = useQuery({
     queryKey: [`/api/stores/${selectedStore?.id}/recommendations?${queryParams.toString()}`],
     enabled: !!selectedStore,
   });

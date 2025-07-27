@@ -94,11 +94,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get card recommendations for store
-  app.get("/api/stores/:id/recommendations", isAuthenticated, async (req: any, res) => {
+  app.get("/api/stores/:id/recommendations", async (req, res) => {
     try {
       const { id } = req.params;
       const { annualFee, creditScore } = req.query;
-      const userId = req.user?.claims?.sub;
+      
+      // Try to get user ID if authenticated, but don't require it
+      let userId: string | undefined;
+      if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+        userId = (req.user as any)?.claims?.sub;
+      }
       
       let recommendations = await storage.getCardRecommendationsForStore(id, userId);
       

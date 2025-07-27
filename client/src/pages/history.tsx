@@ -1,21 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Clock, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
-const getUserSession = () => {
-  let session = localStorage.getItem("userSession");
-  if (!session) {
-    session = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    localStorage.setItem("userSession", session);
-  }
-  return session;
-};
+import { useAuth } from "@/hooks/useAuth";
 
 export default function History() {
-  const userSession = getUserSession();
+  const { user } = useAuth();
 
   const { data: searchHistory, isLoading } = useQuery({
-    queryKey: [`/api/search-history/${userSession}`],
+    queryKey: [`/api/search-history/${user?.id}`],
+    enabled: !!user?.id,
   });
 
   if (isLoading) {

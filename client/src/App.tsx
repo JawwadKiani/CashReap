@@ -40,13 +40,15 @@ function Router() {
       ) : (
         <>
           <div className="pb-16"> {/* Add padding for bottom navigation */}
-            <Route path="/" component={Home} />
-            <Route path="/card/:id" component={CardDetails} />
-            <Route path="/my-cards" component={MyCards} />
-            <Route path="/history" component={History} />
-            <Route path="/settings" component={Settings} />
-            <Route path="/browse-cards" component={CardBrowser} />
-            <Route component={NotFound} />
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/card/:id" component={CardDetails} />
+              <Route path="/my-cards" component={MyCards} />
+              <Route path="/history" component={History} />
+              <Route path="/settings" component={Settings} />
+              <Route path="/browse-cards" component={CardBrowser} />
+              <Route component={NotFound} />
+            </Switch>
             <BottomNavigation />
           </div>
         </>
