@@ -75,12 +75,14 @@ export function LocationDetector({ onStoreSelect, selectedStore }: BusinessSearc
         </div>
       )}
 
-      {/* Popular Business Suggestions */}
-      {!searchQuery && (
+      {/* Popular Business Suggestions - only show when typing */}
+      {searchQuery.length > 0 && searchQuery.length <= 2 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-medium text-on-surface">Popular Businesses</h3>
+          <h3 className="text-sm font-medium text-on-surface">Popular Recommendations</h3>
           <div className="bg-white rounded-lg border border-surface-variant">
-            {['Target', 'Walmart', 'Amazon', 'Starbucks', 'McDonald\'s'].map((suggestion) => (
+            {['Target', 'Walmart', 'Amazon', 'Starbucks', 'McDonald\'s']
+              .filter(suggestion => suggestion.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map((suggestion) => (
               <button
                 key={suggestion}
                 onClick={() => setSearchQuery(suggestion)}
