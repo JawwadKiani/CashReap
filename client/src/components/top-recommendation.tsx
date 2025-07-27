@@ -25,7 +25,14 @@ export function TopRecommendation({ card, onViewDetails }: TopRecommendationProp
         </div>
       </div>
       <div className="flex items-center justify-between text-sm">
-        <span>{card.categoryMatch}</span>
+        <div className="flex items-center gap-2">
+          <span>{card.categoryMatch}</span>
+          {card.isRotating && (
+            <span className="px-2 py-1 text-xs bg-yellow-400 text-yellow-900 rounded-full font-medium">
+              ACTIVE NOW
+            </span>
+          )}
+        </div>
         <Button
           variant="ghost"
           size="sm"

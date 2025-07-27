@@ -427,20 +427,14 @@ export class MemStorage implements IStorage {
     const categoryArray = Array.from(this.merchantCategories.values());
     const cardArray = Array.from(this.creditCards.values());
 
-    // Chase Freedom Flex - Rotating quarterly categories
+    // Chase Freedom Flex - Rotating quarterly categories (5% cash back)
     const chaseCard = cardArray.find(c => c.name === "Chase Freedom Flex")!;
     const deptStoreCategory = categoryArray.find(c => c.name === "Department Stores")!;
     const gasCategory = categoryArray.find(c => c.name === "Gas Stations")!;
+    const groceryCategory = categoryArray.find(c => c.name === "Grocery Stores")!;
+    const restaurantCategory = categoryArray.find(c => c.name === "Restaurants")!;
 
-    this.cardCategoryRewards.set(randomUUID(), {
-      id: randomUUID(),
-      cardId: chaseCard.id,
-      categoryId: deptStoreCategory.id,
-      rewardRate: "5.00",
-      isRotating: true,
-      rotationPeriod: "Q4"
-    });
-
+    // Q1 2025: Gas Stations
     this.cardCategoryRewards.set(randomUUID(), {
       id: randomUUID(),
       cardId: chaseCard.id,
@@ -450,9 +444,90 @@ export class MemStorage implements IStorage {
       rotationPeriod: "Q1"
     });
 
-    // Blue Cash Preferred
+    // Q2 2025: Grocery Stores
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: chaseCard.id,
+      categoryId: groceryCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q2"
+    });
+
+    // Q3 2025: Restaurants
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: chaseCard.id,
+      categoryId: restaurantCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q3"
+    });
+
+    // Q4 2025: Department Stores
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: chaseCard.id,
+      categoryId: deptStoreCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q4"
+    });
+
+    // Discover it Cash Back - Rotating quarterly categories (5% cash back)
+    const discoverCard = cardArray.find(c => c.name === "Discover it Cash Back")!;
+    
+    // Q1 2025: Department Stores (different than Chase)
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: discoverCard.id,
+      categoryId: deptStoreCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q1"
+    });
+
+    // Q2 2025: Gas Stations
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: discoverCard.id,
+      categoryId: gasCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q2"
+    });
+
+    // Q3 2025: Grocery Stores
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: discoverCard.id,
+      categoryId: groceryCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q3"
+    });
+
+    // Q4 2025: Restaurants
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: discoverCard.id,
+      categoryId: restaurantCategory.id,
+      rewardRate: "5.00",
+      isRotating: true,
+      rotationPeriod: "Q4"
+    });
+
+    // Chase Freedom Flex - Permanent categories (always active)
+    this.cardCategoryRewards.set(randomUUID(), {
+      id: randomUUID(),
+      cardId: chaseCard.id,
+      categoryId: categoryArray.find(c => c.name === "Drug Stores")!.id,
+      rewardRate: "3.00",
+      isRotating: false
+    });
+
+    // Blue Cash Preferred - Permanent categories
     const amexCard = cardArray.find(c => c.name === "Blue Cash Preferred")!;
-    const groceryCategory = categoryArray.find(c => c.name === "Grocery Stores")!;
 
     this.cardCategoryRewards.set(randomUUID(), {
       id: randomUUID(),
@@ -480,7 +555,6 @@ export class MemStorage implements IStorage {
 
     // Capital One Savor
     const capitalOneCard = cardArray.find(c => c.name === "Capital One Savor Cash Rewards")!;
-    const restaurantCategory = categoryArray.find(c => c.name === "Restaurants")!;
 
     this.cardCategoryRewards.set(randomUUID(), {
       id: randomUUID(),
@@ -851,21 +925,40 @@ export class MemStorage implements IStorage {
     return false;
   }
 
+  // Utility function to get current quarter
+  private getCurrentQuarter(): string {
+    const now = new Date();
+    const month = now.getMonth() + 1; // getMonth() returns 0-11
+    
+    if (month >= 1 && month <= 3) return "Q1";
+    if (month >= 4 && month <= 6) return "Q2";
+    if (month >= 7 && month <= 9) return "Q3";
+    return "Q4";
+  }
+
   // Recommendations
   async getCardRecommendationsForStore(storeId: string): Promise<CardRecommendation[]> {
     const store = await this.getStore(storeId);
     if (!store) return [];
 
+    const currentQuarter = this.getCurrentQuarter();
     const categoryRewards = await this.getRewardsForCategory(store.categoryId);
     const recommendations: CardRecommendation[] = [];
 
     for (const reward of categoryRewards) {
+      // Skip rotating categories that are not currently active
+      if (reward.isRotating && reward.rotationPeriod !== currentQuarter) {
+        continue;
+      }
+
       const card = await this.getCreditCard(reward.cardId);
       if (card) {
         const category = await this.getMerchantCategory(store.categoryId);
-        const categoryMatch = reward.isRotating 
-          ? `${reward.rotationPeriod} ${category?.name || 'Category'}`
-          : category?.name || 'Category';
+        let categoryMatch = category?.name || 'Category';
+        
+        if (reward.isRotating) {
+          categoryMatch = `${reward.rotationPeriod} ${categoryMatch} (Currently Active)`;
+        }
 
         recommendations.push({
           ...card,

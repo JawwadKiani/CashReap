@@ -39,9 +39,16 @@ export function CardRecommendation({ card, onViewDetails }: CardRecommendationPr
         </div>
       </div>
       <div className="space-y-2">
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between items-center text-sm">
           <span className="text-on-surface-variant">Category</span>
-          <span className="text-on-surface">{card.categoryMatch}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-on-surface">{card.categoryMatch}</span>
+            {card.isRotating && (
+              <span className="px-2 py-1 text-xs bg-yellow-400 text-yellow-900 rounded-full font-medium">
+                ACTIVE
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-on-surface-variant">Annual Fee</span>
