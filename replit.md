@@ -133,12 +133,13 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 
 ### Comprehensive National Business Database (January 2025)
 - **Replaced Location-Based Search**: Moved from GPS-dependent nearby store finder to comprehensive national business database
-- **Major US Retailers**: Target, Walmart, Costco, Sam's Club, Macy's, Nordstrom, Kohl's, JCPenney, Best Buy, Home Depot, Lowe's
-- **Restaurant Chains**: McDonald's, Burger King, Wendy's, Taco Bell, KFC, Subway, Chick-fil-A, Chipotle, Pizza Hut, Domino's, Olive Garden, Applebee's
-- **Grocery Stores**: Whole Foods, Trader Joe's, Safeway, Kroger, Publix, H-E-B, Wegmans, Albertsons, Stop & Shop, Harris Teeter
-- **Gas Stations**: Shell, Chevron, Exxon, Mobil, BP, Texaco, Marathon, Speedway, Circle K, 7-Eleven, Wawa, QuikTrip
-- **Travel Services**: Airlines (Southwest, American, Delta, United, JetBlue), Hotels (Marriott, Hilton, Holiday Inn), Car Rentals (Enterprise, Hertz, Avis)
+- **50+ Major US Businesses**: Complete database covering all major retail categories
+- **Major Retailers**: Target, Walmart, Costco, Sam's Club, Macy's, Nordstrom, Kohl's, JCPenney, Best Buy, Home Depot, Lowe's
+- **Restaurant Chains**: McDonald's, Burger King, Wendy's, Taco Bell, KFC, Subway, Chick-fil-A, Chipotle, Pizza Hut, Domino's, Olive Garden, Applebee's, Starbucks, Dunkin', Tim Hortons
+- **Grocery Stores**: Whole Foods, Trader Joe's, Safeway, Kroger, Publix, H-E-B, Wegmans, Albertsons
+- **Gas Stations**: Shell, Chevron, Exxon, Mobil, BP, Texaco, Marathon, Speedway, Circle K, 7-Eleven
 - **Online Platforms**: Amazon, eBay, Walmart.com, Target.com, Best Buy Online
-- **Coffee & Quick Service**: Starbucks, Dunkin', Tim Hortons, Peet's Coffee, Caribou Coffee
-- **Pharmacies**: CVS Pharmacy, Walgreens, Rite Aid, Duane Reade
-- **Simplified Search**: Users can now search for any major US business by name without needing location permissions
+- **Pharmacies**: CVS Pharmacy, Walgreens, Rite Aid
+- **Personalized Recommendations**: Algorithm prioritizes user's saved cards first, then shows top 2 cards with highest cashback for that store category
+- **Comprehensive Category Coverage**: Expanded reward rates for department stores, gas stations, online shopping, dining, grocery, and drugstores
+- **Simplified Search**: Users can search any major US business by name without location permissions
