@@ -32,7 +32,7 @@ export default function CardDetails() {
   // Save/unsave card mutations
   const saveCardMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest("/api/saved-cards", "POST", { cardId: id });
+      await apiRequest("POST", "/api/saved-cards", { cardId: id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
@@ -52,7 +52,7 @@ export default function CardDetails() {
 
   const unsaveCardMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest(`/api/saved-cards/${id}`, "DELETE");
+      await apiRequest("DELETE", `/api/saved-cards/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
