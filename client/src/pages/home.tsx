@@ -149,7 +149,7 @@ export default function Home() {
               </div>
               <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
               <p className="text-sm text-on-surface-variant">
-                Search for a store or use your location to find the best credit card for maximum cash back rewards.
+                Search for any major US business to find the best credit card for maximum cash back rewards.
               </p>
             </div>
           </div>
