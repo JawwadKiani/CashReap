@@ -24,7 +24,7 @@ import {
   stores
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, inArray } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (mandatory for Replit Auth)
@@ -257,45 +257,47 @@ export class DatabaseStorage implements IStorage {
       .from(creditCards)
       .where(inArray(creditCards.id, cardIds));
 
-    // If user is provided, prioritize their saved cards
-    if (userId) {
-      const userSavedCards = await db
-        .select({ cardId: userSavedCards.cardId })
-        .from(userSavedCards)
-        .where(eq(userSavedCards.userId, userId));
-      
-      const savedCardIds = new Set(userSavedCards.map(sc => sc.cardId));
-      
-      // Separate saved and non-saved cards
-      const savedCards = cards.filter(card => savedCardIds.has(card.id));
-      const otherCards = cards.filter(card => !savedCardIds.has(card.id));
-      
-      // Create a map of reward rates
-      const rewardMap = new Map(categoryRewards.map(r => [r.cardId, r.rewardRate]));
-      
-      // Sort each group by reward rate
-      const sortByReward = (a: CreditCard, b: CreditCard) => {
-        const aRate = rewardMap.get(a.id) || 0;
-        const bRate = rewardMap.get(b.id) || 0;
-        return bRate - aRate;
-      };
-      
-      savedCards.sort(sortByReward);
-      otherCards.sort(sortByReward);
-      
-      // Return saved cards first, then others
-      return [...savedCards, ...otherCards];
-    }
-
     // Create a map of reward rates
     const rewardMap = new Map(categoryRewards.map(r => [r.cardId, r.rewardRate]));
 
     // Sort by reward rate (highest first)
-    return cards.sort((a, b) => {
-      const aRate = rewardMap.get(a.id) || 0;
-      const bRate = rewardMap.get(b.id) || 0;
+    const sortByReward = (a: CreditCard, b: CreditCard) => {
+      const aRate = parseFloat(rewardMap.get(a.id) || "0");
+      const bRate = parseFloat(rewardMap.get(b.id) || "0");
       return bRate - aRate;
-    });
+    };
+
+    // If user is provided, prioritize their saved cards but show all relevant cards
+    if (userId) {
+      try {
+        const userSavedCardResults = await db
+          .select({ cardId: userSavedCards.cardId })
+          .from(userSavedCards)
+          .where(eq(userSavedCards.userId, userId));
+        
+        const savedCardIds = new Set(userSavedCardResults.map(sc => sc.cardId));
+        
+        // Separate saved and non-saved cards
+        const savedCards = cards.filter(card => savedCardIds.has(card.id));
+        const otherCards = cards.filter(card => !savedCardIds.has(card.id));
+        
+        // Sort each group by reward rate
+        savedCards.sort(sortByReward);
+        otherCards.sort(sortByReward);
+        
+        // Return saved cards first, then others (showing all best cards)
+        return [...savedCards, ...otherCards];
+      } catch (error) {
+        console.error("Error fetching user saved cards:", error);
+        // Fallback to showing all cards if user query fails
+        cards.sort(sortByReward);
+        return cards;
+      }
+    }
+
+    // Sort by reward rate (highest first) and return all relevant cards
+    cards.sort(sortByReward);
+    return cards;
   }
 
   // Seed initial data
@@ -333,7 +335,7 @@ export class DatabaseStorage implements IStorage {
           name: "Chase Sapphire Reserve",
           issuer: "Chase",
           annualFee: 550,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 720,
           welcomeBonus: "60,000 points after $4,000 spend in 3 months",
           description: "Premium travel rewards card with 3x on travel and dining"
@@ -343,7 +345,7 @@ export class DatabaseStorage implements IStorage {
           name: "Chase Sapphire Preferred Card",
           issuer: "Chase",
           annualFee: 95,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 690,
           welcomeBonus: "60,000 points after $4,000 spend in 3 months",
           description: "Popular travel card with 2x on travel and dining"
@@ -353,7 +355,7 @@ export class DatabaseStorage implements IStorage {
           name: "Chase Freedom Unlimited",
           issuer: "Chase",
           annualFee: 0,
-          baseReward: 1.5,
+          baseReward: "baseReward: 1.5",
           minCreditScore: 630,
           welcomeBonus: "$200 cash back after $500 spend in 3 months",
           description: "Flat 1.5% cash back on all purchases"
@@ -363,7 +365,7 @@ export class DatabaseStorage implements IStorage {
           name: "Chase Freedom Flex",
           issuer: "Chase",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 630,
           welcomeBonus: "$200 cash back after $500 spend in 3 months",
           description: "Rotating 5x categories plus 3x on dining and drugstores"
@@ -373,7 +375,7 @@ export class DatabaseStorage implements IStorage {
           name: "Chase Ink Business Preferred Credit Card",
           issuer: "Chase",
           annualFee: 95,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 680,
           welcomeBonus: "100,000 points after $15,000 spend in 3 months",
           description: "Business card with 3x on select business categories"
@@ -385,7 +387,7 @@ export class DatabaseStorage implements IStorage {
           name: "The Platinum Card® from American Express",
           issuer: "American Express",
           annualFee: 695,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 720,
           welcomeBonus: "80,000 points after $6,000 spend in 6 months",
           description: "Luxury travel card with extensive benefits and airport lounge access"
@@ -395,7 +397,7 @@ export class DatabaseStorage implements IStorage {
           name: "American Express® Gold Card",
           issuer: "American Express",
           annualFee: 250,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 700,
           welcomeBonus: "60,000 points after $4,000 spend in 6 months",
           description: "Dining and grocery rewards card with 4x on restaurants"
@@ -405,7 +407,7 @@ export class DatabaseStorage implements IStorage {
           name: "Blue Cash Preferred® Card from American Express",
           issuer: "American Express",
           annualFee: 95,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 670,
           welcomeBonus: "$300 after $3,000 spend in 6 months",
           description: "6% cash back at US supermarkets up to $6,000 per year"
@@ -415,7 +417,7 @@ export class DatabaseStorage implements IStorage {
           name: "Blue Cash Everyday® Card from American Express",
           issuer: "American Express",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 630,
           welcomeBonus: "$200 after $2,000 spend in 6 months",
           description: "3% cash back at US supermarkets up to $6,000 per year"
@@ -425,7 +427,7 @@ export class DatabaseStorage implements IStorage {
           name: "The Business Platinum Card® from American Express",
           issuer: "American Express",
           annualFee: 695,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 720,
           welcomeBonus: "120,000 points after $15,000 spend in 3 months",
           description: "Premium business card with travel benefits and rewards"
@@ -437,7 +439,7 @@ export class DatabaseStorage implements IStorage {
           name: "Capital One Venture X Rewards Credit Card",
           issuer: "Capital One",
           annualFee: 395,
-          baseReward: 2.0,
+          baseReward: "baseReward: 2.0",
           minCreditScore: 720,
           welcomeBonus: "75,000 miles after $4,000 spend in 3 months",
           description: "Premium travel card with 2x miles on all purchases"
@@ -447,7 +449,7 @@ export class DatabaseStorage implements IStorage {
           name: "Capital One Venture Rewards Credit Card",
           issuer: "Capital One",
           annualFee: 95,
-          baseReward: 2.0,
+          baseReward: "baseReward: 2.0",
           minCreditScore: 660,
           welcomeBonus: "60,000 miles after $3,000 spend in 3 months",
           description: "Travel rewards card with 2x miles on all purchases"
@@ -457,7 +459,7 @@ export class DatabaseStorage implements IStorage {
           name: "Capital One Savor Cash Rewards Credit Card",
           issuer: "Capital One",
           annualFee: 95,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 660,
           welcomeBonus: "$300 after $3,000 spend in 3 months",
           description: "4% cash back on dining and entertainment"
@@ -467,7 +469,7 @@ export class DatabaseStorage implements IStorage {
           name: "Capital One SavorOne Cash Rewards Credit Card",
           issuer: "Capital One",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 630,
           welcomeBonus: "$200 after $500 spend in 3 months",
           description: "3% cash back on dining, entertainment, and streaming"
@@ -477,7 +479,7 @@ export class DatabaseStorage implements IStorage {
           name: "Capital One Quicksilver Cash Rewards Credit Card",
           issuer: "Capital One",
           annualFee: 0,
-          baseReward: 1.5,
+          baseReward: "baseReward: 1.5",
           minCreditScore: 630,
           welcomeBonus: "$200 after $500 spend in 3 months",
           description: "Flat 1.5% cash back on all purchases"
@@ -489,7 +491,7 @@ export class DatabaseStorage implements IStorage {
           name: "Citi Double Cash Card",
           issuer: "Citi",
           annualFee: 0,
-          baseReward: 2.0,
+          baseReward: "baseReward: 2.0",
           minCreditScore: 650,
           welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
           description: "Simple cash back card with 2% on all purchases"
@@ -499,7 +501,7 @@ export class DatabaseStorage implements IStorage {
           name: "Citi Premier® Card",
           issuer: "Citi",
           annualFee: 95,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 690,
           welcomeBonus: "80,000 points after $4,000 spend in 3 months",
           description: "Travel and dining rewards with 3x points on multiple categories"
@@ -509,7 +511,7 @@ export class DatabaseStorage implements IStorage {
           name: "Citi Custom Cash℠ Card",
           issuer: "Citi",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 650,
           welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
           description: "5% cash back on your top eligible spend category each month"
@@ -519,7 +521,7 @@ export class DatabaseStorage implements IStorage {
           name: "Citi Simplicity® Card",
           issuer: "Citi",
           annualFee: 0,
-          baseReward: 0.0,
+          baseReward: "baseReward: 0.0",
           minCreditScore: 580,
           welcomeBonus: "0% intro APR for 21 months",
           description: "No late fees, no penalty rate, no annual fee"
@@ -531,7 +533,7 @@ export class DatabaseStorage implements IStorage {
           name: "Discover it® Cash Back",
           issuer: "Discover",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 600,
           welcomeBonus: "Discover matches all cash back earned in your first year",
           description: "Rotating 5x categories with first-year cash back match"
@@ -541,7 +543,7 @@ export class DatabaseStorage implements IStorage {
           name: "Discover it® Miles",
           issuer: "Discover",
           annualFee: 0,
-          baseReward: 1.5,
+          baseReward: "baseReward: 1.5",
           minCreditScore: 600,
           welcomeBonus: "Discover matches all miles earned in your first year",
           description: "1.5x miles on all purchases with first-year miles match"
@@ -551,7 +553,7 @@ export class DatabaseStorage implements IStorage {
           name: "Discover it® chrome",
           issuer: "Discover",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 600,
           welcomeBonus: "Discover matches all cash back earned in your first year",
           description: "2% cash back at gas stations and restaurants"
@@ -563,7 +565,7 @@ export class DatabaseStorage implements IStorage {
           name: "Bank of America® Travel Rewards Credit Card",
           issuer: "Bank of America",
           annualFee: 0,
-          baseReward: 1.5,
+          baseReward: "baseReward: 1.5",
           minCreditScore: 650,
           welcomeBonus: "25,000 points after $1,000 spend in 90 days",
           description: "1.5x points on all purchases with no foreign transaction fees"
@@ -573,7 +575,7 @@ export class DatabaseStorage implements IStorage {
           name: "Bank of America® Cash Rewards Credit Card",
           issuer: "Bank of America",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 600,
           welcomeBonus: "$200 after $1,000 spend in 90 days",
           description: "3% cash back in your choice category, 2% at grocery stores and wholesale clubs"
@@ -583,7 +585,7 @@ export class DatabaseStorage implements IStorage {
           name: "Bank of America® Premium Rewards® Credit Card",
           issuer: "Bank of America",
           annualFee: 95,
-          baseReward: 1.5,
+          baseReward: "baseReward: 1.5",
           minCreditScore: 720,
           welcomeBonus: "60,000 points after $4,000 spend in 90 days",
           description: "2x points on travel and dining with premium benefits"
@@ -595,7 +597,7 @@ export class DatabaseStorage implements IStorage {
           name: "Wells Fargo Active Cash® Card",
           issuer: "Wells Fargo",
           annualFee: 0,
-          baseReward: 2.0,
+          baseReward: "baseReward: 2.0",
           minCreditScore: 600,
           welcomeBonus: "$200 cash rewards after $1,000 spend in 3 months",
           description: "Flat 2% cash rewards on all purchases"
@@ -605,7 +607,7 @@ export class DatabaseStorage implements IStorage {
           name: "Wells Fargo Autograph℠ Card",
           issuer: "Wells Fargo",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 650,
           welcomeBonus: "20,000 points after $1,000 spend in 3 months",
           description: "3x points on restaurants, travel, gas, transit, and streaming"
@@ -615,7 +617,7 @@ export class DatabaseStorage implements IStorage {
           name: "Wells Fargo Propel American Express® Card",
           issuer: "Wells Fargo",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 630,
           welcomeBonus: "20,000 points after $1,000 spend in 3 months",
           description: "3x points on dining, ordering, gas, transit, and streaming"
@@ -627,7 +629,7 @@ export class DatabaseStorage implements IStorage {
           name: "U.S. Bank Altitude® Go Visa Signature® Card",
           issuer: "U.S. Bank",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 650,
           welcomeBonus: "20,000 points after $1,000 spend in 90 days",
           description: "4x points on dining, 2x on grocery stores, streaming services, and gas"
@@ -637,7 +639,7 @@ export class DatabaseStorage implements IStorage {
           name: "U.S. Bank Cash+® Visa Signature® Card",
           issuer: "U.S. Bank",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 650,
           welcomeBonus: "$200 after $1,000 spend in 120 days",
           description: "5% cash back on two categories you choose each quarter"
@@ -647,7 +649,7 @@ export class DatabaseStorage implements IStorage {
           name: "U.S. Bank Altitude® Reserve Visa Infinite® Card",
           issuer: "U.S. Bank",
           annualFee: 400,
-          baseReward: 1.5,
+          baseReward: "baseReward: 1.5",
           minCreditScore: 750,
           welcomeBonus: "50,000 points after $4,500 spend in 90 days",
           description: "Premium travel card with 3x points on mobile wallet purchases"
@@ -659,7 +661,7 @@ export class DatabaseStorage implements IStorage {
           name: "Barclaycard Arrival® Plus World Elite Mastercard®",
           issuer: "Barclays",
           annualFee: 89,
-          baseReward: 2.0,
+          baseReward: "baseReward: 2.0",
           minCreditScore: 700,
           welcomeBonus: "70,000 miles after $5,000 spend in 90 days",
           description: "2x miles on all purchases with travel redemption flexibility"
@@ -669,7 +671,7 @@ export class DatabaseStorage implements IStorage {
           name: "Amazon Prime Rewards Visa Signature Card",
           issuer: "Synchrony Bank",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 650,
           welcomeBonus: "$100 Amazon Gift Card upon approval",
           description: "5% back at Amazon and Whole Foods for Prime members"
@@ -679,7 +681,7 @@ export class DatabaseStorage implements IStorage {
           name: "Navy Federal Credit Union More Rewards American Express® Card",
           issuer: "Navy Federal",
           annualFee: 0,
-          baseReward: 1.0,
+          baseReward: "baseReward: 1.0",
           minCreditScore: 650,
           welcomeBonus: "20,000 points after $3,000 spend in 90 days",
           description: "3x points on supermarkets, gas, restaurants, and transit"

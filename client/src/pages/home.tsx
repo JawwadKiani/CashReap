@@ -76,14 +76,24 @@ export default function Home() {
                 <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setFiltersOpen(!filtersOpen)}
-              className="text-on-surface-variant hover:text-primary"
-            >
-              <Sliders className="w-4 h-4" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setFiltersOpen(!filtersOpen)}
+                className="text-on-surface-variant hover:text-primary"
+              >
+                <Sliders className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.location.href = "/api/logout"}
+                className="text-on-surface-variant hover:text-primary"
+              >
+                Logout
+              </Button>
+            </div>
           </div>
           
           <LocationDetector onStoreSelect={handleStoreSelect} selectedStore={selectedStore} />
@@ -117,6 +127,17 @@ export default function Home() {
             card={topRecommendation} 
             onViewDetails={handleViewCardDetails} 
           />
+        )}
+
+        {/* Debug Info */}
+        {selectedStore && (
+          <div className="bg-yellow-100 p-3 rounded-lg text-sm space-y-1">
+            <div><strong>Debug Info:</strong></div>
+            <div>Store: {selectedStore.name}</div>
+            <div>Loading: {recommendationsLoading ? 'Yes' : 'No'}</div>
+            <div>Recommendations Length: {recommendations?.length || 0}</div>
+            <div>First Card: {recommendations?.[0]?.name || 'None'}</div>
+          </div>
         )}
 
         {/* Other Recommendations */}
