@@ -94,12 +94,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get card recommendations for store
-  app.get("/api/stores/:id/recommendations", async (req, res) => {
+  app.get("/api/stores/:id/recommendations", isAuthenticated, async (req: any, res) => {
     try {
       const { id } = req.params;
       const { annualFee, creditScore } = req.query;
+      const userId = req.user?.claims?.sub;
       
-      let recommendations = await storage.getCardRecommendationsForStore(id);
+      let recommendations = await storage.getCardRecommendationsForStore(id, userId);
       
       // Apply filters
       if (annualFee !== undefined) {

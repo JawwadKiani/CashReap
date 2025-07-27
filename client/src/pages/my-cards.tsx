@@ -6,22 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
-
-const getUserSession = () => {
-  let session = localStorage.getItem("userSession");
-  if (!session) {
-    session = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    localStorage.setItem("userSession", session);
-  }
-  return session;
-};
+import { useAuth } from "@/hooks/useAuth";
 
 export default function MyCards() {
   const [showAllCards, setShowAllCards] = useState(false);
-  const userSession = getUserSession();
+  const { user } = useAuth();
 
   const { data: savedCards, isLoading } = useQuery({
-    queryKey: [`/api/saved-cards/${userSession}`],
+    queryKey: [`/api/saved-cards/${user?.id}`],
+    enabled: !!user?.id,
   });
 
   const { data: allCards } = useQuery({
@@ -31,22 +24,19 @@ export default function MyCards() {
 
   const unsaveCardMutation = useMutation({
     mutationFn: async (cardId: string) => {
-      return apiRequest("DELETE", `/api/saved-cards/${userSession}/${cardId}`);
+      return apiRequest("DELETE", `/api/saved-cards/${cardId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${userSession}`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
     },
   });
 
   const saveCardMutation = useMutation({
     mutationFn: async (cardId: string) => {
-      return apiRequest("POST", "/api/saved-cards", {
-        cardId,
-        userSession
-      });
+      return apiRequest("POST", "/api/saved-cards", { cardId });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${userSession}`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
     },
   });
 

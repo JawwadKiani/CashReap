@@ -65,7 +65,7 @@ export interface IStorage {
   unsaveCard(userId: string, cardId: string): Promise<boolean>;
 
   // Recommendations
-  getCardRecommendationsForStore(storeId: string): Promise<CardRecommendation[]>;
+  getCardRecommendationsForStore(storeId: string, userId?: string): Promise<CreditCard[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -230,54 +230,72 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Recommendations
-  async getCardRecommendationsForStore(storeId: string): Promise<CardRecommendation[]> {
-    const store = await this.getStore(storeId);
+  async getCardRecommendationsForStore(storeId: string, userId?: string): Promise<CreditCard[]> {
+    // Get store with category
+    const store = await this.getStoreWithCategory(storeId);
     if (!store) return [];
 
-    const currentQuarter = this.getCurrentQuarter();
-    const categoryRewards = await this.getRewardsForCategory(store.categoryId);
-    const recommendations: CardRecommendation[] = [];
+    // Get all cards that have rewards for this category
+    const categoryRewards = await db
+      .select({
+        cardId: cardCategoryRewards.cardId,
+        rewardRate: cardCategoryRewards.rewardRate,
+      })
+      .from(cardCategoryRewards)
+      .where(eq(cardCategoryRewards.categoryId, store.categoryId));
 
-    for (const reward of categoryRewards) {
-      // Skip rotating categories that are not currently active
-      if (reward.isRotating && reward.rotationPeriod !== currentQuarter) {
-        continue;
-      }
-
-      const card = await this.getCreditCard(reward.cardId);
-      if (card) {
-        const category = await this.getMerchantCategory(store.categoryId);
-        let categoryMatch = category?.name || 'Category';
-        
-        if (reward.isRotating) {
-          categoryMatch = `${reward.rotationPeriod} ${categoryMatch} (Currently Active)`;
-        }
-
-        recommendations.push({
-          ...card,
-          rewardRate: reward.rewardRate,
-          categoryMatch,
-          isRotating: reward.isRotating,
-          rotationPeriod: reward.rotationPeriod || undefined
-        });
-      }
+    // Get the cards and sort by reward rate
+    const cardIds = categoryRewards.map(r => r.cardId);
+    if (cardIds.length === 0) {
+      // If no specific category rewards, return top general cards
+      const topCards = await db.select().from(creditCards).limit(5);
+      return topCards;
     }
 
-    // Add cards with base rewards if no specific category rewards
-    if (recommendations.length === 0) {
-      const allCards = await this.getCreditCards();
-      for (const card of allCards) {
-        recommendations.push({
-          ...card,
-          rewardRate: card.baseReward,
-          categoryMatch: "General Purchases",
-          isRotating: false
-        });
-      }
+    let cards = await db
+      .select()
+      .from(creditCards)
+      .where(inArray(creditCards.id, cardIds));
+
+    // If user is provided, prioritize their saved cards
+    if (userId) {
+      const userSavedCards = await db
+        .select({ cardId: userSavedCards.cardId })
+        .from(userSavedCards)
+        .where(eq(userSavedCards.userId, userId));
+      
+      const savedCardIds = new Set(userSavedCards.map(sc => sc.cardId));
+      
+      // Separate saved and non-saved cards
+      const savedCards = cards.filter(card => savedCardIds.has(card.id));
+      const otherCards = cards.filter(card => !savedCardIds.has(card.id));
+      
+      // Create a map of reward rates
+      const rewardMap = new Map(categoryRewards.map(r => [r.cardId, r.rewardRate]));
+      
+      // Sort each group by reward rate
+      const sortByReward = (a: CreditCard, b: CreditCard) => {
+        const aRate = rewardMap.get(a.id) || 0;
+        const bRate = rewardMap.get(b.id) || 0;
+        return bRate - aRate;
+      };
+      
+      savedCards.sort(sortByReward);
+      otherCards.sort(sortByReward);
+      
+      // Return saved cards first, then others
+      return [...savedCards, ...otherCards];
     }
+
+    // Create a map of reward rates
+    const rewardMap = new Map(categoryRewards.map(r => [r.cardId, r.rewardRate]));
 
     // Sort by reward rate (highest first)
-    return recommendations.sort((a, b) => parseFloat(b.rewardRate) - parseFloat(a.rewardRate));
+    return cards.sort((a, b) => {
+      const aRate = rewardMap.get(a.id) || 0;
+      const bRate = rewardMap.get(b.id) || 0;
+      return bRate - aRate;
+    });
   }
 
   // Seed initial data
