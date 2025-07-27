@@ -25,7 +25,7 @@ export default function MyCards() {
   });
 
   const { data: allCards } = useQuery({
-    queryKey: ["/api/cards"],
+    queryKey: ["/api/credit-cards"],
     enabled: showAllCards,
   });
 
