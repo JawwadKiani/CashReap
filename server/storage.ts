@@ -24,7 +24,7 @@ import {
   stores
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (mandatory for Replit Auth)
@@ -214,7 +214,7 @@ export class DatabaseStorage implements IStorage {
 
   async unsaveCard(userId: string, cardId: string): Promise<boolean> {
     const result = await db.delete(userSavedCards)
-      .where(eq(userSavedCards.userId, userId));
+      .where(and(eq(userSavedCards.userId, userId), eq(userSavedCards.cardId, cardId)));
     return (result.rowCount || 0) > 0;
   }
 

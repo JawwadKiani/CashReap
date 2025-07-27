@@ -1,19 +1,87 @@
 import { useParams } from "wouter";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft, ExternalLink, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/hooks/useAuth";
 import type { CreditCard } from "@shared/schema";
 
 export default function CardDetails() {
   const { id } = useParams();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: card, isLoading, error } = useQuery({
-    queryKey: [`/api/cards/${id}`],
+    queryKey: [`/api/credit-cards/${id}`],
     enabled: !!id,
   });
+
+  // Check if card is saved
+  const { data: savedCards = [] } = useQuery({
+    queryKey: [`/api/saved-cards/${user?.id}`],
+    enabled: !!user?.id,
+  });
+
+  const isCardSaved = savedCards.some((saved: any) => saved.cardId === id);
+
+  // Save/unsave card mutations
+  const saveCardMutation = useMutation({
+    mutationFn: async () => {
+      await apiRequest(`/api/saved-cards`, {
+        method: "POST",
+        body: { cardId: id }
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
+      toast({
+        title: "Card Saved",
+        description: "This card has been added to your saved cards.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to save card. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const unsaveCardMutation = useMutation({
+    mutationFn: async () => {
+      await apiRequest(`/api/saved-cards/${id}`, {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/saved-cards/${user?.id}`] });
+      toast({
+        title: "Card Removed",
+        description: "This card has been removed from your saved cards.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error", 
+        description: "Failed to remove card. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSaveToggle = () => {
+    if (isCardSaved) {
+      unsaveCardMutation.mutate();
+    } else {
+      saveCardMutation.mutate();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -137,8 +205,14 @@ export default function CardDetails() {
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Apply Now
               </Button>
-              <Button variant="outline" className="w-full">
-                Save to My Cards
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={handleSaveToggle}
+                disabled={saveCardMutation.isPending || unsaveCardMutation.isPending}
+              >
+                <Heart className={`w-4 h-4 mr-2 ${isCardSaved ? 'fill-current text-red-500' : ''}`} />
+                {isCardSaved ? 'Remove from My Cards' : 'Save to My Cards'}
               </Button>
             </div>
 

@@ -229,18 +229,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Save card
-  app.post("/api/saved-cards", async (req, res) => {
+  app.post("/api/saved-cards", isAuthenticated, async (req: any, res) => {
     try {
       const schema = z.object({
         cardId: z.string(),
-        userSession: z.string()
       });
       
-      const { cardId, userSession } = schema.parse(req.body);
+      const { cardId } = schema.parse(req.body);
+      const userId = req.user.claims.sub;
       
       const savedCard = await storage.saveCard({
         cardId,
-        userSession
+        userId
       });
       
       res.json(savedCard);
@@ -253,17 +253,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Unsave card
-  app.delete("/api/saved-cards/:userSession/:cardId", async (req, res) => {
+  app.delete("/api/saved-cards/:cardId", isAuthenticated, async (req: any, res) => {
     try {
-      const { userSession, cardId } = req.params;
+      const { cardId } = req.params;
+      const userId = req.user.claims.sub;
       
-      const success = await storage.unsaveCard(userSession, cardId);
+      const success = await storage.unsaveCard(userId, cardId);
       
-      if (success) {
-        res.json({ message: "Card unsaved successfully" });
-      } else {
-        res.status(404).json({ message: "Saved card not found" });
+      if (!success) {
+        return res.status(404).json({ message: "Saved card not found" });
       }
+      
+      res.json({ message: "Card unsaved successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to unsave card" });
     }
