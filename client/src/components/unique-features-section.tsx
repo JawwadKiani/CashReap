@@ -8,7 +8,7 @@ export function UniqueFeaturesSection() {
       icon: <Shield className="w-6 h-6 text-green-600" />,
       title: "Privacy-First Approach",
       description: "No bank account linking required - we never access your financial data",
-      badge: "Unlike MaxRewards",
+      badge: "Privacy First",
       color: "bg-green-50 border-green-200"
     },
     {

@@ -97,7 +97,7 @@ export function TrendingSection() {
 
       <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
         <p className="text-sm text-blue-800">
-          <strong>💡 Pro Tip:</strong> CashReap automatically tracks rotating categories so you never miss bonus periods like competitors often do
+          <strong>💡 Pro Tip:</strong> CashReap automatically tracks rotating categories so you never miss bonus periods
         </p>
       </div>
     </div>

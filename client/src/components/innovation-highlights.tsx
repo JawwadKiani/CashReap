@@ -16,7 +16,7 @@ export function InnovationHighlights() {
       title: "Zero Bank Account Linking",
       description: "Complete privacy - we never access your banking data or transaction history",
       badge: "Privacy Leader",
-      stats: "Unlike 3 major competitors"
+      stats: "Industry leading privacy"
     },
     {
       icon: <Users className="w-6 h-6 text-purple-600" />,
@@ -80,7 +80,7 @@ export function InnovationHighlights() {
             The Future of Credit Card Optimization
           </h4>
           <p className="text-sm text-indigo-700 max-w-2xl mx-auto">
-            While competitors focus on basic category matching, CashReap is building the first AI-native platform that understands your lifestyle and automatically optimizes every purchase for maximum rewards.
+            Traditional apps focus on basic category matching, but CashReap is building the first AI-native platform that understands your lifestyle and automatically optimizes every purchase for maximum rewards.
           </p>
           <div className="flex flex-wrap justify-center gap-2 mt-4">
             {["AI Co-Pilot", "Predictive Analytics", "Social Rewards", "Voice Commands"].map((feature) => (
