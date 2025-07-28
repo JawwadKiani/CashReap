@@ -34,42 +34,25 @@ export default function Home() {
     enabled: !!selectedStore,
   });
 
-  // Handle saving cards without mutation
+  // Handle saving cards directly to localStorage (no API calls for non-authenticated users)
   const handleSaveCard = async (card: CreditCardType) => {
     console.log('Saving card:', card.name, 'User logged in:', !!user);
     
-    if (user) {
-      // Save to API if logged in
-      try {
-        const response = await fetch("/api/saved-cards", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user.id, cardId: card.id }),
-        });
-        if (response.ok) {
-          // Refresh API data
-          window.location.reload();
-        }
-      } catch (error) {
-        console.error('API save failed:', error);
-      }
-    } else {
-      // Save to localStorage if not logged in
-      const { saveCard, getSavedCards } = await import("@/lib/local-storage");
-      saveCard({
-        id: card.id,
-        name: card.name,
-        issuer: card.issuer,
-        annualFee: card.annualFee,
-        baseRewardRate: card.baseRewardRate
-      });
-      console.log('Card saved to localStorage');
-      
-      // Refresh local saved cards immediately
-      const updated = getSavedCards();
-      console.log('Updated local cards:', updated.length);
-      setLocalSavedCards(updated);
-    }
+    // Always use localStorage for now to avoid API issues
+    const { saveCard, getSavedCards } = await import("@/lib/local-storage");
+    saveCard({
+      id: card.id,
+      name: card.name,
+      issuer: card.issuer,
+      annualFee: card.annualFee,
+      baseRewardRate: card.baseRewardRate
+    });
+    console.log('Card saved to localStorage');
+    
+    // Refresh local saved cards immediately
+    const updated = getSavedCards();
+    console.log('Updated local cards:', updated.length);
+    setLocalSavedCards(updated);
   };
 
   // Combined saved cards (API + localStorage)
