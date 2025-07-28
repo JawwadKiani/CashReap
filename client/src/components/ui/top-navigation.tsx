@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Home, CreditCard, Scale, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function BottomNavigation() {
+export function TopNavigation() {
   const [location] = useLocation();
 
   const navItems = [
