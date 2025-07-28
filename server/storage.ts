@@ -253,7 +253,7 @@ export class DatabaseStorage implements IStorage {
   async unsaveCard(userId: string, cardId: string): Promise<boolean> {
     const result = await db.delete(userSavedCards)
       .where(and(eq(userSavedCards.userId, userId), eq(userSavedCards.cardId, cardId)));
-    return (result.rowCount || 0) > 0;
+    return result.rowCount !== null && result.rowCount > 0;
   }
 
   // Utility function to get current quarter

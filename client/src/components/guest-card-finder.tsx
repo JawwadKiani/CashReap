@@ -17,8 +17,11 @@ interface CardRecommendation {
   id: string;
   name: string;
   issuer: string;
-  rewardRate: string;
+  baseReward: string;
   annualFee: number;
+  minCreditScore: number;
+  welcomeBonus: string;
+  description: string;
 }
 
 interface GuestCardFinderProps {
@@ -34,7 +37,7 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
   });
 
   const { data: recommendations = [] } = useQuery<CardRecommendation[]>({
-    queryKey: [`/api/recommendations/${selectedStore?.id}`],
+    queryKey: [`/api/stores/${selectedStore?.id}/recommendations`],
     enabled: !!selectedStore,
   });
 
@@ -137,9 +140,9 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
                       )}
                     </div>
                     <div className="text-sm text-muted-foreground space-y-1">
-                      <p><strong>Reward Rate:</strong> {card.rewardRate}% cash back</p>
+                      <p><strong>Reward Rate:</strong> {card.baseReward}% cash back</p>
                       <p><strong>Annual Fee:</strong> ${card.annualFee}</p>
-                      <p><strong>Issuer:</strong> {card.issuer}</p>
+                      <p><strong>Welcome Bonus:</strong> {card.welcomeBonus}</p>
                     </div>
                   </div>
                 ))}
