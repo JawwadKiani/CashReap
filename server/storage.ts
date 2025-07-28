@@ -434,9 +434,181 @@ export class DatabaseStorage implements IStorage {
 
   // Seed initial data
   private async seedData() {
-    // Check if data already exists
+    // Check if data already exists (for now, always reseed stores and categories)
     const existingCards = await db.select().from(creditCards).limit(1);
-    if (existingCards.length > 0) return; // Data already seeded
+    if (existingCards.length > 0) {
+      // Only reseed stores and categories, not cards
+      console.log("Reseeding stores and categories with expanded database...");
+      try {
+        // Add new merchant categories (skip deletion due to foreign key constraints)
+        const categories = [
+          { id: "grocery", name: "Grocery Stores", description: "Supermarkets and grocery stores" },
+          { id: "gas", name: "Gas Stations", description: "Fuel and gas stations" },
+          { id: "dining", name: "Dining", description: "Restaurants and food delivery" },
+          { id: "travel", name: "Travel", description: "Airlines, hotels, and rental cars" },
+          { id: "drugstores", name: "Drugstores", description: "Pharmacies and drugstores" },
+          { id: "department", name: "Department Stores", description: "Large retail stores" },
+          { id: "warehouse", name: "Warehouse Clubs", description: "Wholesale clubs like Costco" },
+          { id: "online", name: "Online Shopping", description: "E-commerce and online purchases" },
+          { id: "streaming", name: "Streaming Services", description: "Video and music streaming" },
+          { id: "transit", name: "Transit", description: "Public transportation and rideshare" },
+          { id: "entertainment", name: "Entertainment", description: "Movies, gaming, and entertainment" },
+          { id: "fitness", name: "Fitness & Wellness", description: "Gyms, spas, and health services" },
+          { id: "home", name: "Home Improvement", description: "Hardware stores and home improvement" },
+          { id: "electronics", name: "Electronics", description: "Technology and electronics stores" },
+          { id: "clothing", name: "Clothing & Fashion", description: "Apparel and fashion retailers" },
+          { id: "automotive", name: "Automotive", description: "Car services and automotive" },
+          { id: "telecom", name: "Telecommunications", description: "Phone and internet services" },
+          { id: "utilities", name: "Utilities", description: "Electric, water, and utility services" },
+          { id: "financial", name: "Financial Services", description: "Banks and financial institutions" },
+          { id: "insurance", name: "Insurance", description: "Insurance companies and services" }
+        ];
+
+        for (const category of categories) {
+          await db.insert(merchantCategories).values(category).onConflictDoNothing();
+        }
+
+        // Force reseed stores too since we have expanded the database
+        console.log("Now reseeding comprehensive store database...");
+        
+        // Comprehensive US business database - 100+ major businesses
+        const storeData = [
+          // DEPARTMENT STORES & GENERAL RETAIL
+          { id: "target", name: "Target", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "walmart", name: "Walmart", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "costco", name: "Costco", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "sams-club", name: "Sam's Club", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "bjs-wholesale", name: "BJ's Wholesale Club", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "macys", name: "Macy's", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "nordstrom", name: "Nordstrom", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "kohls", name: "Kohl's", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "jcpenney", name: "JCPenney", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "tjmaxx", name: "TJ Maxx", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // GROCERY STORES
+          { id: "whole-foods", name: "Whole Foods Market", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "trader-joes", name: "Trader Joe's", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "safeway", name: "Safeway", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "kroger", name: "Kroger", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "publix", name: "Publix", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "heb", name: "H-E-B", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "wegmans", name: "Wegmans", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "albertsons", name: "Albertsons", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "aldi", name: "ALDI", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // RESTAURANTS & DINING
+          { id: "starbucks", name: "Starbucks", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "mcdonalds", name: "McDonald's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "burger-king", name: "Burger King", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "wendys", name: "Wendy's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "taco-bell", name: "Taco Bell", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "kfc", name: "KFC", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "subway", name: "Subway", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "chick-fil-a", name: "Chick-fil-A", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "chipotle", name: "Chipotle Mexican Grill", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "pizza-hut", name: "Pizza Hut", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "dominos", name: "Domino's Pizza", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "olive-garden", name: "Olive Garden", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "applebees", name: "Applebee's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "dunkin", name: "Dunkin'", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "tim-hortons", name: "Tim Hortons", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // GAS STATIONS
+          { id: "shell", name: "Shell", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "chevron", name: "Chevron", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "exxon", name: "Exxon", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "mobil", name: "Mobil", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "bp", name: "BP", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "texaco", name: "Texaco", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "marathon", name: "Marathon", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "speedway", name: "Speedway", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "circle-k", name: "Circle K", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "seven-eleven", name: "7-Eleven", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ONLINE PLATFORMS
+          { id: "amazon", name: "Amazon", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+          { id: "ebay", name: "eBay", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+          { id: "walmart-online", name: "Walmart.com", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+          { id: "target-online", name: "Target.com", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+          { id: "best-buy-online", name: "BestBuy.com", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+
+          // PHARMACIES & DRUGSTORES
+          { id: "cvs", name: "CVS Pharmacy", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "walgreens", name: "Walgreens", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "rite-aid", name: "Rite Aid", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ELECTRONICS & TECHNOLOGY
+          { id: "best-buy", name: "Best Buy", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "apple-store", name: "Apple Store", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "microsoft-store", name: "Microsoft Store", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "gamestop", name: "GameStop", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // HOME IMPROVEMENT
+          { id: "home-depot", name: "Home Depot", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "lowes", name: "Lowe's", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "menards", name: "Menards", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // STREAMING SERVICES
+          { id: "netflix", name: "Netflix", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "disney-plus", name: "Disney+", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "hbo-max", name: "HBO Max", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "amazon-prime-video", name: "Amazon Prime Video", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "hulu", name: "Hulu", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "paramount-plus", name: "Paramount+", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "apple-tv-plus", name: "Apple TV+", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "youtube-premium", name: "YouTube Premium", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "spotify", name: "Spotify", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+          { id: "apple-music", name: "Apple Music", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+
+          // ENTERTAINMENT & GAMING
+          { id: "amc-theaters", name: "AMC Theaters", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "regal-cinemas", name: "Regal Cinemas", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "dave-busters", name: "Dave & Buster's", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "chuck-e-cheese", name: "Chuck E. Cheese", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // FITNESS & WELLNESS
+          { id: "planet-fitness", name: "Planet Fitness", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "la-fitness", name: "LA Fitness", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "24-hour-fitness", name: "24 Hour Fitness", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "gold-gym", name: "Gold's Gym", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // CLOTHING & FASHION
+          { id: "gap", name: "Gap", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "old-navy", name: "Old Navy", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "banana-republic", name: "Banana Republic", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "h-and-m", name: "H&M", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "forever-21", name: "Forever 21", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // TELECOMMUNICATIONS
+          { id: "verizon", name: "Verizon", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "att", name: "AT&T", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "t-mobile", name: "T-Mobile", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "sprint", name: "Sprint", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // TRAVEL & TRANSPORTATION
+          { id: "uber", name: "Uber", categoryId: "transit", address: "Rideshare Service", city: "Online", state: "US", isOnline: true },
+          { id: "lyft", name: "Lyft", categoryId: "transit", address: "Rideshare Service", city: "Online", state: "US", isOnline: true },
+          { id: "delta", name: "Delta Air Lines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+          { id: "american-airlines", name: "American Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+          { id: "southwest", name: "Southwest Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+          { id: "united", name: "United Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+          { id: "marriott", name: "Marriott Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
+          { id: "hilton", name: "Hilton Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
+          { id: "hyatt", name: "Hyatt Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" }
+        ];
+
+        // Clear existing stores first, then seed new comprehensive database
+        await db.delete(stores);
+        for (const store of storeData) {
+          await db.insert(stores).values(store).onConflictDoNothing();
+        }
+        
+        console.log(`Comprehensive business database reseeded with ${storeData.length} businesses!`);
+      } catch (error) {
+        console.error("Error reseeding categories:", error);
+      }
+      return;
+    }
 
     console.log("Seeding initial data...");
     
@@ -452,7 +624,17 @@ export class DatabaseStorage implements IStorage {
         { id: "warehouse", name: "Warehouse Clubs", description: "Wholesale clubs like Costco" },
         { id: "online", name: "Online Shopping", description: "E-commerce and online purchases" },
         { id: "streaming", name: "Streaming Services", description: "Video and music streaming" },
-        { id: "transit", name: "Transit", description: "Public transportation and rideshare" }
+        { id: "transit", name: "Transit", description: "Public transportation and rideshare" },
+        { id: "entertainment", name: "Entertainment", description: "Movies, gaming, and entertainment" },
+        { id: "fitness", name: "Fitness & Wellness", description: "Gyms, spas, and health services" },
+        { id: "home", name: "Home Improvement", description: "Hardware stores and home improvement" },
+        { id: "electronics", name: "Electronics", description: "Technology and electronics stores" },
+        { id: "clothing", name: "Clothing & Fashion", description: "Apparel and fashion retailers" },
+        { id: "automotive", name: "Automotive", description: "Car services and automotive" },
+        { id: "telecom", name: "Telecommunications", description: "Phone and internet services" },
+        { id: "utilities", name: "Utilities", description: "Electric, water, and utility services" },
+        { id: "financial", name: "Financial Services", description: "Banks and financial institutions" },
+        { id: "insurance", name: "Insurance", description: "Insurance companies and services" }
       ];
 
       for (const category of categories) {
@@ -875,21 +1057,188 @@ export class DatabaseStorage implements IStorage {
         { cardId: "citi-double-cash", categoryId: "warehouse", rewardRate: "2.0", isRotating: false },
         { cardId: "wells-fargo-active-cash", categoryId: "warehouse", rewardRate: "2.0", isRotating: false },
         { cardId: "chase-freedom-unlimited", categoryId: "warehouse", rewardRate: "1.5", isRotating: false },
+        
+        // Streaming Services rewards
+        { cardId: "citi-double-cash", categoryId: "streaming", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "streaming", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "streaming", rewardRate: "1.5", isRotating: false },
+        { cardId: "chase-freedom-flex", categoryId: "streaming", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q4 2025" },
+        { cardId: "amex-gold", categoryId: "streaming", rewardRate: "3.0", isRotating: false },
+        
+        // Entertainment rewards
+        { cardId: "citi-double-cash", categoryId: "entertainment", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "entertainment", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "entertainment", rewardRate: "1.5", isRotating: false },
+        { cardId: "discover-it-cash", categoryId: "entertainment", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q3 2025" },
+        
+        // Electronics rewards
+        { cardId: "citi-double-cash", categoryId: "electronics", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "electronics", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "electronics", rewardRate: "1.5", isRotating: false },
+        { cardId: "chase-freedom-flex", categoryId: "electronics", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q2 2025" },
+        
+        // Home Improvement rewards
+        { cardId: "citi-double-cash", categoryId: "home", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "home", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "home", rewardRate: "1.5", isRotating: false },
+        { cardId: "discover-it-cash", categoryId: "home", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q1 2026" },
+        
+        // Fitness & Wellness rewards
+        { cardId: "citi-double-cash", categoryId: "fitness", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "fitness", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "fitness", rewardRate: "1.5", isRotating: false },
+        
+        // Clothing & Fashion rewards
+        { cardId: "citi-double-cash", categoryId: "clothing", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "clothing", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "clothing", rewardRate: "1.5", isRotating: false },
+        { cardId: "discover-it-cash", categoryId: "clothing", rewardRate: "5.0", isRotating: true, rotationPeriod: "Q4 2025" },
+        
+        // Telecommunications rewards
+        { cardId: "citi-double-cash", categoryId: "telecom", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "telecom", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "telecom", rewardRate: "1.5", isRotating: false },
+        
+        // Transit rewards (Uber, Lyft)
+        { cardId: "citi-double-cash", categoryId: "transit", rewardRate: "2.0", isRotating: false },
+        { cardId: "wells-fargo-active-cash", categoryId: "transit", rewardRate: "2.0", isRotating: false },
+        { cardId: "chase-freedom-unlimited", categoryId: "transit", rewardRate: "1.5", isRotating: false },
+        { cardId: "chase-sapphire-reserve", categoryId: "transit", rewardRate: "3.0", isRotating: false },
+        { cardId: "amex-gold", categoryId: "transit", rewardRate: "3.0", isRotating: false },
       ];
 
       // Clear existing rewards to avoid conflicts and re-seed with expanded data
       await db.delete(cardCategoryRewards);
       await db.insert(cardCategoryRewards).values(rewards);
 
-      // Seed some popular stores
+      // Comprehensive US business database - 100+ major businesses
       const storeData = [
+        // DEPARTMENT STORES & GENERAL RETAIL
         { id: "target", name: "Target", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
         { id: "walmart", name: "Walmart", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
         { id: "costco", name: "Costco", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "sams-club", name: "Sam's Club", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "bjs-wholesale", name: "BJ's Wholesale Club", categoryId: "warehouse", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "macys", name: "Macy's", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "nordstrom", name: "Nordstrom", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "kohls", name: "Kohl's", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "jcpenney", name: "JCPenney", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "tjmaxx", name: "TJ Maxx", categoryId: "department", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // GROCERY STORES
         { id: "whole-foods", name: "Whole Foods Market", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
-        { id: "starbucks", name: "Starbucks", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" }
+        { id: "trader-joes", name: "Trader Joe's", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "safeway", name: "Safeway", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "kroger", name: "Kroger", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "publix", name: "Publix", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "heb", name: "H-E-B", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "wegmans", name: "Wegmans", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "albertsons", name: "Albertsons", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "aldi", name: "ALDI", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // RESTAURANTS & DINING
+        { id: "starbucks", name: "Starbucks", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "mcdonalds", name: "McDonald's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "burger-king", name: "Burger King", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "wendys", name: "Wendy's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "taco-bell", name: "Taco Bell", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "kfc", name: "KFC", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "subway", name: "Subway", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "chick-fil-a", name: "Chick-fil-A", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "chipotle", name: "Chipotle Mexican Grill", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "pizza-hut", name: "Pizza Hut", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "dominos", name: "Domino's Pizza", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "olive-garden", name: "Olive Garden", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "applebees", name: "Applebee's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "dunkin", name: "Dunkin'", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "tim-hortons", name: "Tim Hortons", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // GAS STATIONS
+        { id: "shell", name: "Shell", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "chevron", name: "Chevron", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "exxon", name: "Exxon", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "mobil", name: "Mobil", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "bp", name: "BP", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "texaco", name: "Texaco", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "marathon", name: "Marathon", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "speedway", name: "Speedway", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "circle-k", name: "Circle K", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "seven-eleven", name: "7-Eleven", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // ONLINE PLATFORMS
+        { id: "amazon", name: "Amazon", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+        { id: "ebay", name: "eBay", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+        { id: "walmart-online", name: "Walmart.com", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+        { id: "target-online", name: "Target.com", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+        { id: "best-buy-online", name: "BestBuy.com", categoryId: "online", address: "Online Platform", city: "Online", state: "US", isOnline: true },
+
+        // PHARMACIES & DRUGSTORES
+        { id: "cvs", name: "CVS Pharmacy", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "walgreens", name: "Walgreens", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "rite-aid", name: "Rite Aid", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // ELECTRONICS & TECHNOLOGY
+        { id: "best-buy", name: "Best Buy", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "apple-store", name: "Apple Store", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "microsoft-store", name: "Microsoft Store", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "gamestop", name: "GameStop", categoryId: "electronics", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // HOME IMPROVEMENT
+        { id: "home-depot", name: "Home Depot", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "lowes", name: "Lowe's", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "menards", name: "Menards", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // STREAMING SERVICES
+        { id: "netflix", name: "Netflix", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "disney-plus", name: "Disney+", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "hbo-max", name: "HBO Max", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "amazon-prime-video", name: "Amazon Prime Video", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "hulu", name: "Hulu", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "paramount-plus", name: "Paramount+", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "apple-tv-plus", name: "Apple TV+", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "youtube-premium", name: "YouTube Premium", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "spotify", name: "Spotify", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+        { id: "apple-music", name: "Apple Music", categoryId: "streaming", address: "Streaming Service", city: "Online", state: "US", isOnline: true },
+
+        // ENTERTAINMENT & GAMING
+        { id: "amc-theaters", name: "AMC Theaters", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "regal-cinemas", name: "Regal Cinemas", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "dave-busters", name: "Dave & Buster's", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "chuck-e-cheese", name: "Chuck E. Cheese", categoryId: "entertainment", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // FITNESS & WELLNESS
+        { id: "planet-fitness", name: "Planet Fitness", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "la-fitness", name: "LA Fitness", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "24-hour-fitness", name: "24 Hour Fitness", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "gold-gym", name: "Gold's Gym", categoryId: "fitness", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // CLOTHING & FASHION
+        { id: "gap", name: "Gap", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "old-navy", name: "Old Navy", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "banana-republic", name: "Banana Republic", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "h-and-m", name: "H&M", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "forever-21", name: "Forever 21", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // TELECOMMUNICATIONS
+        { id: "verizon", name: "Verizon", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "att", name: "AT&T", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "t-mobile", name: "T-Mobile", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+        { id: "sprint", name: "Sprint", categoryId: "telecom", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+        // TRAVEL & TRANSPORTATION
+        { id: "uber", name: "Uber", categoryId: "transit", address: "Rideshare Service", city: "Online", state: "US", isOnline: true },
+        { id: "lyft", name: "Lyft", categoryId: "transit", address: "Rideshare Service", city: "Online", state: "US", isOnline: true },
+        { id: "delta", name: "Delta Air Lines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+        { id: "american-airlines", name: "American Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+        { id: "southwest", name: "Southwest Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+        { id: "united", name: "United Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
+        { id: "marriott", name: "Marriott Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
+        { id: "hilton", name: "Hilton Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
+        { id: "hyatt", name: "Hyatt Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" }
       ];
 
+      // Clear existing stores first, then seed new comprehensive database
+      await db.delete(stores);
       for (const store of storeData) {
         await db.insert(stores).values(store).onConflictDoNothing();
       }

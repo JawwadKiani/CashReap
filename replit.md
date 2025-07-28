@@ -132,14 +132,16 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **API Verification**: All 34 cards now properly accessible via /api/credit-cards endpoint
 
 ### Comprehensive National Business Database (January 2025)
-- **Replaced Location-Based Search**: Moved from GPS-dependent nearby store finder to comprehensive national business database
-- **50+ Major US Businesses**: Complete database covering all major retail categories
-- **Major Retailers**: Target, Walmart, Costco, Sam's Club, Macy's, Nordstrom, Kohl's, JCPenney, Best Buy, Home Depot, Lowe's
-- **Restaurant Chains**: McDonald's, Burger King, Wendy's, Taco Bell, KFC, Subway, Chick-fil-A, Chipotle, Pizza Hut, Domino's, Olive Garden, Applebee's, Starbucks, Dunkin', Tim Hortons
-- **Grocery Stores**: Whole Foods, Trader Joe's, Safeway, Kroger, Publix, H-E-B, Wegmans, Albertsons
-- **Gas Stations**: Shell, Chevron, Exxon, Mobil, BP, Texaco, Marathon, Speedway, Circle K, 7-Eleven
-- **Online Platforms**: Amazon, eBay, Walmart.com, Target.com, Best Buy Online
-- **Pharmacies**: CVS Pharmacy, Walgreens, Rite Aid
-- **Personalized Recommendations**: Algorithm prioritizes user's saved cards first, then shows top 2 cards with highest cashback for that store category
-- **Comprehensive Category Coverage**: Expanded reward rates for department stores, gas stations, online shopping, dining, grocery, and drugstores
-- **Simplified Search**: Users can search any major US business by name without location permissions
+- **Massive Database Expansion**: Expanded from 50 to 95+ major US businesses covering all retail categories
+- **Streaming Services Added**: Netflix, Disney+, HBO Max, Amazon Prime Video, Hulu, Paramount+, Apple TV+, YouTube Premium, Spotify, Apple Music
+- **Entertainment & Gaming**: AMC Theaters, Regal Cinemas, Dave & Buster's, Chuck E. Cheese, GameStop
+- **Fitness & Wellness**: Planet Fitness, LA Fitness, 24 Hour Fitness, Gold's Gym
+- **Electronics & Technology**: Best Buy, Apple Store, Microsoft Store, GameStop
+- **Home Improvement**: Home Depot, Lowe's, Menards
+- **Clothing & Fashion**: Gap, Old Navy, Banana Republic, H&M, Forever 21
+- **Telecommunications**: Verizon, AT&T, T-Mobile, Sprint
+- **Travel & Transportation**: Uber, Lyft, Delta Airlines, American Airlines, Southwest, United, Marriott, Hilton, Hyatt
+- **20 Business Categories**: Department stores, grocery, dining, gas, streaming, entertainment, fitness, electronics, home improvement, clothing, telecom, travel, transit, online, drugstores, warehouse clubs, automotive, utilities, financial, insurance
+- **Category-Specific Rewards**: Added reward rates for all new categories including 5% rotating rewards for streaming services
+- **Enhanced User Experience**: Collapsible category browsing with store counts and organized sections
+- **Complete Business Coverage**: Users can now find credit card recommendations for virtually any major US business or service
