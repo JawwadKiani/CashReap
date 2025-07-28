@@ -26,12 +26,27 @@ const CATEGORY_INFO = {
   department: { name: "Department Stores", icon: "🏬", color: "bg-purple-100 text-purple-700" },
   warehouse: { name: "Warehouse Clubs", icon: "📦", color: "bg-amber-100 text-amber-700" },
   online: { name: "Online Shopping", icon: "💻", color: "bg-indigo-100 text-indigo-700" },
-  drugstores: { name: "Pharmacies", icon: "💊", color: "bg-pink-100 text-pink-700" }
+  drugstores: { name: "Pharmacies", icon: "💊", color: "bg-pink-100 text-pink-700" },
+  travel: { name: "Travel", icon: "✈️", color: "bg-cyan-100 text-cyan-700" },
+  streaming: { name: "Streaming Services", icon: "📺", color: "bg-red-100 text-red-700" },
+  entertainment: { name: "Entertainment", icon: "🎮", color: "bg-purple-100 text-purple-700" },
+  fitness: { name: "Fitness & Wellness", icon: "💪", color: "bg-emerald-100 text-emerald-700" },
+  electronics: { name: "Electronics", icon: "📱", color: "bg-slate-100 text-slate-700" },
+  home: { name: "Home Improvement", icon: "🔨", color: "bg-orange-100 text-orange-700" },
+  clothing: { name: "Clothing & Fashion", icon: "👕", color: "bg-rose-100 text-rose-700" },
+  telecom: { name: "Telecommunications", icon: "📞", color: "bg-blue-100 text-blue-700" },
+  transit: { name: "Transit", icon: "🚗", color: "bg-yellow-100 text-yellow-700" },
+  automotive: { name: "Automotive", icon: "🚙", color: "bg-gray-100 text-gray-700" },
+  utilities: { name: "Utilities", icon: "⚡", color: "bg-lime-100 text-lime-700" },
+  financial: { name: "Financial Services", icon: "🏦", color: "bg-teal-100 text-teal-700" },
+  insurance: { name: "Insurance", icon: "🛡️", color: "bg-violet-100 text-violet-700" }
 };
 
 const POPULAR_STORES = [
   "amazon", "target", "walmart", "starbucks", "mcdonalds", "whole-foods", 
-  "costco", "shell", "chevron", "home-depot", "best-buy", "cvs"
+  "costco", "shell", "chevron", "home-depot", "best-buy", "cvs",
+  "netflix", "spotify", "disney-plus", "uber", "lyft", "planet-fitness",
+  "apple-store", "gap", "amc-theaters"
 ];
 
 export function StoreBrowser({ onStoreSelect, selectedStore, onClose }: StoreBrowserProps) {
