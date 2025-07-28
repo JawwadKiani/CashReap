@@ -594,7 +594,102 @@ export class DatabaseStorage implements IStorage {
           { id: "united", name: "United Airlines", categoryId: "travel", address: "Airline", city: "Multiple Locations", state: "US" },
           { id: "marriott", name: "Marriott Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
           { id: "hilton", name: "Hilton Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
-          { id: "hyatt", name: "Hyatt Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" }
+          { id: "hyatt", name: "Hyatt Hotels", categoryId: "travel", address: "Hotel Chain", city: "Multiple Locations", state: "US" },
+
+          // DRUGSTORES & PHARMACIES
+          { id: "cvs", name: "CVS Pharmacy", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "walgreens", name: "Walgreens", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "rite-aid", name: "Rite Aid", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "kroger-pharmacy", name: "Kroger Pharmacy", categoryId: "drugstores", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ADDITIONAL DINING & FAST FOOD
+          { id: "panera-bread", name: "Panera Bread", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "five-guys", name: "Five Guys", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "in-n-out", name: "In-N-Out Burger", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "sonic", name: "Sonic Drive-In", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "popeyes", name: "Popeyes Louisiana Kitchen", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "dairy-queen", name: "Dairy Queen", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "panda-express", name: "Panda Express", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "arby's", name: "Arby's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "jack-in-the-box", name: "Jack in the Box", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "carl's-jr", name: "Carl's Jr.", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "white-castle", name: "White Castle", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "red-robin", name: "Red Robin", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "buffalo-wild-wings", name: "Buffalo Wild Wings", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "ihop", name: "IHOP", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "dennys", name: "Denny's", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "cracker-barrel", name: "Cracker Barrel", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "texas-roadhouse", name: "Texas Roadhouse", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "outback-steakhouse", name: "Outback Steakhouse", categoryId: "dining", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ADDITIONAL GROCERY STORES
+          { id: "food-lion", name: "Food Lion", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "stop-and-shop", name: "Stop & Shop", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "giant-eagle", name: "Giant Eagle", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "meijer", name: "Meijer", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "winn-dixie", name: "Winn-Dixie", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "fresh-market", name: "The Fresh Market", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ADDITIONAL GAS STATIONS
+          { id: "valero", name: "Valero", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "phillips-66", name: "Phillips 66", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "sunoco", name: "Sunoco", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "citgo", name: "Citgo", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "76", name: "76", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "arco", name: "ARCO", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "wawa", name: "Wawa", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "sheetz", name: "Sheetz", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "casey's", name: "Casey's General Store", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ADDITIONAL CLOTHING & RETAIL
+          { id: "urban-outfitters", name: "Urban Outfitters", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "anthropologie", name: "Anthropologie", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "american-eagle", name: "American Eagle Outfitters", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "abercrombie", name: "Abercrombie & Fitch", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "hollister", name: "Hollister", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "zara", name: "Zara", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "uniqlo", name: "Uniqlo", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "express", name: "Express", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "ann-taylor", name: "Ann Taylor", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "loft", name: "LOFT", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // FINANCIAL SERVICES
+          { id: "chase-bank", name: "Chase Bank", categoryId: "financial", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "bank-of-america", name: "Bank of America", categoryId: "financial", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "wells-fargo-bank", name: "Wells Fargo Bank", categoryId: "financial", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "us-bank", name: "U.S. Bank", categoryId: "financial", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "pnc-bank", name: "PNC Bank", categoryId: "financial", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "capital-one-bank", name: "Capital One Bank", categoryId: "financial", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // AUTOMOTIVE SERVICES
+          { id: "jiffy-lube", name: "Jiffy Lube", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "valvoline-instant-oil", name: "Valvoline Instant Oil Change", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "autozone", name: "AutoZone", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "advance-auto-parts", name: "Advance Auto Parts", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "oreilly-auto-parts", name: "O'Reilly Auto Parts", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "pep-boys", name: "Pep Boys", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // UTILITIES & INSURANCE
+          { id: "state-farm", name: "State Farm", categoryId: "insurance", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "geico", name: "GEICO", categoryId: "insurance", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "progressive", name: "Progressive", categoryId: "insurance", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "allstate", name: "Allstate", categoryId: "insurance", address: "National Chain", city: "Multiple Locations", state: "US" },
+
+          // ONLINE SHOPPING PLATFORMS
+          { id: "amazon", name: "Amazon", categoryId: "online", address: "Online Retailer", city: "Online", state: "US", isOnline: true },
+          { id: "ebay", name: "eBay", categoryId: "online", address: "Online Marketplace", city: "Online", state: "US", isOnline: true },
+          { id: "etsy", name: "Etsy", categoryId: "online", address: "Online Marketplace", city: "Online", state: "US", isOnline: true },
+          { id: "alibaba", name: "Alibaba", categoryId: "online", address: "Online Marketplace", city: "Online", state: "US", isOnline: true },
+          { id: "wayfair", name: "Wayfair", categoryId: "online", address: "Online Retailer", city: "Online", state: "US", isOnline: true },
+          { id: "overstock", name: "Overstock.com", categoryId: "online", address: "Online Retailer", city: "Online", state: "US", isOnline: true },
+
+          // ADDITIONAL ENTERTAINMENT & GAMING
+          { id: "six-flags", name: "Six Flags", categoryId: "entertainment", address: "Theme Parks", city: "Multiple Locations", state: "US" },
+          { id: "cedar-point", name: "Cedar Point", categoryId: "entertainment", address: "Theme Park", city: "Sandusky", state: "OH" },
+          { id: "disneyland", name: "Disneyland Resort", categoryId: "entertainment", address: "Theme Park", city: "Anaheim", state: "CA" },
+          { id: "disney-world", name: "Walt Disney World", categoryId: "entertainment", address: "Theme Park", city: "Orlando", state: "FL" },
+          { id: "universal-studios", name: "Universal Studios", categoryId: "entertainment", address: "Theme Parks", city: "Multiple Locations", state: "US" },
+          { id: "knott's-berry-farm", name: "Knott's Berry Farm", categoryId: "entertainment", address: "Theme Park", city: "Buena Park", state: "CA" }
         ];
 
         // Clear existing stores first, then seed new comprehensive database
@@ -999,6 +1094,158 @@ export class DatabaseStorage implements IStorage {
           minCreditScore: 650,
           welcomeBonus: "20,000 points after $3,000 spend in 90 days",
           description: "3x points on supermarkets, gas, restaurants, and transit"
+        },
+        
+        // Additional Premium Cards
+        {
+          id: "amex-platinum",
+          name: "The Platinum Card® from American Express",
+          issuer: "American Express",
+          annualFee: 695,
+          baseReward: "1.0",
+          minCreditScore: 750,
+          welcomeBonus: "80,000 Membership Rewards points after $6,000 spend in 6 months",
+          description: "Premium travel card with 5x on flights and hotels"
+        },
+        {
+          id: "chase-sapphire-preferred",
+          name: "Chase Sapphire Preferred® Card",
+          issuer: "Chase",
+          annualFee: 95,
+          baseReward: "1.0",
+          minCreditScore: 670,
+          welcomeBonus: "60,000 points after $4,000 spend in 3 months",
+          description: "2x on travel and dining, excellent for beginners"
+        },
+        {
+          id: "capital-one-savor",
+          name: "Capital One Savor Cash Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 95,
+          baseReward: "1.0",
+          minCreditScore: 670,
+          welcomeBonus: "$300 cash bonus after $3,000 spend in 3 months",
+          description: "4% on dining and entertainment, 2% at grocery stores"
+        },
+        {
+          id: "discover-it-miles",
+          name: "Discover it® Miles",
+          issuer: "Discover",
+          annualFee: 0,
+          baseReward: "1.5",
+          minCreditScore: 650,
+          welcomeBonus: "Match all miles earned in first year",
+          description: "Simple travel card with 1.5x miles on all purchases"
+        },
+        {
+          id: "amex-blue-business-plus",
+          name: "Blue Business® Plus Credit Card from American Express",
+          issuer: "American Express",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "15,000 Membership Rewards points after $3,000 spend in 3 months",
+          description: "2x points on first $50k in purchases annually"
+        },
+        {
+          id: "chase-ink-business-cash",
+          name: "Chase Ink Business Cash Credit Card",
+          issuer: "Chase",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "$750 cash back after $7,500 spend in 3 months",
+          description: "5% on office supplies, internet, cable, phone services"
+        },
+        {
+          id: "capital-one-quicksilver",
+          name: "Capital One Quicksilver Cash Rewards Credit Card",
+          issuer: "Capital One",
+          annualFee: 0,
+          baseReward: "1.5",
+          minCreditScore: 630,
+          welcomeBonus: "$200 cash bonus after $500 spend in 3 months",
+          description: "Flat 1.5% cash back on all purchases"
+        },
+        {
+          id: "wells-fargo-autograph",
+          name: "Wells Fargo Autograph℠ Card",
+          issuer: "Wells Fargo",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "20,000 points after $1,000 spend in 3 months",
+          description: "3x on restaurants, travel, gas, transit, popular streaming"
+        },
+        {
+          id: "us-bank-cash-plus",
+          name: "U.S. Bank Cash+® Visa Signature® Card",
+          issuer: "U.S. Bank",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "$200 cash back after $1,000 spend in 120 days",
+          description: "5% on two categories you choose, up to $2,000 quarterly"
+        },
+        {
+          id: "bank-of-america-customized-cash",
+          name: "Bank of America® Customized Cash Rewards Credit Card",
+          issuer: "Bank of America",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "$200 cash rewards after $1,000 spend in 90 days",
+          description: "3% in your choice category, 2% at grocery stores and wholesale clubs"
+        },
+        {
+          id: "citi-custom-cash",
+          name: "Citi Custom Cash℠ Card",
+          issuer: "Citi",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "$200 cash back after $1,500 spend in 6 months",
+          description: "5% cash back on up to $500 spent in your top eligible category"
+        },
+        {
+          id: "amex-blue-cash-everyday",
+          name: "Blue Cash Everyday® Card from American Express",
+          issuer: "American Express",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "$200 statement credit after $2,000 spend in 6 months",
+          description: "3% at U.S. supermarkets (up to $6,000 per year), 2% at U.S. gas stations"
+        },
+        {
+          id: "chase-amazon-prime",
+          name: "Amazon Prime Rewards Visa Signature Card",
+          issuer: "Chase",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "$150 Amazon Gift Card upon approval",
+          description: "5% back at Amazon and Whole Foods for Prime members"
+        },
+        {
+          id: "wells-fargo-propel",
+          name: "Wells Fargo Propel American Express® Card",
+          issuer: "Wells Fargo",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 650,
+          welcomeBonus: "30,000 points after $3,000 spend in 3 months",
+          description: "3x on eating out, ordering in, gas, transit, flights, hotels, streaming"
+        },
+        {
+          id: "pnc-cash-rewards",
+          name: "PNC Cash Rewards® Visa® Credit Card",
+          issuer: "PNC Bank",
+          annualFee: 0,
+          baseReward: "1.0",
+          minCreditScore: 630,
+          welcomeBonus: "$200 cash back after $2,000 spend in 3 months",
+          description: "4% on gas (up to $8,000 annually), 3% on dining, 2% on groceries"
         }
       ];
 
