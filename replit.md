@@ -196,3 +196,10 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **Anonymous Users**: Can search stores, get card recommendations, view card details, use calculators
 - **Signed-in Users**: Additional features like saving cards, search history, personalized AI insights
 - **Conversion Points**: Strategic login prompts in "My Cards" and Settings pages
+
+### Local Storage Implementation (No-Login Required)
+- **Save Cards**: Users can save favorite cards locally without signing up
+- **Search History**: Automatic tracking of store searches in browser storage
+- **Cross-Session Persistence**: Data survives browser restarts and page refreshes
+- **Migration Ready**: Local data can sync to account when user eventually signs up
+- **Privacy-First**: All data stored locally, no tracking without explicit consent

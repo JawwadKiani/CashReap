@@ -7,7 +7,7 @@ export function TopNavigation() {
 
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
-    { path: "/browse-cards", icon: CreditCard, label: "Browse" },
+    { path: "/my-cards", icon: CreditCard, label: "My Cards" },
     { path: "/card-comparison", icon: Scale, label: "Compare" },
     { path: "/settings", icon: Settings, label: "Settings" },
   ];

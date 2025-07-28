@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
+import type { LocalSavedCard } from "@/lib/local-storage";
 import { 
   Search, 
   CreditCard, 
@@ -55,11 +56,22 @@ export default function Home() {
     queryKey: ["/api/stores"],
   });
 
-  // Get user's saved cards
-  const { data: savedCards = [] } = useQuery<SavedCard[]>({
+  // Get user's saved cards (from API if logged in, localStorage if not)
+  const { data: apiSavedCards = [] } = useQuery<SavedCard[]>({
     queryKey: ["/api/saved-cards", user?.id],
     enabled: !!user,
   });
+
+  // Get locally saved cards for non-authenticated users
+  const [localSavedCards, setLocalSavedCards] = useState<LocalSavedCard[]>([]);
+  
+  useEffect(() => {
+    if (!user) {
+      import("@/lib/local-storage").then(({ getSavedCards }) => {
+        setLocalSavedCards(getSavedCards());
+      });
+    }
+  }, [user]);
 
   // Get recommendations for selected store
   const { data: recommendations = [], isLoading: isLoadingRecommendations } = useQuery<CreditCard[]>({
@@ -68,19 +80,43 @@ export default function Home() {
   });
 
   const saveMutation = useMutation({
-    mutationFn: async (cardId: string) => {
-      const response = await fetch("/api/saved-cards", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user?.id || '', cardId }),
-      });
-      if (!response.ok) throw new Error("Failed to save card");
-      return response.json();
+    mutationFn: async (card: CreditCard) => {
+      if (user) {
+        // Save to API if logged in
+        const response = await fetch("/api/saved-cards", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, cardId: card.id }),
+        });
+        if (!response.ok) throw new Error("Failed to save card");
+        return response.json();
+      } else {
+        // Save to localStorage if not logged in
+        const { saveCard } = await import("@/lib/local-storage");
+        saveCard({
+          id: card.id,
+          name: card.name,
+          issuer: card.issuer,
+          annualFee: card.annualFee,
+          baseRewardRate: card.baseRewardRate
+        });
+        return { success: true };
+      }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user?.id || ''] });
+      if (user) {
+        queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user.id] });
+      } else {
+        // Refresh local saved cards
+        import("@/lib/local-storage").then(({ getSavedCards }) => {
+          setLocalSavedCards(getSavedCards());
+        });
+      }
     },
   });
+
+  // Combined saved cards (API + localStorage)
+  const savedCards = user ? apiSavedCards : localSavedCards;
 
   return (
     <div className="min-h-screen bg-surface pb-6">
@@ -189,12 +225,27 @@ export default function Home() {
                       {card.welcomeBonus && (
                         <p className="text-xs text-primary mt-2">{card.welcomeBonus}</p>
                       )}
-                      <Button 
-                        className="w-full mt-3 bg-primary hover:bg-primary/90 text-white text-sm py-2"
-                        onClick={() => window.open(`/apply/${card.id}`, '_blank')}
-                      >
-                        Apply Now
-                      </Button>
+                      <div className="flex gap-2 mt-3">
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => saveMutation.mutate(card)}
+                          disabled={savedCards.some(saved => 
+                            user ? saved.card.id === card.id : saved.cardId === card.id
+                          )}
+                        >
+                          {savedCards.some(saved => 
+                            user ? saved.card.id === card.id : saved.cardId === card.id
+                          ) ? "Saved" : "Save"}
+                        </Button>
+                        <Button 
+                          className="flex-1 bg-primary hover:bg-primary/90 text-white text-sm py-2"
+                          onClick={() => window.open(`/apply/${card.id}`, '_blank')}
+                        >
+                          Apply Now
+                        </Button>
+                      </div>
                     </Card>
                   );
                 })
@@ -204,7 +255,7 @@ export default function Home() {
         )}
 
         {/* Quick Actions for returning users */}
-        {!selectedStore && Array.isArray(savedCards) && savedCards.length > 0 && (
+        {!selectedStore && savedCards && savedCards.length > 0 && (
           <div className="space-y-3">
             <h3 className="font-semibold text-on-surface">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-3">
@@ -280,9 +331,12 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-surface w-full max-w-md h-[90vh] max-h-[600px] rounded-xl shadow-xl flex flex-col overflow-hidden">
             <StoreBrowser
-              onStoreSelect={(store) => {
+              onStoreSelect={async (store) => {
                 setSelectedStore(store);
                 setShowStoreBrowser(false);
+                // Add to search history
+                const { addToSearchHistory } = await import("@/lib/local-storage");
+                addToSearchHistory({ id: store.id, name: store.name });
               }}
               selectedStore={selectedStore}
               onClose={() => setShowStoreBrowser(false)}
