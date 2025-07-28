@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Store, MapPin, Grid3X3, List } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { StoreWithCategory } from "@shared/schema";
+
+interface Store {
+  id: string;
+  name: string;
+  categoryId: string;
+  isOnline?: boolean;
+}
 
 interface StoreBrowserProps {
-  onStoreSelect: (store: StoreWithCategory) => void;
-  selectedStore?: StoreWithCategory | null;
+  onStoreSelect: (store: Store) => void;
+  selectedStore?: Store | null;
+  onClose?: () => void;
 }
 
 const CATEGORY_INFO = {
@@ -25,38 +31,45 @@ const CATEGORY_INFO = {
 
 const POPULAR_STORES = [
   "amazon", "target", "walmart", "starbucks", "mcdonalds", "whole-foods", 
-  "costco", "shell", "chase", "home-depot", "best-buy", "cvs"
+  "costco", "shell", "chevron", "home-depot", "best-buy", "cvs"
 ];
 
-export function StoreBrowser({ onStoreSelect, selectedStore }: StoreBrowserProps) {
+export function StoreBrowser({ onStoreSelect, selectedStore, onClose }: StoreBrowserProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
-  const { data: stores = [] } = useQuery({
+  const { data: stores = [] } = useQuery<Store[]>({
     queryKey: ["/api/stores"],
   });
 
-  // Filter stores based on search term and category
-  const filteredStores = stores.filter((store: StoreWithCategory) => {
-    const matchesSearch = store.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || store.categoryId === selectedCategory;
-    return matchesSearch && matchesCategory;
+  // Filter stores based on search term
+  const filteredStores = stores.filter((store: Store) => {
+    return store.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   // Group stores by category
-  const storesByCategory = stores.reduce((acc: Record<string, StoreWithCategory[]>, store: StoreWithCategory) => {
+  const storesByCategory = stores.reduce((acc: Record<string, Store[]>, store: Store) => {
     if (!acc[store.categoryId]) acc[store.categoryId] = [];
     acc[store.categoryId].push(store);
     return acc;
   }, {});
 
   // Get popular stores
-  const popularStores = stores.filter((store: StoreWithCategory) => 
+  const popularStores = stores.filter((store: Store) => 
     POPULAR_STORES.includes(store.id)
   );
 
-  const StoreCard = ({ store }: { store: StoreWithCategory }) => {
+  const toggleCategory = (categoryId: string) => {
+    const newExpanded = new Set(expandedCategories);
+    if (newExpanded.has(categoryId)) {
+      newExpanded.delete(categoryId);
+    } else {
+      newExpanded.add(categoryId);
+    }
+    setExpandedCategories(newExpanded);
+  };
+
+  const StoreCard = ({ store }: { store: Store }) => {
     const categoryInfo = CATEGORY_INFO[store.categoryId as keyof typeof CATEGORY_INFO];
     const isSelected = selectedStore?.id === store.id;
     
@@ -67,17 +80,17 @@ export function StoreBrowser({ onStoreSelect, selectedStore }: StoreBrowserProps
         }`}
         onClick={() => onStoreSelect(store)}
       >
-        <CardContent className="p-4">
+        <CardContent className="p-3">
           <div className="flex items-center gap-3">
-            <div className="text-2xl">{categoryInfo?.icon || "🏪"}</div>
+            <div className="text-xl">{categoryInfo?.icon || "🏪"}</div>
             <div className="flex-1">
               <h3 className="font-medium text-sm">{store.name}</h3>
               <Badge variant="outline" className={`text-xs mt-1 ${categoryInfo?.color || ""}`}>
-                {categoryInfo?.name || store.categoryId}
+                {categoryInfo?.name || "Other"}
               </Badge>
             </div>
-            {isSelected && (
-              <div className="w-2 h-2 rounded-full bg-primary"></div>
+            {store.isOnline && (
+              <Badge variant="secondary" className="text-xs">Online</Badge>
             )}
           </div>
         </CardContent>
@@ -85,178 +98,125 @@ export function StoreBrowser({ onStoreSelect, selectedStore }: StoreBrowserProps
     );
   };
 
-  return (
-    <div className="space-y-4">
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-        <Input
-          placeholder="Search for stores (e.g., Target, Starbucks)..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
-        />
+  const CategorySection = ({ categoryId, stores }: { categoryId: string; stores: Store[] }) => {
+    const categoryInfo = CATEGORY_INFO[categoryId as keyof typeof CATEGORY_INFO];
+    const isExpanded = expandedCategories.has(categoryId);
+    
+    return (
+      <div className="border rounded-lg overflow-hidden">
+        <button
+          onClick={() => toggleCategory(categoryId)}
+          className="w-full p-4 bg-gray-50 dark:bg-gray-800 flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-xl">{categoryInfo?.icon || "🏪"}</span>
+            <div className="text-left">
+              <h3 className="font-semibold text-sm">{categoryInfo?.name || categoryId}</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400">{stores.length} stores</p>
+            </div>
+          </div>
+          {isExpanded ? (
+            <ChevronDown className="w-4 h-4 text-gray-600" />
+          ) : (
+            <ChevronRight className="w-4 h-4 text-gray-600" />
+          )}
+        </button>
+        
+        {isExpanded && (
+          <div className="p-4 space-y-2 bg-white dark:bg-gray-900">
+            {stores.map((store) => (
+              <div 
+                key={store.id}
+                className="p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                onClick={() => onStoreSelect(store)}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{categoryInfo?.icon || "🏪"}</span>
+                  <span className="font-medium text-sm">{store.name}</span>
+                  {store.isOnline && (
+                    <Badge variant="secondary" className="text-xs ml-auto">Online</Badge>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+    );
+  };
 
-      {/* Quick Actions */}
-      {!searchTerm && !selectedCategory && (
-        <div className="flex gap-2 flex-wrap">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setSearchTerm("Starbucks")}
-            className="text-xs"
-          >
-            ☕ Starbucks
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setSearchTerm("Target")}
-            className="text-xs"
-          >
-            🎯 Target
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setSearchTerm("Amazon")}
-            className="text-xs"
-          >
-            📦 Amazon
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setSelectedCategory("dining")}
-            className="text-xs"
-          >
-            🍽️ Dining
+  return (
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">Choose a Store</CardTitle>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <X className="w-4 h-4" />
           </Button>
         </div>
-      )}
+        
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder="Search stores..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+      </CardHeader>
 
-      <Tabs defaultValue="browse" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="browse">Browse</TabsTrigger>
-          <TabsTrigger value="popular">Popular</TabsTrigger>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="browse" className="space-y-4">
-          {/* View Mode Toggle */}
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">
-              {filteredStores.length} stores found
-            </div>
-            <div className="flex gap-1">
-              <Button
-                variant={viewMode === "grid" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewMode("grid")}
-              >
-                <Grid3X3 className="w-4 h-4" />
-              </Button>
-              <Button
-                variant={viewMode === "list" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewMode("list")}
-              >
-                <List className="w-4 h-4" />
-              </Button>
-            </div>
+      {/* Content */}
+      <CardContent className="flex-1 overflow-y-auto space-y-4">
+        {searchTerm ? (
+          // Search Results
+          <div className="space-y-3">
+            <h3 className="font-semibold text-sm text-gray-600">Search Results ({filteredStores.length})</h3>
+            {filteredStores.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">No stores found</p>
+            ) : (
+              <div className="space-y-2">
+                {filteredStores.map((store) => (
+                  <StoreCard key={store.id} store={store} />
+                ))}
+              </div>
+            )}
           </div>
+        ) : (
+          <>
+            {/* Popular Stores */}
+            {popularStores.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <h3 className="font-semibold text-sm">Popular Stores</h3>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {popularStores.slice(0, 6).map((store) => (
+                    <StoreCard key={store.id} store={store} />
+                  ))}
+                </div>
+              </div>
+            )}
 
-          {/* Store Results */}
-          <div className={`grid gap-3 ${viewMode === "grid" ? "grid-cols-1" : "grid-cols-1"}`}>
-            {filteredStores.slice(0, 20).map((store: StoreWithCategory) => (
-              <StoreCard key={store.id} store={store} />
-            ))}
-          </div>
-
-          {filteredStores.length === 0 && searchTerm && (
-            <div className="text-center py-8 text-muted-foreground">
-              <Store className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p>No stores found for "{searchTerm}"</p>
-              <p className="text-sm">Try searching for popular stores like Target, Walmart, or Starbucks</p>
+            {/* Categories */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-sm">Browse by Category</h3>
+              <div className="space-y-2">
+                {Object.entries(storesByCategory).map(([categoryId, categoryStores]) => (
+                  <CategorySection
+                    key={categoryId}
+                    categoryId={categoryId}
+                    stores={categoryStores}
+                  />
+                ))}
+              </div>
             </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="popular" className="space-y-4">
-          <div className="grid gap-3">
-            {popularStores.map((store: StoreWithCategory) => (
-              <StoreCard key={store.id} store={store} />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="categories" className="space-y-4">
-          {Object.entries(storesByCategory).map(([categoryId, categoryStores]) => {
-            const categoryInfo = CATEGORY_INFO[categoryId as keyof typeof CATEGORY_INFO];
-            if (!categoryInfo) return null;
-
-            return (
-              <Card key={categoryId}>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <span className="text-lg">{categoryInfo.icon}</span>
-                    {categoryInfo.name}
-                    <Badge variant="secondary" className="ml-auto">
-                      {categoryStores.length}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-2">
-                    {categoryStores.slice(0, 5).map((store: StoreWithCategory) => (
-                      <div
-                        key={store.id}
-                        className={`p-2 rounded cursor-pointer hover:bg-muted transition-colors ${
-                          selectedStore?.id === store.id ? "bg-primary/10" : ""
-                        }`}
-                        onClick={() => onStoreSelect(store)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">{store.name}</span>
-                          {selectedStore?.id === store.id && (
-                            <div className="w-2 h-2 rounded-full bg-primary"></div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                    {categoryStores.length > 5 && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSelectedCategory(categoryId)}
-                        className="mt-2 text-xs"
-                      >
-                        View all {categoryStores.length} {categoryInfo.name.toLowerCase()}
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </TabsContent>
-      </Tabs>
-
-      {/* Clear Filters */}
-      {(searchTerm || selectedCategory) && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            setSearchTerm("");
-            setSelectedCategory(null);
-          }}
-          className="w-full"
-        >
-          Clear Filters
-        </Button>
-      )}
+          </>
+        )}
+      </CardContent>
     </div>
   );
 }

@@ -266,14 +266,14 @@ export default function Home() {
 
       {/* Store Browser Modal */}
       {showStoreBrowser && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center">
-          <div className="bg-white dark:bg-surface w-full max-w-md mx-4 rounded-t-xl sm:rounded-xl max-h-[80vh] overflow-hidden">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-4">
+          <div className="bg-white dark:bg-surface w-full max-w-md rounded-xl max-h-[85vh] overflow-hidden shadow-xl">
             <StoreBrowser
-              stores={stores}
-              onSelectStore={(store) => {
+              onStoreSelect={(store) => {
                 setSelectedStore(store);
                 setShowStoreBrowser(false);
               }}
+              selectedStore={selectedStore}
               onClose={() => setShowStoreBrowser(false)}
             />
           </div>
