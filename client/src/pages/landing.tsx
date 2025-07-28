@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CreditCard, TrendingUp, Search, Shield } from "lucide-react";
 import { useLocation as useWouterLocation } from "wouter";
 import { GuestCardFinder } from "@/components/guest-card-finder";
+import { UniqueFeaturesSection } from "@/components/unique-features-section";
+import { TrendingSection } from "@/components/trending-section";
 
 export function Landing() {
   const [, navigate] = useWouterLocation();
@@ -107,6 +109,16 @@ export function Landing() {
               </CardDescription>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Trending/Hot This Quarter */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <TrendingSection />
+        </div>
+
+        {/* Competitive Differentiation */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <UniqueFeaturesSection />
         </div>
 
         {/* Sign Up Call to Action */}

@@ -161,3 +161,27 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **Authentication Compatible**: Replit Auth can integrate with iOS OAuth flows
 - **Offline Capability**: Local storage for saved cards and search history
 - **Native Features Ready**: Location services, push notifications, Touch ID integration potential
+
+## Competitive Differentiation Strategy - January 2025
+
+### Key Competitors Analysis
+- **MaxRewards**: Bank sync, automatic offers, premium subscription
+- **CardPointers**: Apple Wallet integration, rotating categories, push notifications
+- **TPG App**: Travel-focused, content-heavy approach
+- **AwardWallet**: Points tracking across multiple programs
+
+### CashReap's Unique Value Propositions
+1. **Agricultural/Harvest Theme**: Unique "reaping rewards" branding differentiates from sterile financial apps
+2. **Business-First Search**: Search by specific business (Netflix, Planet Fitness) vs. category-only approach
+3. **No Bank Account Sync Required**: Privacy-focused approach without requiring bank access
+4. **Comprehensive Business Database**: 95+ major US businesses vs. competitors' category-only focus
+5. **Guest Experience**: Try before sign-up reduces friction vs. competitors requiring immediate registration
+6. **Streaming-Optimized**: First to properly categorize and optimize for streaming services boom
+7. **Simple & Clean**: Mobile-first design without overwhelming features or premium upsells
+
+### Competitive Advantages
+- **Privacy-First**: No bank account linking required (major differentiator vs MaxRewards)
+- **Instant Value**: Guest search provides immediate value without signup friction
+- **Business-Specific**: Search "Netflix" not just "streaming" - more granular than competitors
+- **Modern Categories**: Includes fitness, streaming, entertainment that others missed
+- **Clean UX**: Focused on core value without feature bloat or subscription pressure
