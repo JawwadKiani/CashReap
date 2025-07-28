@@ -5,6 +5,9 @@ import { useLocation as useWouterLocation } from "wouter";
 import { GuestCardFinder } from "@/components/guest-card-finder";
 import { UniqueFeaturesSection } from "@/components/unique-features-section";
 import { TrendingSection } from "@/components/trending-section";
+import { SmartInsightsSection } from "@/components/smart-insights-section";
+import { InnovationHighlights } from "@/components/innovation-highlights";
+import { RewardsForecast } from "@/components/rewards-forecast";
 
 export function Landing() {
   const [, navigate] = useWouterLocation();
@@ -114,6 +117,21 @@ export function Landing() {
         {/* Trending/Hot This Quarter */}
         <div className="max-w-4xl mx-auto mb-12">
           <TrendingSection />
+        </div>
+
+        {/* Smart AI Features */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <SmartInsightsSection />
+        </div>
+
+        {/* Innovation Highlights */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <InnovationHighlights />
+        </div>
+
+        {/* Rewards Forecast */}
+        <div className="max-w-5xl mx-auto mb-12">
+          <RewardsForecast onGetStarted={handleSignUp} />
         </div>
 
         {/* Competitive Differentiation */}
