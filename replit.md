@@ -132,7 +132,7 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **API Verification**: All 34 cards now properly accessible via /api/credit-cards endpoint
 
 ### Comprehensive National Business Database (January 2025)
-- **Massive Database Expansion**: Expanded from 50 to 150+ major US businesses covering all retail categories
+- **Massive Database Expansion**: Expanded from 50 to 220+ major US businesses covering all retail categories
 - **Streaming Services Added**: Netflix, Disney+, HBO Max, Amazon Prime Video, Hulu, Paramount+, Apple TV+, YouTube Premium, Spotify, Apple Music
 - **Entertainment & Gaming**: AMC Theaters, Regal Cinemas, Dave & Buster's, Chuck E. Cheese, GameStop
 - **Fitness & Wellness**: Planet Fitness, LA Fitness, 24 Hour Fitness, Gold's Gym
@@ -145,7 +145,14 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **Category-Specific Rewards**: Added reward rates for all new categories including 5% rotating rewards for streaming services
 - **Enhanced User Experience**: Collapsible category browsing with store counts and organized sections
 - **Complete Business Coverage**: Users can now find credit card recommendations for virtually any major US business or service
-- **Impressive Scale**: Now features 150+ businesses and 50+ credit cards for maximum user confidence
+- **Impressive Scale**: Now features 220+ businesses and 50+ credit cards for maximum user confidence
+
+### Advanced Category Fallback System (January 28, 2025)
+- **Smart Category Selection**: When users search for businesses not in our database, they can select the business category for personalized recommendations
+- **Universal Coverage**: No business search goes unanswered - users always get relevant credit card suggestions
+- **Seamless Experience**: Automatic category selection dropdown appears when no business matches are found
+- **20 Business Categories**: Complete coverage from grocery stores to streaming services to automotive services
+- **API Integration**: Full backend support for category-based recommendations with filtering options
 
 ## Deployment Strategy - January 2025
 

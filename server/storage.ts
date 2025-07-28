@@ -338,6 +338,42 @@ export class DatabaseStorage implements IStorage {
     return cards.slice(0, 5);
   }
 
+  async getCardRecommendationsForCategory(categoryId: string): Promise<CreditCard[]> {
+    // Get all cards that have rewards for this category
+    const categoryRewards = await db
+      .select({
+        cardId: cardCategoryRewards.cardId,
+        rewardRate: cardCategoryRewards.rewardRate,
+      })
+      .from(cardCategoryRewards)
+      .where(eq(cardCategoryRewards.categoryId, categoryId));
+
+    // Get the cards and sort by reward rate
+    const cardIds = categoryRewards.map(r => r.cardId);
+    if (cardIds.length === 0) {
+      // If no specific category rewards, return top general cards
+      const topCards = await db.select().from(creditCards).limit(5);
+      return topCards;
+    }
+
+    let cards = await db
+      .select()
+      .from(creditCards)
+      .where(inArray(creditCards.id, cardIds));
+
+    // Create a map of reward rates
+    const rewardMap = new Map(categoryRewards.map(r => [r.cardId, r.rewardRate]));
+
+    // Sort by reward rate (highest first)
+    const sortByReward = (a: CreditCard, b: CreditCard) => {
+      const aRate = parseFloat(rewardMap.get(a.id) || "0");
+      const bRate = parseFloat(rewardMap.get(b.id) || "0");
+      return bRate - aRate;
+    };
+
+    return cards.sort(sortByReward);
+  }
+
   // User Spending Profiles
   async getUserSpendingProfile(userId: string): Promise<UserSpendingProfile[]> {
     return await db.select().from(userSpendingProfiles).where(eq(userSpendingProfiles.userId, userId));
