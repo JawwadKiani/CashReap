@@ -379,7 +379,7 @@ export class DatabaseStorage implements IStorage {
 
   async deletePurchasePlan(id: string): Promise<boolean> {
     const result = await db.delete(purchasePlans).where(eq(purchasePlans.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   // Welcome Bonus Tracking
@@ -626,9 +626,12 @@ export class DatabaseStorage implements IStorage {
           { id: "food-lion", name: "Food Lion", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "stop-and-shop", name: "Stop & Shop", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "giant-eagle", name: "Giant Eagle", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "giant-food", name: "Giant Food", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "DC/MD/VA" },
           { id: "meijer", name: "Meijer", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "winn-dixie", name: "Winn-Dixie", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "fresh-market", name: "The Fresh Market", categoryId: "grocery", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "shoprite", name: "ShopRite", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Northeast US" },
+          { id: "king-soopers", name: "King Soopers", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "CO" },
 
           // ADDITIONAL GAS STATIONS
           { id: "valero", name: "Valero", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
@@ -640,6 +643,9 @@ export class DatabaseStorage implements IStorage {
           { id: "wawa", name: "Wawa", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "sheetz", name: "Sheetz", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "casey's", name: "Casey's General Store", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "buc-ees", name: "Buc-ee's", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "TX/Southeast US" },
+          { id: "qt", name: "QuikTrip", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "Midwest/Southeast US" },
+          { id: "racetrac", name: "RaceTrac", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
 
           // ADDITIONAL CLOTHING & RETAIL
           { id: "urban-outfitters", name: "Urban Outfitters", categoryId: "clothing", address: "National Chain", city: "Multiple Locations", state: "US" },
@@ -668,6 +674,8 @@ export class DatabaseStorage implements IStorage {
           { id: "advance-auto-parts", name: "Advance Auto Parts", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "oreilly-auto-parts", name: "O'Reilly Auto Parts", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
           { id: "pep-boys", name: "Pep Boys", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "henna-ford", name: "Henna Ford", categoryId: "automotive", address: "Regional Dealership", city: "Multiple Locations", state: "NY" },
+          { id: "napa-auto-parts", name: "NAPA Auto Parts", categoryId: "automotive", address: "National Chain", city: "Multiple Locations", state: "US" },
 
           // UTILITIES & INSURANCE
           { id: "state-farm", name: "State Farm", categoryId: "insurance", address: "National Chain", city: "Multiple Locations", state: "US" },
@@ -689,7 +697,14 @@ export class DatabaseStorage implements IStorage {
           { id: "disneyland", name: "Disneyland Resort", categoryId: "entertainment", address: "Theme Park", city: "Anaheim", state: "CA" },
           { id: "disney-world", name: "Walt Disney World", categoryId: "entertainment", address: "Theme Park", city: "Orlando", state: "FL" },
           { id: "universal-studios", name: "Universal Studios", categoryId: "entertainment", address: "Theme Parks", city: "Multiple Locations", state: "US" },
-          { id: "knott's-berry-farm", name: "Knott's Berry Farm", categoryId: "entertainment", address: "Theme Park", city: "Buena Park", state: "CA" }
+          { id: "knott's-berry-farm", name: "Knott's Berry Farm", categoryId: "entertainment", address: "Theme Park", city: "Buena Park", state: "CA" },
+          
+          // REGIONAL POWERHOUSE BUSINESSES
+          { id: "hyvee", name: "Hy-Vee", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Midwest US" },
+          { id: "wegmans", name: "Wegmans", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Northeast US" },
+          { id: "publix", name: "Publix", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
+          { id: "fred-meyer", name: "Fred Meyer", categoryId: "department", address: "Regional Chain", city: "Multiple Locations", state: "Pacific Northwest" },
+          { id: "winco", name: "WinCo Foods", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Western US" }
         ];
 
         // Clear existing stores first, then seed new comprehensive database
