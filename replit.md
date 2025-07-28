@@ -182,3 +182,17 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **Direct Partnerships**: Chase, American Express, Capital One, Citi
 - **Technical Implementation**: Custom referral tracking, conversion attribution
 - **Compliance**: FTC disclosure requirements, CCPA/GDPR privacy standards
+
+## Recent Updates - January 28, 2025
+
+### No-Login Design Implementation (GasBuddy Style)
+- **Optional Authentication**: Users can browse and get recommendations without signing up
+- **Graceful Degradation**: All core features work without login, advanced features require account
+- **Login Incentives**: Clear benefits shown in settings (save cards, track spending, personalized insights)
+- **Navigation Updated**: Changed "My Cards" to "Browse" in main navigation for non-authenticated users
+- **UX Pattern**: Similar to GasBuddy - immediate value without registration barriers
+
+### User Experience Flow
+- **Anonymous Users**: Can search stores, get card recommendations, view card details, use calculators
+- **Signed-in Users**: Additional features like saving cards, search history, personalized AI insights
+- **Conversion Points**: Strategic login prompts in "My Cards" and Settings pages

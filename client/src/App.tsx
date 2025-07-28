@@ -23,51 +23,30 @@ import { SignIn, SignUp } from "@/pages/auth";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-on-surface-variant">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <Switch>
-      {!isAuthenticated ? (
-        <>
-          <Route path="/" component={Landing} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={SignUp} />
-        </>
-      ) : (
-        <>
-          <div className="pt-16"> {/* Add padding for top navigation */}
-            <Switch>
-              <Route path="/" component={Home} />
-              <Route path="/card/:id" component={CardDetails} />
-              <Route path="/my-cards" component={MyCards} />
-              <Route path="/history" component={History} />
-              <Route path="/settings" component={Settings} />
-              <Route path="/browse-cards" component={CardBrowser} />
-              <Route path="/purchase-planner" component={PurchasePlanner} />
-              <Route path="/reward-calculator" component={RewardCalculator} />
-              <Route path="/welcome-bonus-tracker" component={WelcomeBonusTracker} />
-              <Route path="/card-comparison" component={CardComparison} />
-              <Route path="/spending-analytics" component={SpendingAnalyticsPage} />
-              <Route path="/insights-dashboard" component={InsightsDashboard} />
-              <Route path="/ai-recommendations" component={AIRecommendations} />
-              <Route component={NotFound} />
-            </Switch>
-            <TopNavigation />
-          </div>
-        </>
-      )}
-    </Switch>
+    <div className="pt-16"> {/* Add padding for top navigation */}
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/card/:id" component={CardDetails} />
+        <Route path="/my-cards" component={MyCards} />
+        <Route path="/history" component={History} />
+        <Route path="/settings" component={Settings} />
+        <Route path="/browse-cards" component={CardBrowser} />
+        <Route path="/purchase-planner" component={PurchasePlanner} />
+        <Route path="/reward-calculator" component={RewardCalculator} />
+        <Route path="/welcome-bonus-tracker" component={WelcomeBonusTracker} />
+        <Route path="/card-comparison" component={CardComparison} />
+        <Route path="/spending-analytics" component={SpendingAnalyticsPage} />
+        <Route path="/insights-dashboard" component={InsightsDashboard} />
+        <Route path="/ai-recommendations" component={AIRecommendations} />
+        {/* Auth pages - available but not required */}
+        <Route path="/signin" component={SignIn} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/landing" component={Landing} />
+        <Route component={NotFound} />
+      </Switch>
+      <TopNavigation />
+    </div>
   );
 }
 

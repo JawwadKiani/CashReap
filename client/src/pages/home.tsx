@@ -93,6 +93,11 @@ export default function Home() {
           <p className="text-on-surface-variant text-sm">
             Get the highest cash back for any store
           </p>
+          {!user && (
+            <p className="text-xs text-primary mt-2">
+              No signup required • Browse freely like GasBuddy
+            </p>
+          )}
         </div>
 
         {/* Store Search */}
