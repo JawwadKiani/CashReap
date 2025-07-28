@@ -4,6 +4,9 @@ import { useLocation as useWouterLocation } from "wouter";
 import { Sliders, Scale, Bookmark, Search, Sparkles, TrendingUp, Award, Star, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LocationDetector } from "@/components/location-detector";
+import { StoreBrowser } from "@/components/store-browser";
+import { OnboardingFlow } from "@/components/onboarding-flow";
+import { SimpleAIInsights } from "@/components/simple-ai-insights";
 import { FilterPanel } from "@/components/filter-panel";
 import { StoreInfo } from "@/components/store-info";
 import { TopRecommendation } from "@/components/top-recommendation";
@@ -24,6 +27,8 @@ export default function Home() {
   const [selectedStore, setSelectedStore] = useState<StoreWithCategory | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({});
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [viewMode, setViewMode] = useState<"simple" | "advanced">("simple");
 
   // Build query parameters for recommendations
   const queryParams = new URLSearchParams();
@@ -85,6 +90,20 @@ export default function Home() {
   const topRecommendation = enrichedRecommendations.length > 0 ? enrichedRecommendations[0] : null;
   const otherRecommendations = enrichedRecommendations.slice(1);
 
+  // Check if user is new (no saved cards and no search history)
+  const isNewUser = (!Array.isArray(savedCards) || savedCards.length === 0) && 
+                   (!Array.isArray(searchHistory) || searchHistory.length === 0);
+
+  // Show onboarding for new users
+  if (showOnboarding || (isNewUser && !selectedStore)) {
+    return (
+      <OnboardingFlow 
+        onComplete={() => setShowOnboarding(false)}
+        onSkip={() => setShowOnboarding(false)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-surface">
       {/* Header */}
@@ -118,7 +137,33 @@ export default function Home() {
             </div>
           </div>
           
-          <LocationDetector onStoreSelect={handleStoreSelect} selectedStore={selectedStore} />
+          {viewMode === "simple" ? (
+            <StoreBrowser onStoreSelect={handleStoreSelect} selectedStore={selectedStore} />
+          ) : (
+            <LocationDetector onStoreSelect={handleStoreSelect} selectedStore={selectedStore} />
+          )}
+          
+          {/* View Mode Toggle */}
+          <div className="flex justify-center mt-3">
+            <div className="bg-muted rounded-lg p-1 flex">
+              <Button
+                variant={viewMode === "simple" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("simple")}
+                className="text-xs"
+              >
+                Browse Stores
+              </Button>
+              <Button
+                variant={viewMode === "advanced" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("advanced")}
+                className="text-xs"
+              >
+                Search by Name
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -178,6 +223,11 @@ export default function Home() {
               />
             ))}
           </div>
+        )}
+
+        {/* AI Insights Section */}
+        {!selectedStore && (
+          <SimpleAIInsights className="mb-6" />
         )}
 
         {/* Enhanced Feature Showcase - Comprehensive CashReap Platform */}
