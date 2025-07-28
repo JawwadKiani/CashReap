@@ -79,46 +79,44 @@ export default function Home() {
     enabled: !!selectedStore,
   });
 
-  const saveMutation = useMutation({
-    mutationFn: async (card: CreditCard) => {
-      console.log('Saving card:', card.name, 'User logged in:', !!user);
-      
-      if (user) {
-        // Save to API if logged in
+  const handleSaveCard = async (card: CreditCard) => {
+    console.log('Saving card:', card.name, 'User logged in:', !!user);
+    
+    if (user) {
+      // Save to API if logged in
+      try {
         const response = await fetch("/api/saved-cards", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId: user.id, cardId: card.id }),
         });
-        if (!response.ok) throw new Error("Failed to save card");
-        return response.json();
-      } else {
-        // Save to localStorage if not logged in
-        const { saveCard, getSavedCards } = await import("@/lib/local-storage");
-        saveCard({
-          id: card.id,
-          name: card.name,
-          issuer: card.issuer,
-          annualFee: card.annualFee,
-          baseRewardRate: card.baseRewardRate
-        });
-        console.log('Card saved to localStorage');
-        return { success: true };
+        if (response.ok) {
+          queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user.id] });
+        }
+      } catch (error) {
+        console.error('API save failed:', error);
       }
-    },
-    onSuccess: () => {
-      console.log('Save mutation success');
-      if (user) {
-        queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user.id] });
-      } else {
-        // Refresh local saved cards immediately
-        import("@/lib/local-storage").then(({ getSavedCards }) => {
-          const updated = getSavedCards();
-          console.log('Updated local cards:', updated.length);
-          setLocalSavedCards(updated);
-        });
-      }
-    },
+    } else {
+      // Save to localStorage if not logged in
+      const { saveCard, getSavedCards } = await import("@/lib/local-storage");
+      saveCard({
+        id: card.id,
+        name: card.name,
+        issuer: card.issuer,
+        annualFee: card.annualFee,
+        baseRewardRate: card.baseRewardRate
+      });
+      console.log('Card saved to localStorage');
+      
+      // Refresh local saved cards immediately
+      const updated = getSavedCards();
+      console.log('Updated local cards:', updated.length);
+      setLocalSavedCards(updated);
+    }
+  };
+
+  const saveMutation = useMutation({
+    mutationFn: handleSaveCard,
     onError: (error) => {
       console.error('Save mutation error:', error);
     }

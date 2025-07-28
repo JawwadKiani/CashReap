@@ -49,7 +49,7 @@ export default function MyCards() {
                 <circle cx="250" cy="115" r="8" fill="#F59E0B"/>
                 <text x="250" y="120" fontFamily="Arial, sans-serif" fontSize="10" fontWeight="bold" textAnchor="middle" fill="#fff">$</text>
               </svg>
-              <h1 className="text-xl font-bold text-on-surface">My Saved Cards</h1>
+              <h1 className="text-xl font-bold text-on-surface">My Cards</h1>
               <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
             </div>
           </div>
@@ -147,19 +147,20 @@ export default function MyCards() {
             <CardHeader className="text-center">
               <CardTitle className="flex items-center justify-center gap-2">
                 <User className="w-6 h-6 text-primary" />
-                Sign in to save cards
+                Save cards without signing in
               </CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-4">
               <p className="text-on-surface-variant">
-                Create an account to save your favorite credit cards and track your rewards
+                You can save credit cards locally without creating an account. They'll be remembered on this device.
               </p>
               <div className="space-y-2">
                 <Button 
                   onClick={() => window.location.href = "/api/login"}
+                  variant="outline"
                   className="w-full"
                 >
-                  Sign In
+                  Sign In to Sync Across Devices
                 </Button>
                 <Button 
                   variant="outline"
