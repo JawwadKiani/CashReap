@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreditCard, TrendingUp, Search, Shield } from "lucide-react";
 import { useLocation as useWouterLocation } from "wouter";
+import { GuestCardFinder } from "@/components/guest-card-finder";
 
 export function Landing() {
   const [, navigate] = useWouterLocation();
@@ -52,57 +53,9 @@ export function Landing() {
           </p>
         </header>
 
-        {/* Call to Action - Login/Register Section */}
-        <div className="text-center mb-12">
-          <Card className="max-w-md mx-auto">
-            <CardHeader>
-              <CardTitle>Ready to Start Harvesting?</CardTitle>
-              <CardDescription>
-                Create an account to access personalized recommendations and save your favorite cards
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-3">
-                <Button 
-                  onClick={handleSignUp}
-                  className="flex-1 bg-primary hover:bg-primary/90 text-white"
-                  size="lg"
-                >
-                  Sign Up
-                </Button>
-                <Button 
-                  onClick={handleSignIn}
-                  variant="outline"
-                  className="flex-1"
-                  size="lg"
-                >
-                  Sign In
-                </Button>
-              </div>
-              
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-surface-variant"></div>
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-on-surface-variant">Or</span>
-                </div>
-              </div>
-
-              <Button 
-                onClick={handleReplitLogin}
-                variant="outline"
-                className="w-full"
-                size="lg"
-              >
-                Continue with Replit
-              </Button>
-              
-              <div className="text-xs text-on-surface-variant">
-                Multiple secure authentication options available
-              </div>
-            </CardContent>
-          </Card>
+        {/* Guest Card Finder - Try Before Sign Up */}
+        <div className="max-w-2xl mx-auto mb-12">
+          <GuestCardFinder onSignUpClick={handleSignUp} />
         </div>
 
         {/* Features */}
@@ -156,8 +109,57 @@ export function Landing() {
           </Card>
         </div>
 
+        {/* Sign Up Call to Action */}
+        <div className="text-center mb-8">
+          <Card className="max-w-md mx-auto">
+            <CardHeader>
+              <CardTitle>Ready for Full Access?</CardTitle>
+              <CardDescription>
+                Sign up to save your favorite cards, track search history, and get personalized insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-3">
+                <Button 
+                  onClick={handleSignUp}
+                  className="flex-1 bg-primary hover:bg-primary/90 text-white"
+                  size="lg"
+                >
+                  Sign Up Free
+                </Button>
+                <Button 
+                  onClick={handleSignIn}
+                  variant="outline"
+                  className="flex-1"
+                  size="lg"
+                >
+                  Sign In
+                </Button>
+              </div>
+              
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-surface-variant"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-on-surface-variant">Or</span>
+                </div>
+              </div>
+
+              <Button 
+                onClick={handleReplitLogin}
+                variant="outline"
+                className="w-full"
+                size="lg"
+              >
+                Continue with Replit
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Additional Info */}
-        <div className="text-center mt-12 text-sm text-on-surface-variant">
+        <div className="text-center mt-8 text-sm text-on-surface-variant">
           <p>Join thousands of users maximizing their credit card rewards</p>
         </div>
       </div>
