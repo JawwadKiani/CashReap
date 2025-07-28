@@ -282,7 +282,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { userId } = req.params;
       const plans = await storage.getUserPurchasePlans(userId);
       const plansWithRecommendations = await Promise.all(plans.map(async (plan) => {
-        let recommendedCards = [];
+        let recommendedCards: any[] = [];
         let potentialEarnings = 0;
         
         if (plan.storeId) {
