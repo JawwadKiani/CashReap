@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreditCard, TrendingUp, Search, Shield } from "lucide-react";
+import { CreditCard, TrendingUp, Search, Shield, Wheat, DollarSign } from "lucide-react";
 import { useLocation as useWouterLocation } from "wouter";
 import { GuestCardFinder } from "@/components/guest-card-finder";
 import { UniqueFeaturesSection } from "@/components/unique-features-section";
@@ -192,6 +192,56 @@ export function Landing() {
         <div className="text-center mt-8 text-sm text-on-surface-variant">
           <p>Join thousands of users maximizing their credit card rewards</p>
         </div>
+
+        {/* Footer */}
+        <footer className="bg-background/80 backdrop-blur-sm border-t border-border mt-16">
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid md:grid-cols-4 gap-8 mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="relative">
+                    <Wheat className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                    <DollarSign className="w-3 h-3 text-green-600 dark:text-green-400 absolute -bottom-1 -right-1" />
+                  </div>
+                  <span className="font-bold text-lg">CashReap</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Harvest Your Rewards with Smart Credit Card Recommendations
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-3">Company</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li><a href="/about" className="hover:text-primary">About Us</a></li>
+                  <li><a href="/contact" className="hover:text-primary">Contact</a></li>
+                  <li><a href="/faq" className="hover:text-primary">FAQ</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-3">Features</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li><span className="cursor-default">Card Recommendations</span></li>
+                  <li><span className="cursor-default">Business Search</span></li>
+                  <li><span className="cursor-default">Reward Calculator</span></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-3">Legal</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li><a href="/privacy" className="hover:text-primary">Privacy Policy</a></li>
+                  <li><a href="/terms" className="hover:text-primary">Terms of Service</a></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="text-center text-muted-foreground border-t border-border pt-4">
+              <p>&copy; 2025 CashReap. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

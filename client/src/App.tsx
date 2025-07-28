@@ -20,6 +20,11 @@ import InsightsDashboard from "@/pages/insights-dashboard";
 import AIRecommendations from "@/pages/ai-recommendations";
 import { Landing } from "@/pages/landing";
 import { SignIn, SignUp } from "@/pages/auth";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsOfService from "@/pages/terms-of-service";
+import FAQ from "@/pages/faq";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -43,6 +48,11 @@ function Router() {
           <Route path="/" component={Landing} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/privacy" component={PrivacyPolicy} />
+          <Route path="/terms" component={TermsOfService} />
+          <Route path="/faq" component={FAQ} />
         </>
       ) : (
         <>
@@ -61,6 +71,11 @@ function Router() {
               <Route path="/spending-analytics" component={SpendingAnalyticsPage} />
               <Route path="/insights-dashboard" component={InsightsDashboard} />
               <Route path="/ai-recommendations" component={AIRecommendations} />
+              <Route path="/about" component={About} />
+              <Route path="/contact" component={Contact} />
+              <Route path="/privacy" component={PrivacyPolicy} />
+              <Route path="/terms" component={TermsOfService} />
+              <Route path="/faq" component={FAQ} />
               <Route component={NotFound} />
             </Switch>
             <TopNavigation />
