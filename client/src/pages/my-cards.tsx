@@ -163,7 +163,7 @@ export default function MyCards() {
                 </Button>
                 <Button 
                   variant="outline"
-                  onClick={() => window.location.href = "/"}
+                  onClick={() => window.location.href = "/browse-cards"}
                   className="w-full"
                 >
                   <CreditCard className="w-4 h-4 mr-2" />

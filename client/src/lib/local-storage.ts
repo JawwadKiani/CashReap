@@ -40,10 +40,12 @@ export function saveCard(card: {
 }): void {
   try {
     const savedCards = getSavedCards();
+    console.log('Current saved cards:', savedCards.length);
     
     // Check if card is already saved
     const existingCard = savedCards.find(saved => saved.cardId === card.id);
     if (existingCard) {
+      console.log('Card already saved:', card.name);
       return; // Already saved
     }
 
@@ -59,6 +61,7 @@ export function saveCard(card: {
 
     savedCards.push(newSavedCard);
     localStorage.setItem(SAVED_CARDS_KEY, JSON.stringify(savedCards));
+    console.log('Card saved successfully:', card.name, 'Total cards:', savedCards.length);
   } catch (error) {
     console.error('Error saving card to localStorage:', error);
   }

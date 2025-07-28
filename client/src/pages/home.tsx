@@ -81,6 +81,8 @@ export default function Home() {
 
   const saveMutation = useMutation({
     mutationFn: async (card: CreditCard) => {
+      console.log('Saving card:', card.name, 'User logged in:', !!user);
+      
       if (user) {
         // Save to API if logged in
         const response = await fetch("/api/saved-cards", {
@@ -92,7 +94,7 @@ export default function Home() {
         return response.json();
       } else {
         // Save to localStorage if not logged in
-        const { saveCard } = await import("@/lib/local-storage");
+        const { saveCard, getSavedCards } = await import("@/lib/local-storage");
         saveCard({
           id: card.id,
           name: card.name,
@@ -100,23 +102,38 @@ export default function Home() {
           annualFee: card.annualFee,
           baseRewardRate: card.baseRewardRate
         });
+        console.log('Card saved to localStorage');
         return { success: true };
       }
     },
     onSuccess: () => {
+      console.log('Save mutation success');
       if (user) {
         queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user.id] });
       } else {
-        // Refresh local saved cards
+        // Refresh local saved cards immediately
         import("@/lib/local-storage").then(({ getSavedCards }) => {
-          setLocalSavedCards(getSavedCards());
+          const updated = getSavedCards();
+          console.log('Updated local cards:', updated.length);
+          setLocalSavedCards(updated);
         });
       }
     },
+    onError: (error) => {
+      console.error('Save mutation error:', error);
+    }
   });
 
   // Combined saved cards (API + localStorage)
   const savedCards = user ? apiSavedCards : localSavedCards;
+
+  // Debug logging
+  useEffect(() => {
+    console.log('User:', !!user);
+    console.log('API Saved Cards:', apiSavedCards?.length || 0);
+    console.log('Local Saved Cards:', localSavedCards?.length || 0);
+    console.log('Final Saved Cards:', savedCards?.length || 0);
+  }, [user, apiSavedCards, localSavedCards, savedCards]);
 
   return (
     <div className="min-h-screen bg-surface pb-6">
@@ -129,11 +146,7 @@ export default function Home() {
           <p className="text-on-surface-variant text-sm">
             Get the highest cash back for any store
           </p>
-          {!user && (
-            <p className="text-xs text-primary mt-2">
-              No signup required • Browse freely like GasBuddy
-            </p>
-          )}
+
         </div>
 
         {/* Store Search */}
@@ -231,13 +244,14 @@ export default function Home() {
                           size="sm"
                           className="flex-1"
                           onClick={() => saveMutation.mutate(card)}
-                          disabled={savedCards.some(saved => 
-                            user ? saved.card.id === card.id : saved.cardId === card.id
-                          )}
+                          disabled={saveMutation.isPending || (savedCards && savedCards.some(saved => 
+                            user ? saved.card?.id === card.id : saved.cardId === card.id
+                          ))}
                         >
-                          {savedCards.some(saved => 
-                            user ? saved.card.id === card.id : saved.cardId === card.id
-                          ) ? "Saved" : "Save"}
+                          {saveMutation.isPending ? "Saving..." : 
+                           (savedCards && savedCards.some(saved => 
+                            user ? saved.card?.id === card.id : saved.cardId === card.id
+                          )) ? "Saved" : "Save"}
                         </Button>
                         <Button 
                           className="flex-1 bg-primary hover:bg-primary/90 text-white text-sm py-2"
