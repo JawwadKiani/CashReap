@@ -37,63 +37,40 @@ export default function Settings() {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-4 space-y-4">
-        {/* User Profile - Show login option if not logged in */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Account</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {user ? (
-              <>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    {user.profileImageUrl ? (
-                      <img src={user.profileImageUrl} alt="Profile" className="w-12 h-12 rounded-full object-cover" />
-                    ) : (
-                      <User className="w-6 h-6 text-primary" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="font-medium text-on-surface">
-                      {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
-                    </p>
-                    <p className="text-sm text-on-surface-variant">{user.email}</p>
-                  </div>
+        {/* User Profile */}
+        {user && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Account</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  {user.profileImageUrl ? (
+                    <img src={user.profileImageUrl} alt="Profile" className="w-12 h-12 rounded-full object-cover" />
+                  ) : (
+                    <User className="w-6 h-6 text-primary" />
+                  )}
                 </div>
-                <Separator />
-                <Button
-                  variant="outline"
-                  onClick={handleLogout}
-                  className="w-full justify-start"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <div className="text-center py-4">
-                  <User className="w-16 h-16 text-gray-400 mx-auto mb-3" />
-                  <h3 className="font-medium text-on-surface mb-2">Sign in for extra features</h3>
-                  <p className="text-sm text-on-surface-variant mb-4">
-                    Save your favorite cards, track spending, and get personalized recommendations
+                <div>
+                  <p className="font-medium text-on-surface">
+                    {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
                   </p>
-                  <div className="space-y-2">
-                    <Button 
-                      onClick={() => window.location.href = "/api/login"}
-                      className="w-full"
-                    >
-                      Sign In
-                    </Button>
-                    <p className="text-xs text-on-surface-variant">
-                      You can still use CashReap without signing in
-                    </p>
-                  </div>
+                  <p className="text-sm text-on-surface-variant">{user.email}</p>
                 </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
+              </div>
+              <Separator />
+              <Button
+                variant="outline"
+                onClick={handleLogout}
+                className="w-full justify-start"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Preferences */}
         <Card>

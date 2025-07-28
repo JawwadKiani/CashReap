@@ -1,29 +1,15 @@
-import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Clock, MapPin, User, Search } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import type { LocalSearchHistory } from "@/lib/local-storage";
 
 export default function History() {
   const { user } = useAuth();
-  const [localHistory, setLocalHistory] = useState<LocalSearchHistory[]>([]);
 
-  const { data: apiSearchHistory, isLoading } = useQuery({
+  const { data: searchHistory, isLoading } = useQuery({
     queryKey: [`/api/search-history/${user?.id}`],
     enabled: !!user?.id,
   });
-
-  useEffect(() => {
-    if (!user) {
-      import("@/lib/local-storage").then(({ getSearchHistory }) => {
-        setLocalHistory(getSearchHistory());
-      });
-    }
-  }, [user]);
-
-  const searchHistory = user ? apiSearchHistory : localHistory;
 
   if (isLoading) {
     return (
@@ -47,25 +33,6 @@ export default function History() {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-4">
-        {!user && (
-          <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <User className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-800 dark:text-blue-200">Local History</span>
-            </div>
-            <p className="text-xs text-blue-600 dark:text-blue-400 mb-2">
-              Your search history is stored locally. Sign in to sync across devices.
-            </p>
-            <Button 
-              onClick={() => window.location.href = "/api/login"}
-              variant="outline"
-              size="sm"
-            >
-              Sign In
-            </Button>
-          </div>
-        )}
-
         {searchHistory && searchHistory.length > 0 ? (
           <div className="space-y-3">
             {searchHistory.map((search: any) => (
@@ -73,23 +40,27 @@ export default function History() {
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Search className="w-5 h-5 text-primary" />
+                      <i className={`${search.store.category.iconClass} text-primary`} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-on-surface">
-                        {user ? search.store?.name : search.storeName}
-                      </h3>
-                      <p className="text-sm text-on-surface-variant">Store Search</p>
+                      <h3 className="font-semibold text-on-surface">{search.store.name}</h3>
+                      <p className="text-sm text-on-surface-variant">{search.store.category.name}</p>
+                      {search.store.address && (
+                        <div className="flex items-center gap-1 mt-1">
+                          <MapPin className="w-3 h-3 text-on-surface-variant" />
+                          <p className="text-xs text-on-surface-variant truncate">{search.store.address}</p>
+                        </div>
+                      )}
                     </div>
                     <div className="text-right">
                       <div className="flex items-center gap-1 text-on-surface-variant">
                         <Clock className="w-3 h-3" />
                         <span className="text-xs">
-                          {new Date(user ? search.searchedAt : search.searchedAt).toLocaleDateString()}
+                          {new Date(search.searchedAt).toLocaleDateString()}
                         </span>
                       </div>
                       <span className="text-xs text-on-surface-variant">
-                        {new Date(user ? search.searchedAt : search.searchedAt).toLocaleTimeString([], { 
+                        {new Date(search.searchedAt).toLocaleTimeString([], { 
                           hour: '2-digit', 
                           minute: '2-digit' 
                         })}
