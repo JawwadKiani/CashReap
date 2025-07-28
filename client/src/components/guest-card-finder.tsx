@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, CreditCard, TrendingUp } from "lucide-react";
+import { Search, CreditCard, TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Store {
   id: string;
   name: string;
   categoryId: string;
   isOnline?: boolean;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  description: string;
 }
 
 interface CardRecommendation {
@@ -31,14 +38,25 @@ interface GuestCardFinderProps {
 export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [showCategoryFallback, setShowCategoryFallback] = useState(false);
 
   const { data: stores = [] } = useQuery<Store[]>({
     queryKey: ["/api/stores"],
   });
 
+  const { data: categories = [] } = useQuery<Category[]>({
+    queryKey: ["/api/categories"],
+    enabled: showCategoryFallback,
+  });
+
   const { data: recommendations = [] } = useQuery<CardRecommendation[]>({
-    queryKey: [`/api/stores/${selectedStore?.id}/recommendations`],
-    enabled: !!selectedStore,
+    queryKey: selectedStore 
+      ? [`/api/stores/${selectedStore.id}/recommendations`]
+      : selectedCategory
+      ? [`/api/categories/${selectedCategory}/recommendations`]
+      : [],
+    enabled: !!(selectedStore || selectedCategory),
   });
 
   // Filter stores based on search
@@ -48,7 +66,24 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
 
   const handleStoreSelect = (store: Store) => {
     setSelectedStore(store);
+    setSelectedCategory("");
     setSearchTerm(store.name);
+    setShowCategoryFallback(false);
+  };
+
+  const handleCategorySelect = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setSelectedStore(null);
+    const category = categories.find(c => c.id === categoryId);
+    if (category) {
+      setSearchTerm(`${category.name} business`);
+    }
+  };
+
+  const handleSearchSubmit = () => {
+    if (searchTerm.length > 1 && filteredStores.length === 0) {
+      setShowCategoryFallback(true);
+    }
   };
 
   return (
@@ -76,7 +111,7 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
           </div>
 
           {/* Search Results */}
-          {searchTerm.length > 1 && filteredStores.length > 0 && !selectedStore && (
+          {searchTerm.length > 1 && filteredStores.length > 0 && !selectedStore && !selectedCategory && (
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {filteredStores.map((store) => (
                 <button
@@ -95,8 +130,54 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
             </div>
           )}
 
+          {/* No Results - Category Fallback */}
+          {searchTerm.length > 1 && filteredStores.length === 0 && !selectedStore && !selectedCategory && (
+            <div className="p-4 bg-amber-50 dark:bg-amber-950 rounded-lg border border-amber-200 dark:border-amber-800">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <span className="font-medium text-amber-800 dark:text-amber-200">
+                  Can't find "{searchTerm}"?
+                </span>
+              </div>
+              <p className="text-sm text-amber-700 dark:text-amber-300 mb-3">
+                Select the category that best matches your business and we'll show you the best credit cards:
+              </p>
+              <Button 
+                onClick={handleSearchSubmit}
+                variant="outline"
+                size="sm"
+                className="w-full border-amber-300 text-amber-800 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-200 dark:hover:bg-amber-900"
+              >
+                <ArrowRight className="w-4 h-4 mr-2" />
+                Choose Business Category
+              </Button>
+            </div>
+          )}
+
+          {/* Category Selection */}
+          {showCategoryFallback && !selectedCategory && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                <span className="font-medium">What type of business is this?</span>
+              </div>
+              <Select onValueChange={handleCategorySelect}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select business category..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           {/* Popular Stores Quick Select */}
-          {!selectedStore && searchTerm.length <= 1 && (
+          {!selectedStore && !selectedCategory && searchTerm.length <= 1 && (
             <div>
               <p className="text-sm font-medium mb-2">Popular Stores:</p>
               <div className="flex flex-wrap gap-2">
@@ -120,12 +201,15 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
       </Card>
 
       {/* Recommendations Results */}
-      {selectedStore && (
+      {(selectedStore || selectedCategory) && (
         <Card className="border-green-200 bg-green-50 dark:bg-green-950 dark:border-green-800">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200">
               <CreditCard className="w-5 h-5" />
-              Best Cards for {selectedStore.name}
+              {selectedStore 
+                ? `Best Cards for ${selectedStore.name}`
+                : `Best Cards for ${categories.find(c => c.id === selectedCategory)?.name || 'Selected Category'}`
+              }
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -150,7 +234,9 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
             ) : (
               <div className="text-center py-4">
                 <TrendingUp className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                <p className="text-muted-foreground">Finding best cards for {selectedStore.name}...</p>
+                <p className="text-muted-foreground">
+                  Finding best cards for {selectedStore ? selectedStore.name : categories.find(c => c.id === selectedCategory)?.name}...
+                </p>
               </div>
             )}
 
@@ -171,7 +257,9 @@ export function GuestCardFinder({ onSignUpClick }: GuestCardFinderProps) {
                   variant="ghost"
                   onClick={() => {
                     setSelectedStore(null);
+                    setSelectedCategory("");
                     setSearchTerm("");
+                    setShowCategoryFallback(false);
                   }}
                   className="w-full"
                   size="sm"

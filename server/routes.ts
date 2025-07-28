@@ -126,6 +126,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get card recommendations by category (fallback for unknown businesses)
+  app.get("/api/categories/:categoryId/recommendations", async (req, res) => {
+    try {
+      const { categoryId } = req.params;
+      const { annualFee, creditScore } = req.query;
+      
+      let recommendations = await storage.getCardRecommendationsForCategory(categoryId);
+      
+      // Apply filters
+      if (annualFee !== undefined) {
+        const maxFee = annualFee === "0" ? 0 : annualFee === "100" ? 100 : Infinity;
+        recommendations = recommendations.filter((card: any) => card.annualFee <= maxFee);
+      }
+      
+      if (creditScore !== undefined) {
+        const minScore = parseInt(creditScore as string);
+        if (!isNaN(minScore)) {
+          recommendations = recommendations.filter((card: any) => card.minCreditScore <= minScore);
+        }
+      }
+      
+      res.json(recommendations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get category recommendations" });
+    }
+  });
+
+  // Get all merchant categories for fallback selection
+  app.get("/api/categories", async (req, res) => {
+    try {
+      const categories = await storage.getMerchantCategories();
+      res.json(categories);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch categories" });
+    }
+  });
+
   // Get all credit cards
   app.get("/api/credit-cards", async (req, res) => {
     try {

@@ -704,7 +704,54 @@ export class DatabaseStorage implements IStorage {
           { id: "wegmans", name: "Wegmans", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Northeast US" },
           { id: "publix", name: "Publix", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
           { id: "fred-meyer", name: "Fred Meyer", categoryId: "department", address: "Regional Chain", city: "Multiple Locations", state: "Pacific Northwest" },
-          { id: "winco", name: "WinCo Foods", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Western US" }
+          { id: "winco", name: "WinCo Foods", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Western US" },
+          
+          // ADDITIONAL REGIONAL POWERHOUSES
+          { id: "heb-plus", name: "H-E-B Plus!", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "TX" },
+          { id: "brookshires", name: "Brookshire's", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "TX/LA/AR" },
+          { id: "piggly-wiggly", name: "Piggly Wiggly", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
+          { id: "food-4-less", name: "Food 4 Less", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "CA/IN/IL/NV" },
+          { id: "ralphs", name: "Ralphs", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "CA" },
+          { id: "vons", name: "Vons", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "CA/NV" },
+          { id: "jewel-osco", name: "Jewel-Osco", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "IL/IN/IA" },
+          { id: "mariano's", name: "Mariano's", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "IL/WI" },
+          { id: "price-chopper", name: "Price Chopper", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "NY/VT/CT/MA/NH/PA" },
+          { id: "hannaford", name: "Hannaford", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "ME/NH/VT/MA/NY" },
+          { id: "acme-markets", name: "ACME Markets", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "PA/NJ/DE/MD" },
+          { id: "shaws", name: "Shaw's", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "ME/NH/VT/MA/RI/CT" },
+          
+          // REGIONAL GAS & CONVENIENCE
+          { id: "kwik-trip", name: "Kwik Trip", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "WI/MN/IA" },
+          { id: "royal-farms", name: "Royal Farms", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "MD/DE/PA/VA/WV/NJ" },
+          { id: "kum-and-go", name: "Kum & Go", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "IA/CO/MN/MT/ND/NE/OK/SD/UT/WY" },
+          { id: "maverick", name: "Maverick", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "Western US" },
+          { id: "pilot-flying-j", name: "Pilot Flying J", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "loves-travel-stops", name: "Love's Travel Stops", categoryId: "gas", address: "National Chain", city: "Multiple Locations", state: "US" },
+          { id: "holiday-stationstores", name: "Holiday Stationstores", categoryId: "gas", address: "Regional Chain", city: "Multiple Locations", state: "MN/WI/ND/SD/MI" },
+          
+          // REGIONAL DINING CHAINS
+          { id: "whataburger", name: "Whataburger", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "TX/Southern US" },
+          { id: "culvers", name: "Culver's", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "Midwest US" },
+          { id: "in-n-out-burger", name: "In-N-Out Burger", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "CA/NV/AZ/UT/CO/TX" },
+          { id: "white-castle", name: "White Castle", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "Midwest/Southeast US" },
+          { id: "krystal", name: "Krystal", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
+          { id: "bojangles", name: "Bojangles", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
+          { id: "zaxbys", name: "Zaxby's", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" },
+          { id: "raising-canes", name: "Raising Cane's", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "Southern US" },
+          { id: "cookout", name: "Cook Out", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "NC/SC/VA/WV/TN/KY/AL/GA/MD" },
+          { id: "portillos", name: "Portillo's", categoryId: "dining", address: "Regional Chain", city: "Multiple Locations", state: "IL/IN/CA/AZ/FL/TX" },
+          
+          // REGIONAL DEPARTMENT & RETAIL
+          { id: "meijer-stores", name: "Meijer", categoryId: "department", address: "Regional Chain", city: "Multiple Locations", state: "MI/OH/IN/IL/KY/WI" },
+          { id: "woodmans", name: "Woodman's Markets", categoryId: "grocery", address: "Regional Chain", city: "Multiple Locations", state: "WI/IL" },
+          { id: "menards-home", name: "Menards", categoryId: "home", address: "Regional Chain", city: "Multiple Locations", state: "Midwest US" },
+          { id: "fleet-farm", name: "Fleet Farm", categoryId: "department", address: "Regional Chain", city: "Multiple Locations", state: "WI/MN/IA/ND" },
+          { id: "tractor-supply", name: "Tractor Supply Co.", categoryId: "home", address: "National Chain", city: "Multiple Locations", state: "US" },
+          
+          // REGIONAL PHARMACIES
+          { id: "meijer-pharmacy", name: "Meijer Pharmacy", categoryId: "drugstores", address: "Regional Chain", city: "Multiple Locations", state: "Midwest US" },
+          { id: "hyvee-pharmacy", name: "Hy-Vee Pharmacy", categoryId: "drugstores", address: "Regional Chain", city: "Multiple Locations", state: "Midwest US" },
+          { id: "publix-pharmacy", name: "Publix Pharmacy", categoryId: "drugstores", address: "Regional Chain", city: "Multiple Locations", state: "Southeast US" }
         ];
 
         // Clear existing stores first, then seed new comprehensive database
