@@ -52,59 +52,8 @@ export function Landing() {
           </p>
         </header>
 
-        {/* Features */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="text-center">
-            <CardHeader>
-              <Search className="w-8 h-8 text-primary mx-auto mb-2" />
-              <CardTitle className="text-lg">Smart Search</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Search any major US business and get instant credit card recommendations
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <TrendingUp className="w-8 h-8 text-primary mx-auto mb-2" />
-              <CardTitle className="text-lg">Rotating Categories</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Stay updated with current quarter rotating categories that are active right now
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <CreditCard className="w-8 h-8 text-primary mx-auto mb-2" />
-              <CardTitle className="text-lg">34+ Cards</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Comprehensive database of cards from all major US issuers
-              </CardDescription>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <Shield className="w-8 h-8 text-primary mx-auto mb-2" />
-              <CardTitle className="text-lg">Secure & Private</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Your data is secure and we never share your personal information
-              </CardDescription>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center">
+        {/* Call to Action - Login/Register Section */}
+        <div className="text-center mb-12">
           <Card className="max-w-md mx-auto">
             <CardHeader>
               <CardTitle>Ready to Start Harvesting?</CardTitle>
@@ -152,6 +101,57 @@ export function Landing() {
               <div className="text-xs text-on-surface-variant">
                 Multiple secure authentication options available
               </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Features */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <Card className="text-center">
+            <CardHeader>
+              <Search className="w-8 h-8 text-primary mx-auto mb-2" />
+              <CardTitle className="text-lg">Smart Search</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Search any major US business and get instant credit card recommendations
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <TrendingUp className="w-8 h-8 text-primary mx-auto mb-2" />
+              <CardTitle className="text-lg">Rotating Categories</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Stay updated with current quarter rotating categories that are active right now
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <CreditCard className="w-8 h-8 text-primary mx-auto mb-2" />
+              <CardTitle className="text-lg">34+ Cards</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Comprehensive database of cards from all major US issuers
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <Shield className="w-8 h-8 text-primary mx-auto mb-2" />
+              <CardTitle className="text-lg">Secure & Private</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Your data is secure and we never share your personal information
+              </CardDescription>
             </CardContent>
           </Card>
         </div>
