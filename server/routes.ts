@@ -276,6 +276,152 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Purchase Plans API routes
+  app.get('/api/purchase-plans/:userId', isAuthenticated, async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const plans = await storage.getUserPurchasePlans(userId);
+      const plansWithRecommendations = await Promise.all(plans.map(async (plan) => {
+        let recommendedCards = [];
+        let potentialEarnings = 0;
+        
+        if (plan.storeId) {
+          recommendedCards = await storage.getCardRecommendationsForStore(plan.storeId, userId);
+        } else if (plan.categoryId) {
+          // Get cards for category
+          const categoryRewards = await storage.getRewardsForCategory(plan.categoryId);
+          const cardIds = categoryRewards.map(r => r.cardId);
+          if (cardIds.length > 0) {
+            const cards = await storage.getCreditCards();
+            recommendedCards = cards.filter(c => cardIds.includes(c.id)).slice(0, 3);
+          }
+        }
+        
+        if (recommendedCards.length > 0) {
+          const bestCard = recommendedCards[0];
+          const categoryReward = await storage.getRewardsForCard(bestCard.id);
+          const rewardRate = categoryReward.length > 0 ? parseFloat(categoryReward[0].rewardRate) : parseFloat(bestCard.baseReward);
+          potentialEarnings = (parseFloat(plan.amount) * rewardRate) / 100;
+        }
+        
+        return {
+          ...plan,
+          recommendedCards: recommendedCards.map(card => ({
+            ...card,
+            rewardRate: "2.0" // simplified for demo
+          })),
+          potentialEarnings
+        };
+      }));
+      
+      res.json(plansWithRecommendations);
+    } catch (error) {
+      console.error("Error fetching purchase plans:", error);
+      res.status(500).json({ message: "Failed to fetch purchase plans" });
+    }
+  });
+
+  app.post('/api/purchase-plans', isAuthenticated, async (req, res) => {
+    try {
+      const plan = await storage.createPurchasePlan(req.body);
+      res.json(plan);
+    } catch (error) {
+      console.error("Error creating purchase plan:", error);
+      res.status(500).json({ message: "Failed to create purchase plan" });
+    }
+  });
+
+  app.patch('/api/purchase-plans/:id/complete', isAuthenticated, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const plan = await storage.updatePurchasePlan(id, { isCompleted: true });
+      res.json(plan);
+    } catch (error) {
+      console.error("Error completing purchase plan:", error);
+      res.status(500).json({ message: "Failed to complete purchase plan" });
+    }
+  });
+
+  // Welcome Bonus Tracking API routes
+  app.get('/api/welcome-bonus-tracking/:userId', isAuthenticated, async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const trackings = await storage.getUserWelcomeBonusTracking(userId);
+      const cards = await storage.getCreditCards();
+      
+      const trackingsWithProgress = trackings.map(tracking => {
+        const card = cards.find(c => c.id === tracking.cardId);
+        const progressPercentage = Math.min((parseFloat(tracking.currentSpending) / parseFloat(tracking.requiredSpending)) * 100, 100);
+        const remainingSpending = Math.max(parseFloat(tracking.requiredSpending) - parseFloat(tracking.currentSpending), 0);
+        
+        // Calculate days remaining
+        const startDate = new Date(tracking.startDate);
+        const endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + tracking.timeframeMonths);
+        const daysRemaining = Math.max(Math.ceil((endDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)), 0);
+        
+        return {
+          ...tracking,
+          card: card || { name: "Unknown Card", issuer: "Unknown" },
+          progressPercentage,
+          remainingSpending,
+          daysRemaining
+        };
+      });
+      
+      res.json(trackingsWithProgress);
+    } catch (error) {
+      console.error("Error fetching welcome bonus tracking:", error);
+      res.status(500).json({ message: "Failed to fetch welcome bonus tracking" });
+    }
+  });
+
+  app.post('/api/welcome-bonus-tracking', isAuthenticated, async (req, res) => {
+    try {
+      const tracking = await storage.createWelcomeBonusTracking(req.body);
+      res.json(tracking);
+    } catch (error) {
+      console.error("Error creating welcome bonus tracking:", error);
+      res.status(500).json({ message: "Failed to create welcome bonus tracking" });
+    }
+  });
+
+  app.patch('/api/welcome-bonus-tracking/:id', isAuthenticated, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const tracking = await storage.updateWelcomeBonusTracking(id, req.body);
+      res.json(tracking);
+    } catch (error) {
+      console.error("Error updating welcome bonus tracking:", error);
+      res.status(500).json({ message: "Failed to update welcome bonus tracking" });
+    }
+  });
+
+  app.patch('/api/welcome-bonus-tracking/:id/complete', isAuthenticated, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const tracking = await storage.updateWelcomeBonusTracking(id, { isCompleted: true });
+      res.json(tracking);
+    } catch (error) {
+      console.error("Error completing welcome bonus tracking:", error);
+      res.status(500).json({ message: "Failed to complete welcome bonus tracking" });
+    }
+  });
+
+  // Card Comparisons API routes
+  app.post('/api/card-comparisons', isAuthenticated, async (req, res) => {
+    try {
+      const comparison = await storage.createCardComparison({
+        ...req.body,
+        cardIds: JSON.stringify(req.body.cardIds)
+      });
+      res.json(comparison);
+    } catch (error) {
+      console.error("Error creating card comparison:", error);
+      res.status(500).json({ message: "Failed to create card comparison" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

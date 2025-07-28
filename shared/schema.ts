@@ -77,6 +77,57 @@ export const userSavedCards = pgTable("user_saved_cards", {
   savedAt: timestamp("saved_at").notNull().default(sql`now()`),
 });
 
+// New tables for enhanced features
+
+export const userSpendingProfiles = pgTable("user_spending_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  categoryId: varchar("category_id").notNull().references(() => merchantCategories.id),
+  monthlySpending: decimal("monthly_spending", { precision: 10, scale: 2 }).notNull().default("0.00"),
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
+export const purchasePlans = pgTable("purchase_plans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  title: text("title").notNull(),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  storeId: varchar("store_id").references(() => stores.id),
+  categoryId: varchar("category_id").references(() => merchantCategories.id),
+  targetDate: timestamp("target_date"),
+  isCompleted: boolean("is_completed").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
+export const welcomeBonusTracking = pgTable("welcome_bonus_tracking", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  cardId: varchar("card_id").notNull().references(() => creditCards.id),
+  requiredSpending: decimal("required_spending", { precision: 10, scale: 2 }).notNull(),
+  currentSpending: decimal("current_spending", { precision: 10, scale: 2 }).notNull().default("0.00"),
+  timeframeMonths: integer("timeframe_months").notNull().default(3),
+  startDate: timestamp("start_date").notNull().default(sql`now()`),
+  isCompleted: boolean("is_completed").notNull().default(false),
+});
+
+export const userPreferences = pgTable("user_preferences", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  creditScoreRange: varchar("credit_score_range").notNull().default("650-700"), // "600-650", "650-700", "700-750", "750+"
+  maxAnnualFee: integer("max_annual_fee").notNull().default(0),
+  preferredIssuers: text("preferred_issuers"), // JSON array of preferred issuers
+  notificationsEnabled: boolean("notifications_enabled").notNull().default(true),
+  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+});
+
+export const cardComparisons = pgTable("card_comparisons", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  cardIds: text("card_ids").notNull(), // JSON array of card IDs being compared
+  comparisonName: text("comparison_name"),
+  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+});
+
 // Insert schemas
 export const insertCreditCardSchema = createInsertSchema(creditCards).omit({ id: true });
 export const insertMerchantCategorySchema = createInsertSchema(merchantCategories).omit({ id: true });
@@ -85,6 +136,11 @@ export const insertStoreSchema = createInsertSchema(stores).omit({ id: true });
 export const insertUserSearchHistorySchema = createInsertSchema(userSearchHistory).omit({ id: true });
 export const insertUserSavedCardSchema = createInsertSchema(userSavedCards).omit({ id: true });
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertUserSpendingProfileSchema = createInsertSchema(userSpendingProfiles).omit({ id: true, updatedAt: true });
+export const insertPurchasePlanSchema = createInsertSchema(purchasePlans).omit({ id: true, createdAt: true });
+export const insertWelcomeBonusTrackingSchema = createInsertSchema(welcomeBonusTracking).omit({ id: true });
+export const insertUserPreferencesSchema = createInsertSchema(userPreferences).omit({ id: true, updatedAt: true });
+export const insertCardComparisonSchema = createInsertSchema(cardComparisons).omit({ id: true, createdAt: true });
 
 // Types
 export type CreditCard = typeof creditCards.$inferSelect;
@@ -102,6 +158,16 @@ export type InsertUserSavedCard = z.infer<typeof insertUserSavedCardSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type UpsertUser = typeof users.$inferInsert;
+export type UserSpendingProfile = typeof userSpendingProfiles.$inferSelect;
+export type InsertUserSpendingProfile = z.infer<typeof insertUserSpendingProfileSchema>;
+export type PurchasePlan = typeof purchasePlans.$inferSelect;
+export type InsertPurchasePlan = z.infer<typeof insertPurchasePlanSchema>;
+export type WelcomeBonusTracking = typeof welcomeBonusTracking.$inferSelect;
+export type InsertWelcomeBonusTracking = z.infer<typeof insertWelcomeBonusTrackingSchema>;
+export type UserPreferences = typeof userPreferences.$inferSelect;
+export type InsertUserPreferences = z.infer<typeof insertUserPreferencesSchema>;
+export type CardComparison = typeof cardComparisons.$inferSelect;
+export type InsertCardComparison = z.infer<typeof insertCardComparisonSchema>;
 
 // Extended types for API responses
 export type StoreWithCategory = Store & {
@@ -120,4 +186,36 @@ export type LocationData = {
   address: string;
   latitude?: number;
   longitude?: number;
+};
+
+// Enhanced API response types
+export type SpendingAnalysis = {
+  categoryId: string;
+  categoryName: string;
+  monthlySpending: number;
+  recommendedCards: CardRecommendation[];
+  potentialEarnings: number;
+};
+
+export type PurchasePlanWithRecommendations = PurchasePlan & {
+  store?: StoreWithCategory;
+  category?: MerchantCategory;
+  recommendedCards: CardRecommendation[];
+  potentialEarnings: number;
+};
+
+export type WelcomeBonusProgress = WelcomeBonusTracking & {
+  card: CreditCard;
+  progressPercentage: number;
+  remainingSpending: number;
+  daysRemaining: number;
+};
+
+export type CardWithEarnings = CreditCard & {
+  projectedAnnualEarnings: number;
+  topCategories: Array<{
+    categoryName: string;
+    rewardRate: string;
+    monthlyEarnings: number;
+  }>;
 };

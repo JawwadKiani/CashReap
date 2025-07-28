@@ -11,6 +11,10 @@ import MyCards from "@/pages/my-cards";
 import History from "@/pages/history";
 import Settings from "@/pages/settings";
 import CardBrowser from "@/pages/card-browser";
+import PurchasePlanner from "@/pages/purchase-planner";
+import RewardCalculator from "@/pages/reward-calculator";
+import WelcomeBonusTracker from "@/pages/welcome-bonus-tracker";
+import CardComparison from "@/pages/card-comparison";
 import { Landing } from "@/pages/landing";
 import { SignIn, SignUp } from "@/pages/auth";
 import NotFound from "@/pages/not-found";
@@ -47,6 +51,10 @@ function Router() {
               <Route path="/history" component={History} />
               <Route path="/settings" component={Settings} />
               <Route path="/browse-cards" component={CardBrowser} />
+              <Route path="/purchase-planner" component={PurchasePlanner} />
+              <Route path="/reward-calculator" component={RewardCalculator} />
+              <Route path="/welcome-bonus-tracker" component={WelcomeBonusTracker} />
+              <Route path="/card-comparison" component={CardComparison} />
               <Route component={NotFound} />
             </Switch>
             <BottomNavigation />

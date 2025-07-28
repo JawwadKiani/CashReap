@@ -175,31 +175,88 @@ export default function Home() {
           </div>
         )}
 
-        {/* No Store Selected */}
+        {/* Enhanced Feature Showcase - Comprehensive CashReap Platform */}
         {!selectedStore && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-surface-variant text-center">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-on-surface mb-2">Welcome to CashReap</h2>
-              <p className="text-sm text-on-surface-variant mb-4">
-                Search for any major US business to find the best credit card for maximum cash back rewards.
-              </p>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-amber-50 to-green-50 dark:from-amber-900 dark:to-green-900 rounded-xl p-6 shadow-sm border border-surface-variant text-center">
+              <div className="mb-4">
+                <h2 className="text-xl font-bold text-on-surface mb-2">🌾 CashReap Platform</h2>
+                <p className="text-sm text-on-surface-variant mb-4">
+                  Complete credit card optimization suite with advanced planning, tracking, and analysis tools
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    onClick={() => navigate("/browse-cards")}
+                    className="bg-primary hover:bg-primary/90 text-white"
+                  >
+                    <Search className="w-4 h-4 mr-2" />
+                    Browse All Cards
+                  </Button>
+                  <Button
+                    onClick={() => navigate("/purchase-planner")}
+                    variant="outline"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
+                  >
+                    Plan Purchases
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Advanced Tools Grid */}
+            <div className="grid grid-cols-2 gap-4">
               <Button
-                onClick={() => navigate("/browse-cards")}
-                className="bg-primary hover:bg-primary/90 text-white"
+                onClick={() => navigate("/reward-calculator")}
+                variant="outline"
+                className="h-20 flex-col bg-green-50 dark:bg-green-900 border-green-200 hover:bg-green-100"
               >
-                <Search className="w-4 h-4 mr-2" />
-                Browse All Cards
+                <div className="text-2xl mb-1">🧮</div>
+                <span className="text-sm font-medium">Reward Calculator</span>
               </Button>
+              <Button
+                onClick={() => navigate("/welcome-bonus-tracker")}
+                variant="outline"
+                className="h-20 flex-col bg-purple-50 dark:bg-purple-900 border-purple-200 hover:bg-purple-100"
+              >
+                <div className="text-2xl mb-1">🎁</div>
+                <span className="text-sm font-medium">Bonus Tracker</span>
+              </Button>
+              <Button
+                onClick={() => navigate("/card-comparison")}
+                variant="outline"
+                className="h-20 flex-col bg-blue-50 dark:bg-blue-900 border-blue-200 hover:bg-blue-100"
+              >
+                <div className="text-2xl mb-1">📊</div>
+                <span className="text-sm font-medium">Compare Cards</span>
+              </Button>
+              <Button
+                onClick={() => navigate("/history")}
+                variant="outline"
+                className="h-20 flex-col bg-orange-50 dark:bg-orange-900 border-orange-200 hover:bg-orange-100"
+              >
+                <div className="text-2xl mb-1">📈</div>
+                <span className="text-sm font-medium">Your Activity</span>
+              </Button>
+            </div>
+
+            {/* Search for Store */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-surface-variant">
+              <h3 className="font-semibold text-on-surface mb-3">Find Best Card for Store</h3>
+              <p className="text-sm text-on-surface-variant mb-4">
+                Search any major US business to get personalized credit card recommendations
+              </p>
+              <LocationDetector onStoreSelect={handleStoreSelect} />
             </div>
           </div>
         )}
 
-        {/* Quick Actions */}
+        {/* Enhanced Quick Actions */}
         {selectedStore && recommendations && recommendations.length > 0 && (
           <div className="space-y-3">
             <h3 className="font-semibold text-on-surface">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-3">
               <Button
+                onClick={() => navigate("/card-comparison")}
                 variant="outline"
                 className="bg-white rounded-xl p-4 shadow-sm border-surface-variant hover:shadow-md h-auto flex-col"
               >
@@ -207,11 +264,12 @@ export default function Home() {
                 <span className="text-sm font-medium text-on-surface">Compare Cards</span>
               </Button>
               <Button
+                onClick={() => navigate("/purchase-planner")}
                 variant="outline"
                 className="bg-white rounded-xl p-4 shadow-sm border-surface-variant hover:shadow-md h-auto flex-col"
               >
                 <Bookmark className="w-5 h-5 text-primary mb-2" />
-                <span className="text-sm font-medium text-on-surface">Save Results</span>
+                <span className="text-sm font-medium text-on-surface">Plan Purchase</span>
               </Button>
             </div>
           </div>

@@ -15,13 +15,28 @@ import {
   type UpsertUser,
   type StoreWithCategory,
   type CardRecommendation,
+  type UserSpendingProfile,
+  type InsertUserSpendingProfile,
+  type PurchasePlan,
+  type InsertPurchasePlan,
+  type WelcomeBonusTracking,
+  type InsertWelcomeBonusTracking,
+  type UserPreferences,
+  type InsertUserPreferences,
+  type CardComparison,
+  type InsertCardComparison,
   users,
   userSearchHistory,
   userSavedCards,
   creditCards,
   merchantCategories,
   cardCategoryRewards,
-  stores
+  stores,
+  userSpendingProfiles,
+  purchasePlans,
+  welcomeBonusTracking,
+  userPreferences,
+  cardComparisons
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, inArray } from "drizzle-orm";
@@ -66,6 +81,29 @@ export interface IStorage {
 
   // Recommendations
   getCardRecommendationsForStore(storeId: string, userId?: string): Promise<CreditCard[]>;
+
+  // User Spending Profiles
+  getUserSpendingProfile(userId: string): Promise<UserSpendingProfile[]>;
+  updateSpendingProfile(profile: InsertUserSpendingProfile): Promise<UserSpendingProfile>;
+
+  // Purchase Plans
+  getUserPurchasePlans(userId: string): Promise<PurchasePlan[]>;
+  createPurchasePlan(plan: InsertPurchasePlan): Promise<PurchasePlan>;
+  updatePurchasePlan(id: string, updates: Partial<PurchasePlan>): Promise<PurchasePlan>;
+  deletePurchasePlan(id: string): Promise<boolean>;
+
+  // Welcome Bonus Tracking
+  getUserWelcomeBonusTracking(userId: string): Promise<WelcomeBonusTracking[]>;
+  createWelcomeBonusTracking(tracking: InsertWelcomeBonusTracking): Promise<WelcomeBonusTracking>;
+  updateWelcomeBonusTracking(id: string, updates: Partial<WelcomeBonusTracking>): Promise<WelcomeBonusTracking>;
+
+  // User Preferences
+  getUserPreferences(userId: string): Promise<UserPreferences | undefined>;
+  updateUserPreferences(preferences: InsertUserPreferences): Promise<UserPreferences>;
+
+  // Card Comparisons
+  getUserCardComparisons(userId: string): Promise<CardComparison[]>;
+  createCardComparison(comparison: InsertCardComparison): Promise<CardComparison>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -298,6 +336,100 @@ export class DatabaseStorage implements IStorage {
     // Sort by reward rate (highest first) and return top 5 cards
     cards.sort(sortByReward);
     return cards.slice(0, 5);
+  }
+
+  // User Spending Profiles
+  async getUserSpendingProfile(userId: string): Promise<UserSpendingProfile[]> {
+    return await db.select().from(userSpendingProfiles).where(eq(userSpendingProfiles.userId, userId));
+  }
+
+  async updateSpendingProfile(profile: InsertUserSpendingProfile): Promise<UserSpendingProfile> {
+    const [result] = await db
+      .insert(userSpendingProfiles)
+      .values(profile)
+      .onConflictDoUpdate({
+        target: [userSpendingProfiles.userId, userSpendingProfiles.categoryId],
+        set: {
+          monthlySpending: profile.monthlySpending,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return result;
+  }
+
+  // Purchase Plans
+  async getUserPurchasePlans(userId: string): Promise<PurchasePlan[]> {
+    return await db.select().from(purchasePlans).where(eq(purchasePlans.userId, userId));
+  }
+
+  async createPurchasePlan(plan: InsertPurchasePlan): Promise<PurchasePlan> {
+    const [result] = await db.insert(purchasePlans).values(plan).returning();
+    return result;
+  }
+
+  async updatePurchasePlan(id: string, updates: Partial<PurchasePlan>): Promise<PurchasePlan> {
+    const [result] = await db
+      .update(purchasePlans)
+      .set(updates)
+      .where(eq(purchasePlans.id, id))
+      .returning();
+    return result;
+  }
+
+  async deletePurchasePlan(id: string): Promise<boolean> {
+    const result = await db.delete(purchasePlans).where(eq(purchasePlans.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Welcome Bonus Tracking
+  async getUserWelcomeBonusTracking(userId: string): Promise<WelcomeBonusTracking[]> {
+    return await db.select().from(welcomeBonusTracking).where(eq(welcomeBonusTracking.userId, userId));
+  }
+
+  async createWelcomeBonusTracking(tracking: InsertWelcomeBonusTracking): Promise<WelcomeBonusTracking> {
+    const [result] = await db.insert(welcomeBonusTracking).values(tracking).returning();
+    return result;
+  }
+
+  async updateWelcomeBonusTracking(id: string, updates: Partial<WelcomeBonusTracking>): Promise<WelcomeBonusTracking> {
+    const [result] = await db
+      .update(welcomeBonusTracking)
+      .set(updates)
+      .where(eq(welcomeBonusTracking.id, id))
+      .returning();
+    return result;
+  }
+
+  // User Preferences
+  async getUserPreferences(userId: string): Promise<UserPreferences | undefined> {
+    const [result] = await db.select().from(userPreferences).where(eq(userPreferences.userId, userId));
+    return result;
+  }
+
+  async updateUserPreferences(preferences: InsertUserPreferences): Promise<UserPreferences> {
+    const [result] = await db
+      .insert(userPreferences)
+      .values(preferences)
+      .onConflictDoUpdate({
+        target: userPreferences.userId,
+        set: {
+          ...preferences,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return result;
+  }
+
+  // Card Comparisons
+  async getUserCardComparisons(userId: string): Promise<CardComparison[]> {
+    return await db.select().from(cardComparisons).where(eq(cardComparisons.userId, userId));
+  }
+
+  async createCardComparison(comparison: InsertCardComparison): Promise<CardComparison> {
+    const [result] = await db.insert(cardComparisons).values(comparison).returning();
+    return result;
   }
 
   // Seed initial data
