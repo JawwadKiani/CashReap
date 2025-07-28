@@ -9,10 +9,14 @@ import {
   insertUserSavedCardSchema,
   type CardRecommendation
 } from "@shared/schema";
+import { registerAffiliateRoutes } from "./routes-affiliate";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
   await setupAuth(app);
+  
+  // Setup affiliate routes
+  registerAffiliateRoutes(app);
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {

@@ -161,3 +161,24 @@ The application is designed to be deployed on platforms like Replit, Vercel, or 
 - **Authentication Compatible**: Replit Auth can integrate with iOS OAuth flows
 - **Offline Capability**: Local storage for saved cards and search history
 - **Native Features Ready**: Location services, push notifications, Touch ID integration potential
+
+## Business Strategy & Monetization - January 2025
+
+### Revenue Streams
+1. **Credit Card Affiliate Commissions**: $50-200 per approved application
+2. **Premium Subscription**: $9.99/month for advanced features
+3. **Business Partnerships**: Revenue sharing with major retailers
+4. **Data Insights**: Anonymized spending pattern reports (enterprise)
+
+### Patent Strategy
+- **Core Innovation**: AI-powered credit card recommendation algorithm matching stores to optimal rewards
+- **Unique Elements**: Real-time rewards optimization, category-based matching, user spending prediction
+- **Patent Type**: Utility patent for "Method and System for Optimizing Credit Card Rewards Based on Merchant Categories"
+- **Timeline**: 18-24 months for approval, $10,000-15,000 in legal costs
+- **Protection**: Algorithm, database structure, user interface innovations
+
+### Affiliate Integration Plan
+- **Major Networks**: Commission Junction, ShareASale, Impact Radius
+- **Direct Partnerships**: Chase, American Express, Capital One, Citi
+- **Technical Implementation**: Custom referral tracking, conversion attribution
+- **Compliance**: FTC disclosure requirements, CCPA/GDPR privacy standards

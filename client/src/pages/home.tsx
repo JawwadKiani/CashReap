@@ -58,7 +58,7 @@ export default function Home() {
   // Get user's saved cards
   const { data: savedCards = [] } = useQuery<SavedCard[]>({
     queryKey: ["/api/saved-cards", user?.id],
-    enabled: !!user?.id,
+    enabled: !!user,
   });
 
   // Get recommendations for selected store
@@ -72,13 +72,13 @@ export default function Home() {
       const response = await fetch("/api/saved-cards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user?.id, cardId }),
+        body: JSON.stringify({ userId: user?.id || '', cardId }),
       });
       if (!response.ok) throw new Error("Failed to save card");
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/saved-cards", user?.id || ''] });
     },
   });
 
@@ -184,6 +184,12 @@ export default function Home() {
                       {card.welcomeBonus && (
                         <p className="text-xs text-primary mt-2">{card.welcomeBonus}</p>
                       )}
+                      <Button 
+                        className="w-full mt-3 bg-primary hover:bg-primary/90 text-white text-sm py-2"
+                        onClick={() => window.open(`/apply/${card.id}`, '_blank')}
+                      >
+                        Apply Now
+                      </Button>
                     </Card>
                   );
                 })
