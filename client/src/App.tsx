@@ -15,6 +15,8 @@ import PurchasePlanner from "@/pages/purchase-planner";
 import RewardCalculator from "@/pages/reward-calculator";
 import WelcomeBonusTracker from "@/pages/welcome-bonus-tracker";
 import CardComparison from "@/pages/card-comparison";
+import SpendingAnalyticsPage from "@/pages/spending-analytics";
+import InsightsDashboard from "@/pages/insights-dashboard";
 import { Landing } from "@/pages/landing";
 import { SignIn, SignUp } from "@/pages/auth";
 import NotFound from "@/pages/not-found";
@@ -55,6 +57,8 @@ function Router() {
               <Route path="/reward-calculator" component={RewardCalculator} />
               <Route path="/welcome-bonus-tracker" component={WelcomeBonusTracker} />
               <Route path="/card-comparison" component={CardComparison} />
+              <Route path="/spending-analytics" component={SpendingAnalyticsPage} />
+              <Route path="/insights-dashboard" component={InsightsDashboard} />
               <Route component={NotFound} />
             </Switch>
             <BottomNavigation />
