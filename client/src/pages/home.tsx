@@ -42,7 +42,7 @@ export default function Home() {
     enabled: !!selectedStore && !!user?.id,
   });
 
-  const { data: searchHistory } = useQuery({
+  const { data: searchHistory = [] } = useQuery({
     queryKey: [`/api/search-history/${user?.id}`],
     enabled: !!user?.id,
   });
@@ -90,14 +90,15 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-surface-variant sticky top-0 z-50">
         <div className="max-w-md mx-auto px-4 py-3">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex-1 flex justify-center">
-              <div className="flex flex-col items-center">
-                <img src="/src/assets/logo-transparent.svg" alt="CashReap" className="h-32 mb-1" />
-                <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
-              </div>
+          <div className="relative mb-3">
+            {/* Centered Logo */}
+            <div className="flex flex-col items-center justify-center">
+              <img src="/src/assets/logo-transparent.svg" alt="CashReap" className="h-24 mb-1" />
+              <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
             </div>
-            <div className="flex items-center gap-2">
+            
+            {/* Action buttons positioned absolutely */}
+            <div className="absolute top-0 right-0 flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -295,12 +296,12 @@ export default function Home() {
             {/* New Advanced Features Row */}
             <div className="grid grid-cols-4 gap-3">
               <Button
-                onClick={() => navigate("/insights-dashboard")}
+                onClick={() => navigate("/ai-recommendations")}
                 variant="outline"
                 className="h-16 flex-col bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900 dark:to-indigo-900 border-purple-200 hover:bg-purple-100 hover:shadow-lg transition-all duration-300"
               >
                 <div className="text-lg mb-1">🧠</div>
-                <span className="text-xs font-medium">AI Insights</span>
+                <span className="text-xs font-medium">AI ML</span>
               </Button>
               <Button
                 onClick={() => navigate("/history")}
@@ -423,7 +424,7 @@ export default function Home() {
       <FloatingActionButton
         icon={Sparkles}
         gradient="purple"
-        onClick={() => navigate("/insights-dashboard")}
+        onClick={() => navigate("/ai-recommendations")}
         label="AI"
       />
     </div>

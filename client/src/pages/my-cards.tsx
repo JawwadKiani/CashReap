@@ -65,21 +65,25 @@ export default function MyCards() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-surface-variant sticky top-0 z-50">
         <div className="max-w-md mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 flex flex-col items-center">
-              <img src="/src/assets/logo-transparent.svg" alt="CashReap" className="h-32 mb-2" />
+          <div className="relative">
+            {/* Centered Logo and Title */}
+            <div className="flex flex-col items-center justify-center">
+              <img src="/src/assets/logo-transparent.svg" alt="CashReap" className="h-24 mb-2" />
               <h1 className="text-xl font-bold text-on-surface">My Cards</h1>
               <div className="text-xs text-on-surface-variant font-medium">Harvest Your Rewards</div>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-primary"
-              onClick={() => setShowAllCards(!showAllCards)}
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              {showAllCards ? "Hide Cards" : "Add Card"}
-            </Button>
+            
+            {/* Action button positioned absolutely */}
+            <div className="absolute top-0 right-0">
+              <Button 
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAllCards(!showAllCards)}
+                className="text-on-surface-variant hover:text-primary"
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -129,79 +133,71 @@ export default function MyCards() {
           {Array.isArray(savedCards) && savedCards.length > 0 ? (
             <div className="space-y-4">
               {savedCards.map((savedCard: any) => (
-              <Card key={savedCard.id} className="shadow-sm">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg text-on-surface">{savedCard.card.name}</CardTitle>
-                      <p className="text-sm text-on-surface-variant">{savedCard.card.issuer}</p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleUnsaveCard(savedCard.card.id)}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-primary">{parseFloat(savedCard.card.baseReward).toFixed(1)}%</div>
-                      <div className="text-xs text-on-surface-variant">Base Reward</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-on-surface">
-                        {savedCard.card.annualFee === 0 ? '$0' : `$${savedCard.card.annualFee}`}
+                <Card key={savedCard.id} className="shadow-sm">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-lg text-on-surface">{savedCard.card.name}</CardTitle>
+                        <p className="text-sm text-on-surface-variant">{savedCard.card.issuer}</p>
                       </div>
-                      <div className="text-xs text-on-surface-variant">Annual Fee</div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleUnsaveCard(savedCard.card.id)}
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-on-surface">{savedCard.card.minCreditScore}+</div>
-                      <div className="text-xs text-on-surface-variant">Credit Score</div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-primary">{parseFloat(savedCard.card.baseReward).toFixed(1)}%</div>
+                        <div className="text-xs text-on-surface-variant">Base Reward</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-on-surface">
+                          {savedCard.card.annualFee === 0 ? '$0' : `$${savedCard.card.annualFee}`}
+                        </div>
+                        <div className="text-xs text-on-surface-variant">Annual Fee</div>
+                      </div>
+                      <div className="text-center">
+                        <Badge variant="outline" className="text-xs">{savedCard.card.issuer}</Badge>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex gap-2 justify-center">
-                    {savedCard.card.annualFee === 0 && (
-                      <Badge variant="secondary" className="bg-secondary text-white text-xs">No Fee</Badge>
+                    
+                    {savedCard.card.description && (
+                      <p className="text-xs text-on-surface-variant mt-3 line-clamp-2">
+                        {savedCard.card.description}
+                      </p>
                     )}
-                    <Badge variant="outline" className="text-xs">{savedCard.card.issuer}</Badge>
-                  </div>
-                  
-                  {savedCard.card.description && (
-                    <p className="text-xs text-on-surface-variant mt-3 line-clamp-2">
-                      {savedCard.card.description}
-                    </p>
-                  )}
-                  
-                  <div className="text-xs text-on-surface-variant mt-2">
-                    Saved {new Date(savedCard.savedAt).toLocaleDateString()}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-              <Plus className="w-8 h-8 text-muted-foreground" />
+                    
+                    <div className="text-xs text-on-surface-variant mt-2">
+                      Saved {new Date(savedCard.savedAt).toLocaleDateString()}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            <h2 className="text-lg font-semibold text-on-surface mb-2">No Saved Cards</h2>
-            <p className="text-on-surface-variant mb-4">
-              Save credit cards from recommendations to quickly access them later.
-            </p>
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-white"
-              onClick={() => setShowAllCards(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Browse Available Cards
-            </Button>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                <Plus className="w-8 h-8 text-muted-foreground" />
+              </div>
+              <h2 className="text-lg font-semibold text-on-surface mb-2">No Saved Cards</h2>
+              <p className="text-on-surface-variant mb-4">
+                Save credit cards from recommendations to quickly access them later.
+              </p>
+              <Button 
+                className="bg-primary hover:bg-primary/90 text-white"
+                onClick={() => setShowAllCards(true)}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Browse Available Cards
+              </Button>
+            </div>
+          )}
         </div>
       </main>
     </div>
