@@ -148,9 +148,9 @@ export function StoreBrowser({ onStoreSelect, selectedStore, onClose }: StoreBro
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Choose a Store</CardTitle>
+      <div className="flex-shrink-0 p-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Choose a Store</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="w-4 h-4" />
           </Button>
@@ -166,10 +166,10 @@ export function StoreBrowser({ onStoreSelect, selectedStore, onClose }: StoreBro
             className="pl-10"
           />
         </div>
-      </CardHeader>
+      </div>
 
-      {/* Content */}
-      <CardContent className="flex-1 overflow-y-auto space-y-4">
+      {/* Content - Scrollable */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {searchTerm ? (
           // Search Results
           <div className="space-y-3">
@@ -216,7 +216,7 @@ export function StoreBrowser({ onStoreSelect, selectedStore, onClose }: StoreBro
             </div>
           </>
         )}
-      </CardContent>
+      </div>
     </div>
   );
 }
