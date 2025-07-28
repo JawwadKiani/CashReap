@@ -30,7 +30,7 @@ export function Landing() {
         {/* Header */}
         <header className="text-center mb-12">
           <div className="flex justify-center mb-6">
-            <svg width="200" height="200" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="280" height="280" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="140" y="180" width="120" height="80" rx="8" fill="#F59E0B" stroke="#000" strokeWidth="2"/>
               <rect x="140" y="195" width="120" height="12" fill="#000"/>
               <circle cx="220" cy="225" r="8" fill="#F59E0B" stroke="#000" strokeWidth="1"/>
