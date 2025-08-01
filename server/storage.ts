@@ -12,6 +12,7 @@ import {
   type UserSavedCard,
   type InsertUserSavedCard,
   type User,
+  type InsertUser,
   type UpsertUser,
   type StoreWithCategory,
   type CardRecommendation,
@@ -42,8 +43,10 @@ import { db } from "./db";
 import { eq, and, inArray } from "drizzle-orm";
 
 export interface IStorage {
-  // User operations (mandatory for Replit Auth)
+  // User operations
   getUser(id: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>;
 
   // Credit Cards
@@ -111,9 +114,19 @@ export class DatabaseStorage implements IStorage {
     this.seedData();
   }
 
-  // User operations (mandatory for Replit Auth)
+  // User operations
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async createUser(userData: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(userData).returning();
     return user;
   }
 

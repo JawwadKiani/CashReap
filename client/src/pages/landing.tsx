@@ -20,9 +20,7 @@ export function Landing() {
     navigate("/signup");
   };
 
-  const handleReplitLogin = () => {
-    window.location.href = "/api/login";
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-surface to-primary/5">
@@ -177,12 +175,12 @@ export function Landing() {
               </div>
 
               <Button 
-                onClick={handleReplitLogin}
+                onClick={handleSignUp}
                 variant="outline"
                 className="w-full"
                 size="lg"
               >
-                Continue with Replit
+                Try as Guest
               </Button>
             </CardContent>
           </Card>
